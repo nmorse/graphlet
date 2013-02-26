@@ -1,0 +1,29 @@
+var graph = {"nodes":[
+  {"id":"div","start":true,"view":{"position":{"x":79,"y":105}}},
+  {"id":"ul","start":true,"view":{"position":{"x":265,"y":146}}},
+  {"id":"ol","start":true,"view":{"position":{"x":270,"y":40}}},
+  {"id":"li","view":{"position":{"x":525,"y":100}}},
+  {"id":"h#","start":true,"view":{"position":{"x":79,"y":335}}},
+  {"id":"p","start":true,"view":{"position":{"x":191,"y":229}}},
+  {"id":"text","view":{"position":{"x":525,"y":335}}},
+  {"id":"em","view":{"position":{"x":404,"y":229}}}
+ ],
+ "edges":[
+  ["div","h#","tag_path"],
+  ["div","p","tag_path"],
+  ["div","ul","tag_path"],
+  ["div","ol","tag_path"],
+  ["div","div","tag_path"],
+  ["h#","text","tag_path"],
+  ["p","text","tag_path"],
+  ["ul","li","tag_path"],
+  ["ol","li","tag_path"],
+  ["li","p","tag_path"],
+  ["li","ul","tag_path"],
+  ["li","ol","tag_path"],
+  ["li","text","tag_path"],
+  ["li","em","tag_path"],
+  ["p","em","tag_path"],
+  ["em","text","tag_path"]
+ ]
+};
