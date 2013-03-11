@@ -1,10 +1,15 @@
+var g;
 $(function(){
 	var raw_nodes = graph.nodes;
 	var raw_edges = graph.edges;
 	var demoNodes = [];
 	var demoEdges = [];
 	var i, o;
-    var g;
+    var add_edge_mode = false;
+    var delete_node_mode = false;
+    var delete_edge_mode = false;
+    var add_edge_arr = [];
+    
 	for (i = 0; i < raw_nodes.length; i++) {
         o = {data:raw_nodes[i]};
         
@@ -33,7 +38,7 @@ $(function(){
       .selector("node")
 			.css({
 				"content": "data(id)",
-				"shape": "data(shape)",
+				"shape": "ellipse",
 				"border-width": 3,
 				"background-color": "#DDD",
 				"border-color": "#555"
@@ -91,24 +96,74 @@ $(function(){
           $('#graph_out>pre').text( 'renderedPosition:' + JSON.stringify(node.renderedPosition()) + ',\nnode.json() --> ' + JSON.stringify(node.json()));
           //node.position(node.renderedPosition());
         });
-        this.on('mouseup', 'node', function(evt){
-          var node = this;
-          var pos = node.renderedPosition();
-          //$('#graph_out>pre').text( 'renderedPosition:' + JSON.stringify(node.renderedPosition()));
+        this.on('mouseup', 'edge', function(evt){
           $('#graph_out>pre').text( export_graph_json(g));
+          if (delete_edge_mode) {
+              g.remove(this);
+          }
+        });
+        this.on('mouseup', 'node', function(evt){
+          $('#graph_out>pre').text( export_graph_json(g));
+          if (delete_node_mode) {
+              g.remove(this);
+          }
+          else if (add_edge_mode) {
+            if(!add_edge_arr[0]) {
+                add_edge_arr[0] = this.data().id;
+                //alert("first node" + node.data().id);
+            }
+            else {
+                add_edge_arr[1] = this.data().id;
+                //alert("second node" + node.data().id);
+                g.add({"edges":[ {"data":{"source":add_edge_arr[0], "target":add_edge_arr[1]}}]});
+                add_edge_mode = false;
+            }
+          }
         });
       }
     });
     g = $("#graph_vis").cytoscape("get");
     
+    $('#add_node').on("click", function() {
+        //alert(g.nodes().length);
+        var ns = g.add({"nodes":[ {"data":{"view":{"position":{"x":30,"y":30}}}} ]});
+        var d = ns[0].data();
+        var pos = d.view.position;
+        add_edge_mode = false;
+        delete_node_mode = false;
+        delete_edge_mode = false;
+        ns[0].position({x: pos.x, y: pos.y});
+    });
+    $('#add_edge').on("click", function() {
+        // toggle edge mode
+        add_edge_mode = !add_edge_mode;
+        delete_node_mode = false;
+        delete_edge_mode = false;
+        if (add_edge_mode) {
+            add_edge_arr[0] = null;
+            add_edge_arr[1] = null;
+        }
+    });
+    $('#delete_node').on("click", function() {
+        // toggle edge mode
+        add_edge_mode = false;
+        delete_node_mode = !delete_node_mode;
+        delete_edge_mode = false;
+    });
+    $('#delete_edge').on("click", function() {
+        // toggle edge mode
+        add_edge_mode = false;
+        delete_node_mode = false;
+        delete_edge_mode = !delete_edge_mode;
+    });
 
 });
 
 function export_graph_json(g) {
     var nodes = g.nodes();
     var edges = g.edges();
-    var exp_graph_json = '{"nodes":['
-    //'], edges:[]}';
+    var exp_graph_json = '{"nodes":[';
+    
     var o, data, pos, source, target, spacer = "";
     for (i = nodes.length-1; i >= 0; i--) {
         exp_graph_json += spacer + '\n';
@@ -119,7 +174,6 @@ function export_graph_json(g) {
         o.view = {};
         o.view.position = {'x':pos.x, 'y':pos.y};
         exp_graph_json += "  " + JSON.stringify(o);
-        //console.log(o);
     }
     spacer = "";
     exp_graph_json += '\n ],\n "edges":['
@@ -131,7 +185,6 @@ function export_graph_json(g) {
         target = edges[i].target().id();
         o = [source, target, data.edge_type];
         exp_graph_json += "  " + JSON.stringify(o);
-        //console.log(o);
     }
     exp_graph_json += '\n ]\n}';
     return exp_graph_json;
