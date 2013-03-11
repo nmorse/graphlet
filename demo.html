@@ -1,32 +1,35 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/cyto/cytoscape.min.js"></script>
-        <script type="text/javascript" src="js/honeybee_graph_vis.js"></script>
-        <script type="text/javascript" src="js/demo.js"></script>
-        <!-- Bootstrap -->
-        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <style>
         #graph_vis {
             height: 400px;
+            width:  600px;
             border: 1px solid #ddd;
-            margin: 1em 0;
         }
+        .left {float: left;}
+        .clear {clear: both;}
         </style>
-        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/cyto/cytoscape.js"></script>
+        <script type="text/javascript" src="js/honeybee_graph_vis.js"></script>
+        <script type="text/javascript" src="js/demo.js"></script>
     </head>
 <body>
     <h1>A Simple HoneyBee Demonstration</h1>
-    <div class="row">
-      <div id="graph_vis" class="span8">
+    <div>
+      <div id="graph_vis" class="left">
       </div>
-      <div class="span4">...</div>
+      <div class="left">
+          <div><button id="add_node">add node</button></div>
+        <div><button id="add_edge">add edge</button></div>
+        <div><button id="delete_node">delete node</button></div>
+        <div><button id="delete_edge">delete edge</button>
+      </div>
     </div>
-    <button id="add_node">add node</button>
-    <button id="add_edge">add edge</button>
-    <button id="delete_node">delete node</button>
-    <button id="delete_edge">delete edge</button>
+    <div class="clear"> </div>
+    
     <div id="graph_out">
         <pre></pre>
     </div>

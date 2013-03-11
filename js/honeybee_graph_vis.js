@@ -102,12 +102,9 @@ $(function(){
               g.remove(this);
           }
         });
-        this.on('mouseup', 'node', function(evt){
+        this.on('click', 'node', function(evt){
           $('#graph_out>pre').text( export_graph_json(g));
-          if (delete_node_mode) {
-              g.remove(this);
-          }
-          else if (add_edge_mode) {
+          if (add_edge_mode) {
             if(!add_edge_arr[0]) {
                 add_edge_arr[0] = this.data().id;
                 //alert("first node" + node.data().id);
@@ -145,16 +142,12 @@ $(function(){
         }
     });
     $('#delete_node').on("click", function() {
-        // toggle edge mode
-        add_edge_mode = false;
-        delete_node_mode = !delete_node_mode;
-        delete_edge_mode = false;
+        var eles = g.elements("node:selected");
+        g.remove(eles);
     });
     $('#delete_edge').on("click", function() {
-        // toggle edge mode
-        add_edge_mode = false;
-        delete_node_mode = false;
-        delete_edge_mode = !delete_edge_mode;
+        var eles = g.elements("edge:selected");
+        g.remove(eles);
     });
 
 });
