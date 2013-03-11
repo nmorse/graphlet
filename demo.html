@@ -1,22 +1,27 @@
-<html>
+<!doctype html>
+<html lang="en">
     <head>
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/cyto/cytoscape.min.js"></script>
         <script type="text/javascript" src="js/honeybee_graph_vis.js"></script>
         <script type="text/javascript" src="js/demo.js"></script>
+        <!-- Bootstrap -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <style>
         #graph_vis {
-	height: 400px;
-	width: 600px;
-	border: 1px solid #ddd;
-	margin: 1em 0;
-}
-        
+            height: 400px;
+            border: 1px solid #ddd;
+            margin: 1em 0;
+        }
         </style>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
     </head>
 <body>
     <h1>A Simple HoneyBee Demonstration</h1>
-    <div id="graph_vis">
+    <div class="row">
+      <div id="graph_vis" class="span8">
+      </div>
+      <div class="span4">...</div>
     </div>
     <button id="add_node">add node</button>
     <button id="add_edge">add edge</button>
