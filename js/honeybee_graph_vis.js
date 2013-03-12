@@ -4,27 +4,18 @@ $(function(){
 	var raw_edges = graph.edges;
 	var demoNodes = [];
 	var demoEdges = [];
-	var i, o;
+	var i, o, l, id;
     var add_edge_mode = false;
-    var delete_node_mode = false;
-    var delete_edge_mode = false;
     var add_edge_arr = [];
     
 	for (i = 0; i < raw_nodes.length; i++) {
         o = {data:raw_nodes[i]};
-        
-        //if (!raw_nodes[i].view) {
-        //    o.position = {'x':(i/3)*3, 'y':(i%3)*3};
-        //}
-        //else {
-        //    //alert(raw_nodes[i].view.position.x + " " + raw_nodes[i].view.position.y);
-        //    o.data.view = {};
-        //    o.data.view.position = raw_nodes[i].view.position;
-        //}
         demoNodes.push(o);
     }
     for (i = 0; i < raw_edges.length; i++) {
-        o = {data:{id:"e" + (i * 2), source: raw_edges[i][0], target: raw_edges[i][1], edge_type: raw_edges[i][2], weight: 20}};
+        l = raw_edges[i][3] || "test";
+        id = "e" + (i * 2);
+        o = {"data":{"id":id, "content": l, "source": raw_edges[i][0], "target": raw_edges[i][1], "edge_type": raw_edges[i][2], "weight": 20}};
         demoEdges.push(o);
     }
 
@@ -35,48 +26,88 @@ $(function(){
       edges: demoEdges
     },
     style: cytoscape.stylesheet()
-      .selector("node")
-			.css({
-				"content": "data(id)",
-				"shape": "ellipse",
-				"border-width": 3,
-				"background-color": "#DDD",
-				"border-color": "#555"
-			})
-		.selector("edge")
-			.css({
-				"width": "mapData(weight, 0, 100, 1, 4)",
-				"target-arrow-shape": "triangle",
-				"source-arrow-shape": "circle",
-				"line-color": "#444",
-			})
-		.selector(":selected")
-			.css({
-				"background-color": "#000",
-				"line-color": "#000",
+        .selector("node")
+            .css({
+                "content": "data(id)",
+                "font-size": 14,
+                "shape": "ellipse",
+                "border-width": 3,
+                "background-color": "#DDD",
+                "border-color": "#555",
+                "text-valign":"center"
+            })
+        .selector("node[node_type='input']")
+            .css({
+                "shape": "roundrectangle",
+                "width": 80
+            })
+        .selector("edge")
+            .css({
+                "content": "data(content)",
+                "font-size": 20,
+                "text-outline-color": "#FFF",
+                "text-outline-width": 0.4,
+                "opacity": 0.65,
+                "text-opacity": 1.0,
+                "text-outline-opacity": 0.5,
+                "color": "#000",
+                "font-weight": "normal",
+                "width": "mapData(weight, 0, 100, 1, 4)",
+                "source-arrow-shape": "circle",
+                "target-arrow-shape": "triangle",
+                "line-color": "#444",
+            })
+        .selector("edge[edge_type='get']")
+            .css({
+                "line-color": "#2B2",
+                "source-arrow-color": "#2B2",
+                "target-arrow-color": "#2B2",
+                "source-arrow-shape": "diamond",
+                "target-arrow-shape": "triangle"
+            })
+        .selector("edge[edge_type='set']")
+            .css({
+                "line-color": "#B22",
+                "source-arrow-color": "#B22",
+                "target-arrow-color": "#B22",
+                "source-arrow-shape": "circle",
+                "target-arrow-shape": "triangle"
+            })
+        .selector("edge[edge_type='flo']")
+            .css({
+                "line-color": "#22B",
+                "source-arrow-color": "#22B",
+                "target-arrow-color": "#22B",
+                "source-arrow-shape": "tee",
+                "target-arrow-shape": "triangle"
+            })
+        .selector(":selected")
+            .css({
+                "background-color": "#000",
+                "line-color": "#000",
                 "border-color": "#955",
-				"source-arrow-color": "#000",
-				"target-arrow-color": "#000"
-			})
-		.selector(".ui-cytoscape-edgehandles-source")
-			.css({
-				"border-color": "#5CC2ED",
-				"border-width": 3
-			})
-		.selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
-			.css({
-				"background-color": "#5CC2ED"
-			})
-		.selector("edge.ui-cytoscape-edgehandles-preview")
-			.css({
-				"line-color": "#5CC2ED"
-			})
-		.selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
-			.css({
-				"shape": "rectangle",
-				"width": 15,
-				"height": 15
-			})
+                "source-arrow-color": "#000",
+                "target-arrow-color": "#000"
+            })
+        .selector(".ui-cytoscape-edgehandles-source")
+            .css({
+                "border-color": "#5CC2ED",
+                "border-width": 3
+            })
+        .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
+            .css({
+                "background-color": "#5CC2ED"
+            })
+        .selector("edge.ui-cytoscape-edgehandles-preview")
+            .css({
+                "line-color": "#5CC2ED"
+            })
+        .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
+            .css({
+                "shape": "rectangle",
+                "width": 15,
+                "height": 15
+            })
     , ready: function(){
       	var nodeCount, nodes;
         var i, pos, data;
@@ -90,20 +121,7 @@ $(function(){
                 nodes[i].position({x: pos.x, y: pos.y});
             }
         }
-        //alert(nodeCount);
-        this.on('position', 'node', function(evt){
-          var node = this;
-          $('#graph_out>pre').text( 'renderedPosition:' + JSON.stringify(node.renderedPosition()) + ',\nnode.json() --> ' + JSON.stringify(node.json()));
-          //node.position(node.renderedPosition());
-        });
-        this.on('mouseup', 'edge', function(evt){
-          $('#graph_out>pre').text( export_graph_json(g));
-          if (delete_edge_mode) {
-              g.remove(this);
-          }
-        });
         this.on('click', 'node', function(evt){
-          $('#graph_out>pre').text( export_graph_json(g));
           if (add_edge_mode) {
             if(!add_edge_arr[0]) {
                 add_edge_arr[0] = this.data().id;
@@ -126,16 +144,11 @@ $(function(){
         var ns = g.add({"nodes":[ {"data":{"view":{"position":{"x":30,"y":30}}}} ]});
         var d = ns[0].data();
         var pos = d.view.position;
-        add_edge_mode = false;
-        delete_node_mode = false;
-        delete_edge_mode = false;
         ns[0].position({x: pos.x, y: pos.y});
     });
     $('#add_edge').on("click", function() {
         // toggle edge mode
         add_edge_mode = !add_edge_mode;
-        delete_node_mode = false;
-        delete_edge_mode = false;
         if (add_edge_mode) {
             add_edge_arr[0] = null;
             add_edge_arr[1] = null;
@@ -149,7 +162,9 @@ $(function(){
         var eles = g.elements("edge:selected");
         g.remove(eles);
     });
-
+    $('#save').on("click", function() {
+        $('#graph_out>pre').text( export_graph_json(g) );
+    });
 });
 
 function export_graph_json(g) {
@@ -176,7 +191,7 @@ function export_graph_json(g) {
         data = edges[i].data();
         source = edges[i].source().id();
         target = edges[i].target().id();
-        o = [source, target, data.edge_type];
+        o = [source, target, data.edge_type, data.content];
         exp_graph_json += "  " + JSON.stringify(o);
     }
     exp_graph_json += '\n ]\n}';
