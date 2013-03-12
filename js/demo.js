@@ -11,6 +11,7 @@ var graph = {"nodes":[
   ["process","end","flo","done"],
   ["process","input 1","get","a"],
   ["process","output 1","set","'Hello '+a"],
-  ["start","process","flo","a.length"]
+  ["start","process","flo","a.length"],
+  ["input 1","start","flo","onchange"]
  ]
 };
