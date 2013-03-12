@@ -38,6 +38,15 @@ $(function(){
             })
         .selector("node[node_type='input']")
             .css({
+                "background-color": "#DFD",
+                "border-color": "#8B8",
+                "shape": "roundrectangle",
+                "width": 80
+            })
+        .selector("node[node_type='output']")
+            .css({
+                "background-color": "#FDD",
+                "border-color": "#B88",
                 "shape": "roundrectangle",
                 "width": 80
             })

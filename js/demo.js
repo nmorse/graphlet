@@ -1,11 +1,16 @@
 var graph = {"nodes":[
-  {"view":{"position":{"x":278,"y":224}},"id":"n2"},
-  {"view":{"position":{"x":339,"y":121}},"id":"n1"},
-  {"view":{"position":{"x":200,"y":121}},"id":"n0111", "node_type":"input"}
+  {"view":{"position":{"x":66,"y":152}},"id":"start"},
+  {"view":{"position":{"x":328,"y":152}},"id":"process"},
+  {"view":{"position":{"x":328,"y":300}},"id":"end"},
+  {"view":{"position":{"x":205,"y":51}},"id":"input 1","node_type":"input"},
+  {"view":{"position":{"x":445,"y":51}},"id":"output 1","node_type":"output"}
  ],
  "edges":[
-  ["n0111","n1","set", "a"],
-  ["n0111","n2","get", "b"],
-  ["n1","n2","flo", "c"]
+  ["start","input 1","get","a"],
+  ["start","end","flo","ng"],
+  ["process","end","flo","done"],
+  ["process","input 1","get","a"],
+  ["process","output 1","set","'Hello '+a"],
+  ["start","process","flo","a.length"]
  ]
 };
