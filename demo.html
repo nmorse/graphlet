@@ -21,21 +21,51 @@
     </head>
 <body>
     <h1>A Simple HoneyBee Demonstration</h1>
-    <div>
-      <div id="graph_vis" class="left">
+    <div class="row">
+      <div id="graph_vis" class="span6">
       </div>
-      <div class="left">
-        <div class="row"><div class="span2"><button id="add_node" type="button" class="btn btn-primary">add node</button></div>
-                         <div class="span2"><button id="add_edge" type="button" class="btn btn-primary" data-toggle="button">add edge</button></div>
+      
+      <div class="span6">
+        <div class="row">
+          <div class="span12">
+            <div id="ui_mode" class="btn-group" data-toggle="buttons-radio">
+              <button id="save" type="button" class="btn btn-primary">Save</button>
+              <button id="edit" type="button" class="btn btn-primary">Edit</button>
+              <button id="run" type="button" class="btn btn-primary">Run</button>
+            </div>
+          </div>
         </div>
-        <div class="row"><div class="span2"><button id="delete_node" type="button" class="btn btn-primary">delete node</button></div>
-                         <div class="span2"><button id="delete_edge" type="button" class="btn btn-primary">delete edge</button></div>
+        <div id="edit_mode_ui">
+            <div class="row"><div class="span2"><button id="add_node" type="button" class="btn btn-primary">add node</button></div>
+                             <div class="span2"><button id="add_edge" type="button" class="btn btn-primary" data-toggle="button">add edge</button></div>
+            </div>
+            <div class="row"><div class="span2"><button id="delete_node" type="button" class="btn btn-primary">delete node</button></div>
+                             <div class="span2"><button id="delete_edge" type="button" class="btn btn-primary">delete edge</button></div>
+            </div>
+            <div><h4>Node data</h4>
+                <form class="form-horizontal">
+                  <div class="control-group">
+                    <label class="control-label" for="node_input_node_type">Node Type</label>
+                    <div class="controls">
+                        <select id="node_input_node_type" class="input-small"><option>input</option><option>output</option><option>process</option><option>data</option></select>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label" for="node_input_label">Label</label>
+                    <div class="controls">
+                        <input id="node_input_label" type="text" class="input-small" placeholder="Label">
+                    </div>
+                  </div>
+                </form>
+            </div>
         </div>
+        <div id="graph_out">
+            <pre></pre>
+        </div>
+
       </div>
-      <div class="clear"><button id="save">save</button> </div>
+      </div>
     
-    <div id="graph_out">
-        <pre></pre>
-    </div>
 </body>
 </html>

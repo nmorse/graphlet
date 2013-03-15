@@ -174,6 +174,24 @@ $(function(){
     $('#save').on("click", function() {
         $('#graph_out>pre').text( export_graph_json(g) );
     });
+    $("#ui_mode").on('click', function (e) {
+        var $btn = $(e.target);
+        var id = "", fq = "";
+        if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
+        id = $btn.attr("id");
+        if (id === "save") {
+            $('#edit_mode_ui').hide();
+            $('#graph_out').show();
+        }
+        if (id === "edit") {
+            $('#edit_mode_ui').show();
+            $('#graph_out').hide();
+        }
+    });
+        
+        
+        
+        
 });
 
 function export_graph_json(g) {
