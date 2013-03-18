@@ -18,14 +18,14 @@ var graph = {"nodes":[
 graph = {"nodes":[
   {"view":{"position":{"x":186,"y":116}},"id":"start"},
   {"view":{"position":{"x":186,"y":266}},"id":"process"},
-  {"view":{"position":{"x":390,"y":83}},"id":"input 1","node_type":"input"},
-  {"view":{"position":{"x":390,"y":324}},"id":"output 1","node_type":"output"}
+  {"view":{"position":{"x":390,"y":83}},"id":"input_1","node_type":"input"},
+  {"view":{"position":{"x":390,"y":324}},"id":"output_1","node_type":"output"}
  ],
  "edges":[
-  ["start","input 1","get","a"],
-  ["process","input 1","get","a"],
-  ["process","output 1","set","'Hello '+a"],
+  ["start","input_1","get","a"],
+  ["process","input_1","get","a"],
+  ["process","output_1","set","'Hello '+a"],
   ["start","process","flo","a.length"],
-  ["input 1","start","flo","on-change"]
+  ["input_1","start","flo","on-change"]
  ]
 };

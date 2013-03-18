@@ -17,7 +17,8 @@
         <script type="text/javascript" src="js/honeybee_graph_vis.js"></script>
         <script type="text/javascript" src="js/demo.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
-        
+        <script type="text/javascript" src="js/json2html/json2html-0.4.1.js"></script>
+        <script type="text/javascript" src="js/json2html/jquery.json2html.js"></script>
     </head>
 <body>
     <h1>A Simple HoneyBee Demonstration</h1>
@@ -43,20 +44,23 @@
                              <div class="span2"><button id="delete_edge" type="button" class="btn btn-primary">delete edge</button></div>
             </div>
             <div><h4>Node data</h4>
-                <form class="form-horizontal">
+                <form id="node_input_form" class="form-horizontal">
+
+ <div class="control-group">
+                    <label class="control-label" for="node_input_label">Label</label>
+                    <div class="controls">
+                        <input id="node_input_label" type="text" class="input-small" placeholder="Label">
+                    </div>
+                  </div>
                   <div class="control-group">
                     <label class="control-label" for="node_input_node_type">Node Type</label>
                     <div class="controls">
                         <select id="node_input_node_type" class="input-small"><option></option><option>input</option><option>output</option><option>io</option><option>process</option><option>data</option></select>
                     </div>
                   </div>
-
-                  <div class="control-group">
-                    <label class="control-label" for="node_input_label">Label</label>
-                    <div class="controls">
-                        <input id="node_input_label" type="text" class="input-small" placeholder="Label">
-                    </div>
-                  </div>
+                  
+                  
+                  
                 </form>
             </div>
         </div>

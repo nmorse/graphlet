@@ -1,4 +1,26 @@
 var g;
+var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
+    {"tag":"div","class":"control-group","children":[
+        {"tag":"label","class":"control-label","for":"node_input_label","html":"Label"},
+        {"tag":"div","class":"controls","children":[
+            {"tag":"input","id":"node_input_label_${id}","type":"text","class":"input-small","placeholder":"Label","html":"", "value":"${id}"}
+          ]}
+      ]},
+    {"tag":"div","class":"control-group","children":[
+        {"tag":"label","class":"control-label","for":"node_input_node_type","html":"Node Type"},
+        {"tag":"div","class":"controls","children":[
+          {"tag":"select","id":"node_input_node_type_${id}","class":"input-small","children":[
+            {"tag":"option","html":""},
+            {"tag":"option","html":"input"},
+            {"tag":"option","html":"output"},
+            {"tag":"option","html":"io"},
+            {"tag":"option","html":"process"},
+            {"tag":"option","html":"data"}
+          ]}
+        ]}
+      ]}
+  ]};
+//var nodes_selected = [];
 $(function(){
 	var raw_nodes = graph.nodes;
 	var raw_edges = graph.edges;
@@ -123,12 +145,20 @@ $(function(){
                 add_edge_mode = false;
             }
           }
-          $('#node_input_node_type').val(this.data().node_type);
-          $('#node_input_label').val(this.data().id);
+//          $('#node_input_node_type').val(this.data().node_type);
+//          $('#node_input_label').val(this.data().id);
         });
-        //this.on('select', 'node', function(evt) {
-        //    alert("here "+ JSON.stringify(this[0].isNode())+ JSON.stringify(this[0].data().node_type));
-        //});
+        this.on('select', "node",  function(evt) {
+            var nodes_selected = [];
+            var eles = g.elements("node:selected");
+            $.each(eles, function(i, o){
+                nodes_selected.push(o.data());
+            });
+            //alert(JSON.stringify(nodes_selected, null, " "));
+            //alert(JSON.stringify(prune2level(evt, 2), null, " "));
+            $("#node_input_form").trigger("update_form", [nodes_selected]);
+            
+        });
       }
     });
     g = $("#graph_vis").cytoscape("get");
@@ -173,7 +203,15 @@ $(function(){
             $('#graph_out').hide();
         }
     });
-        
+    
+    $("#node_input_form").on("update_form", function(event, nodes_selected) {
+        //alert(JSON.stringify(nodes_selected, null, " "));
+        $("#node_input_form").empty();
+        $("#node_input_form").json2html(nodes_selected, node_form_template);
+        $.each(nodes_selected, function(i, o) {
+            $('#node_input_node_type_'+o.id).val(o.node_type);
+        });
+    });    
         
         
         
@@ -208,4 +246,19 @@ function export_graph_json(g) {
     }
     exp_graph_json += '\n ]\n}';
     return exp_graph_json;
+}
+
+function prune2level(obj, level) {
+    var top_obj = {};
+    var t;
+    for (key in obj) {
+        t = typeof obj[key];
+        if (t !== "undefined" && t !== "object" && t !== "function") {
+            top_obj[key] = obj[key];
+        }
+        if (level > 1 && t === "object" && obj[key] !== null) {
+            top_obj[key] = prune2level(obj[key], level -1);
+        }
+    }
+    return top_obj;
 }
