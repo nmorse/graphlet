@@ -141,6 +141,7 @@ $(function(){
     , ready: function(){
       	var nodeCount, nodes;
         var i, pos, data;
+        g = $("#graph_vis").cytoscape("get");
         nodes = g.nodes();
         nodeCount = nodes.length;
         for (i = 0; i < nodeCount; i++) {
@@ -189,7 +190,6 @@ $(function(){
         });
       }
     });
-    g = $("#graph_vis").cytoscape("get");
     
     $('#add_node').on("click", function() {
         //alert(g.nodes().length);
