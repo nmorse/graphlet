@@ -1,9 +1,9 @@
 var g;
 var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
     {"tag":"div","class":"control-group","children":[
-        {"tag":"label","class":"control-label","for":"node_input_label","html":"Label"},
+        {"tag":"label","class":"control-label","for":"node_input_id","html":"Node ID:"},
         {"tag":"div","class":"controls","children":[
-            {"tag":"input","id":"node_input_label_${id}","type":"text","class":"input-small","placeholder":"Label","html":"", "value":"${id}"}
+            {"tag":"input","id":"node_input_id_${id}","type":"text","class":"input-small","placeholder":"Node ID","html":"", "value":"${id}"}
           ]}
       ]},
     {"tag":"div","class":"control-group","children":[
@@ -16,6 +16,25 @@ var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
             {"tag":"option","html":"io"},
             {"tag":"option","html":"process"},
             {"tag":"option","html":"data"}
+          ]}
+        ]}
+      ]}
+  ]};
+var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
+    {"tag":"div","class":"control-group","children":[
+        {"tag":"label","class":"control-label","for":"edge_input_id","html":"Edge ID:"},
+        {"tag":"div","class":"controls","children":[
+            {"tag":"input","id":"edge_input_id_${id}","type":"text","class":"input-small","placeholder":"Edge ID","html":"", "value":"${id}"}
+          ]}
+      ]},
+    {"tag":"div","class":"control-group","children":[
+        {"tag":"label","class":"control-label","for":"edge_input_edge_type","html":"Edge Type"},
+        {"tag":"div","class":"controls","children":[
+          {"tag":"select","id":"edge_input_edge_type_${id}","class":"input-small","children":[
+            {"tag":"option","html":""},
+            {"tag":"option","html":"get"},
+            {"tag":"option","html":"set"},
+            {"tag":"option","html":"flo"}
           ]}
         ]}
       ]}
@@ -145,8 +164,6 @@ $(function(){
                 add_edge_mode = false;
             }
           }
-//          $('#node_input_node_type').val(this.data().node_type);
-//          $('#node_input_label').val(this.data().id);
         });
         this.on('select', "node",  function(evt) {
             var nodes_selected = [];
@@ -157,7 +174,18 @@ $(function(){
             //alert(JSON.stringify(nodes_selected, null, " "));
             //alert(JSON.stringify(prune2level(evt, 2), null, " "));
             $("#node_input_form").trigger("update_form", [nodes_selected]);
-            
+        });
+        this.on('select', "edge",  function(evt) {
+            var edges_selected = [];
+            var eles = g.elements("edge:selected");
+            $.each(eles, function(i, o){
+                edges_selected.push(o.data());
+            });
+            $("#edge_input_form").trigger("update_form", [edges_selected]);
+        });
+        this.on("mouseup",  function(evt) {
+            $("#node_input_form").trigger("update_form", [[]]);
+            $("#edge_input_form").trigger("update_form", [[]]);
         });
       }
     });
@@ -206,12 +234,22 @@ $(function(){
     
     $("#node_input_form").on("update_form", function(event, nodes_selected) {
         //alert(JSON.stringify(nodes_selected, null, " "));
+        $("#node_input_header>span").text(""+nodes_selected.length);
         $("#node_input_form").empty();
         $("#node_input_form").json2html(nodes_selected, node_form_template);
         $.each(nodes_selected, function(i, o) {
             $('#node_input_node_type_'+o.id).val(o.node_type);
         });
-    });    
+    });
+    $("#edge_input_form").on("update_form", function(event, edges_selected) {
+        //alert(JSON.stringify(edges_selected, null, " "));
+        $("#edge_input_header>span").text(""+edges_selected.length);
+        $("#edge_input_form").empty();
+        $("#edge_input_form").json2html(edges_selected, edge_form_template);
+        $.each(edges_selected, function(i, o) {
+            $('#edge_input_edge_type_'+o.id).val(o.edge_type);
+        });
+    });
         
         
         

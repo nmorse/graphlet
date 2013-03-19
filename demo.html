@@ -43,24 +43,12 @@
             <div class="row"><div class="span2"><button id="delete_node" type="button" class="btn btn-primary">delete node</button></div>
                              <div class="span2"><button id="delete_edge" type="button" class="btn btn-primary">delete edge</button></div>
             </div>
-            <div><h4>Node data</h4>
+            <div><h4 id="node_input_header">Node data (<span>0</span> Selected)</h4>
                 <form id="node_input_form" class="form-horizontal">
-
- <div class="control-group">
-                    <label class="control-label" for="node_input_label">Label</label>
-                    <div class="controls">
-                        <input id="node_input_label" type="text" class="input-small" placeholder="Label">
-                    </div>
-                  </div>
-                  <div class="control-group">
-                    <label class="control-label" for="node_input_node_type">Node Type</label>
-                    <div class="controls">
-                        <select id="node_input_node_type" class="input-small"><option></option><option>input</option><option>output</option><option>io</option><option>process</option><option>data</option></select>
-                    </div>
-                  </div>
-                  
-                  
-                  
+                </form>
+            </div>
+            <div><h4 id="edge_input_header">Edge data (<span>0</span> Selected)</h4>
+                <form id="edge_input_form" class="form-horizontal">
                 </form>
             </div>
         </div>
