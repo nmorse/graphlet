@@ -22,9 +22,13 @@ var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
   ]};
 var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
     {"tag":"div","class":"control-group","children":[
-        {"tag":"label","class":"control-label","for":"edge_input_id","html":"Edge ID:"},
+        {"tag":"label","class":"control-label","for":"edge_input_id_${id}","html":"Edge ID:"},
         {"tag":"div","class":"controls","children":[
             {"tag":"input","id":"edge_input_id_${id}","type":"text","class":"input-small","placeholder":"Edge ID","html":"", "value":"${id}"}
+          ]},
+        {"tag":"label","class":"control-label","for":"edge_input_content_${id}","html":"Content:"},
+        {"tag":"div","class":"controls","children":[
+            {"tag":"input","id":"edge_input_content_${id}","type":"text","class":"input-small","placeholder":"Content","html":"", "value":"${content}"}
           ]}
       ]},
     {"tag":"div","class":"control-group","children":[
@@ -39,7 +43,7 @@ var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
         ]}
       ]}
   ]};
-//var nodes_selected = [];
+
 $(function(){
 	var raw_nodes = graph.nodes;
 	var raw_edges = graph.edges;
@@ -166,28 +170,8 @@ $(function(){
             }
           }
         });
-        this.on('select', "node",  function(evt) {
-            var nodes_selected = [];
-            var eles = g.elements("node:selected");
-            $.each(eles, function(i, o){
-                nodes_selected.push(o.data());
-            });
-            //alert(JSON.stringify(nodes_selected, null, " "));
-            //alert(JSON.stringify(prune2level(evt, 2), null, " "));
-            $("#node_input_form").trigger("update_form", [nodes_selected]);
-        });
-        this.on('select', "edge",  function(evt) {
-            var edges_selected = [];
-            var eles = g.elements("edge:selected");
-            $.each(eles, function(i, o){
-                edges_selected.push(o.data());
-            });
-            $("#edge_input_form").trigger("update_form", [edges_selected]);
-        });
-        this.on("mouseup",  function(evt) {
-            $("#node_input_form").trigger("update_form", [[]]);
-            $("#edge_input_form").trigger("update_form", [[]]);
-        });
+        this.on('select', sync_selected);
+        this.on("mouseup", sync_selected);
       }
     });
     
@@ -250,10 +234,24 @@ $(function(){
             $('#edge_input_edge_type_'+o.id).val(o.edge_type);
         });
     });
-        
-        
-        
 });
+
+function sync_selected(evt) {
+    var nodes_selected = [];
+    var edges_selected = [];
+    var eles = g.elements("node:selected");
+    $.each(eles, function(i, o){
+        nodes_selected.push(o.data());
+    });
+    //alert(JSON.stringify(nodes_selected, null, " "));
+    //alert(JSON.stringify(prune2level(evt, 2), null, " "));
+    $("#node_input_form").trigger("update_form", [nodes_selected]);
+    eles = g.elements("edge:selected");
+    $.each(eles, function(i, o){
+        edges_selected.push(o.data());
+    });
+    $("#edge_input_form").trigger("update_form", [edges_selected]);
+}
 
 function export_graph_json(g) {
     var nodes = g.nodes();

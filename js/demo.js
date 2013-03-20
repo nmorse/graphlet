@@ -24,7 +24,7 @@ graph = {"nodes":[
  "edges":[
   ["start","input_1","get","a"],
   ["process","input_1","get","a"],
-  ["process","output_1","set","'Hello '+a"],
+  ["process","output_1","set","'Hello'"],
   ["start","process","flo","a.length"],
   ["input_1","start","flo","on-change"]
  ]
