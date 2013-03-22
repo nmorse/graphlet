@@ -21,17 +21,23 @@
         <script type="text/javascript" src="js/json2html/jquery.json2html.js"></script>
     </head>
 <body>
-    <h1>A Simple HoneyBee Demonstration</h1>
+    <h1>HoneyBee Demonstration</h1>
     <div class="row">
       <div id="graph_vis" class="span6">
       </div>
       
       <div class="span6">
         <div class="row">
-          <div class="span12">
+          <div class="span3">
             <div id="ui_mode" class="btn-group" data-toggle="buttons-radio">
               <button id="save" type="button" class="btn btn-primary">Save</button>
-              <button id="edit" type="button" class="btn btn-primary">Edit</button>
+              <button id="load" type="button" class="btn btn-primary">Load</button>
+              <button id="hsare" type="button" class="btn btn-primary">Share</button>
+            </div>
+          </div>
+          <div class="span3">
+            <div id="ui_mode" class="btn-group" data-toggle="buttons-radio">
+              <button id="edit" type="button" class="btn btn-primary active">Edit</button>
               <button id="run" type="button" class="btn btn-primary">Run</button>
             </div>
           </div>
@@ -52,7 +58,7 @@
                 </form>
             </div>
         </div>
-        <div id="graph_out">
+        <div id="graph_out" style="display: none;">
             <pre></pre>
         </div>
 

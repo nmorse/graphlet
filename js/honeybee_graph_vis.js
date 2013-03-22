@@ -1,18 +1,13 @@
 var g;
 var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
     {"tag":"div","class":"control-group","children":[
-        {"tag":"label","class":"control-label","for":"node_input_id","html":"Node ID:"},
+        {"tag":"label","class":"control-label","for":"node_input_name","html":"Node Name:"},
         {"tag":"div","class":"controls","children":[
-            {"tag":"input","id":"node_input_id_${id}","type":"text","class":"input-small","placeholder":"Node ID","html":"", "value":"${id}"}
-          ]}
-      ]},
-    {"tag":"div","class":"control-group","children":[
+            {"tag":"input","id":"node_input_name_${id}","data-id":"${id}","type":"text","class":"input-small node_input_name","placeholder":"Node Name","html":"", "value":"${name}"}
+          ]},
         {"tag":"label","class":"control-label","for":"node_input_node_type","html":"Node Type"},
         {"tag":"div","class":"controls","children":[
-          {"tag":"select","id":"node_input_node_type_${id}","class":"input-small","children":[
-            {"tag":"option","html":""},
-            {"tag":"option","html":"input"},
-            {"tag":"option","html":"output"},
+          {"tag":"select","id":"node_input_node_type_${id}","data-id":"${id}","class":"input-small node_input_node_type","children":[
             {"tag":"option","html":"io"},
             {"tag":"option","html":"process"},
             {"tag":"option","html":"data"}
@@ -22,25 +17,24 @@ var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
   ]};
 var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
     {"tag":"div","class":"control-group","children":[
-        {"tag":"label","class":"control-label","for":"edge_input_id_${id}","html":"Edge ID:"},
+        {"tag":"label","class":"control-label","for":"edge_input_name_${id}","html":"Name:"},
         {"tag":"div","class":"controls","children":[
-            {"tag":"input","id":"edge_input_id_${id}","type":"text","class":"input-small","placeholder":"Edge ID","html":"", "value":"${id}"}
+            {"tag":"input","id":"edge_input_name_${id}","type":"text","class":"input-small","placeholder":"Name","html":"", "value":"${name}"}
           ]},
-        {"tag":"label","class":"control-label","for":"edge_input_content_${id}","html":"Content:"},
-        {"tag":"div","class":"controls","children":[
-            {"tag":"input","id":"edge_input_content_${id}","type":"text","class":"input-small","placeholder":"Content","html":"", "value":"${content}"}
-          ]}
-      ]},
-    {"tag":"div","class":"control-group","children":[
         {"tag":"label","class":"control-label","for":"edge_input_edge_type","html":"Edge Type"},
         {"tag":"div","class":"controls","children":[
           {"tag":"select","id":"edge_input_edge_type_${id}","class":"input-small","children":[
-            {"tag":"option","html":""},
             {"tag":"option","html":"get"},
             {"tag":"option","html":"set"},
+            {"tag":"option","html":"evt"},
             {"tag":"option","html":"flo"}
           ]}
-        ]}
+        ]},
+                {"tag":"label","class":"control-label","for":"edge_input_guard_${id}","html":"Edge Guard:"},
+        {"tag":"div","class":"controls","children":[
+            {"tag":"input","id":"edge_input_guard_${id}","type":"text","class":"input-small","placeholder":"Edge Guard","html":"", "value":"${guard}"}
+          ]}
+
       ]}
   ]};
 
@@ -49,21 +43,36 @@ $(function(){
 	var raw_edges = graph.edges;
 	var demoNodes = [];
 	var demoEdges = [];
-	var i, o, l, id;
+	var i, o, name, id;
     var add_edge_mode = false;
     var add_edge_arr = [];
+    var source, target;
+    var id_mode = "provided";
     
 	for (i = 0; i < raw_nodes.length; i++) {
         o = {data:raw_nodes[i]};
+        if (o.data.id === undefined) {
+            o.id = "n"+i;
+            id_mode = "generated";
+        }
+        if (o.data.node_type === undefined && o.data.type !== undefined) {
+            o.data.node_type = o.data.type;
+        }
         demoNodes.push(o);
     }
     for (i = 0; i < raw_edges.length; i++) {
-        l = raw_edges[i][3] || "test";
+        name = raw_edges[i][3] || "";
         id = "e" + (i * 2);
-        o = {"data":{"id":id, "content": l, "source": raw_edges[i][0], "target": raw_edges[i][1], "edge_type": raw_edges[i][2], "weight": 20}};
+        source = raw_edges[i][0];
+        target = raw_edges[i][1];
+        if (id_mode === "generated") {
+            source = "n"+raw_edges[i][0];
+            target = "n"+raw_edges[i][1];
+        }
+        
+        o = {"data":{"id":id, "name": name, "source": source, "target": target, "edge_type": raw_edges[i][2], "weight": 20}};
         demoEdges.push(o);
     }
-
 
     $('#graph_vis').cytoscape({
     elements: { 
@@ -73,7 +82,7 @@ $(function(){
     style: cytoscape.stylesheet()
         .selector("node")
             .css({
-                "content": "data(id)",
+                "content": "data(name)",
                 "font-size": 16,
                 "shape": "ellipse",
                 "border-width": 3,
@@ -82,23 +91,16 @@ $(function(){
                 "text-valign":"center",
                 "width": 60
             })
-        .selector("node[node_type='input']")
+        .selector("node[node_type='io']")
             .css({
-                "background-color": "#DFD",
-                "border-color": "#8B8",
-                "shape": "roundrectangle",
-                "width": 80
-            })
-        .selector("node[node_type='output']")
-            .css({
-                "background-color": "#FDD",
-                "border-color": "#B88",
+                "background-color": "#DDF",
+                "border-color": "#88B",
                 "shape": "roundrectangle",
                 "width": 80
             })
         .selector("edge")
             .css({
-                "content": "data(content)",
+                "content": "data(name)",
                 "font-size": 16,
                 "text-outline-color": "#FFF",
                 "text-outline-width": 0.4,
@@ -128,7 +130,7 @@ $(function(){
                 "source-arrow-shape": "circle",
                 "target-arrow-shape": "triangle"
             })
-        .selector("edge[edge_type='flo']")
+        .selector("edge[edge_type='flo'], edge[edge_type='evt']")
             .css({
                 "line-color": "#22B",
                 "source-arrow-color": "#22B",
@@ -171,7 +173,7 @@ $(function(){
           }
         });
         this.on('select', sync_selected);
-        this.on("mouseup", sync_selected);
+        //this.on("mouseup", sync_selected);
       }
     });
     
@@ -216,6 +218,7 @@ $(function(){
         }
     });
     
+    
     $("#node_input_form").on("update_form", function(event, nodes_selected) {
         //alert(JSON.stringify(nodes_selected, null, " "));
         $("#node_input_header>span").text(""+nodes_selected.length);
@@ -223,6 +226,12 @@ $(function(){
         $("#node_input_form").json2html(nodes_selected, node_form_template);
         $.each(nodes_selected, function(i, o) {
             $('#node_input_node_type_'+o.id).val(o.node_type);
+        });
+        $(".node_input_form").on("change", function(event) {
+            var node_id = $(this).data("id");
+            var ele = g.elements("node[id='"+node_id+"']")[0];
+            //alert(node_id + " " + JSON.stringify(ele.data()));
+            ele.data().name = $(this).val();
         });
     });
     $("#edge_input_form").on("update_form", function(event, edges_selected) {
@@ -277,7 +286,7 @@ function export_graph_json(g) {
         data = edges[i].data();
         source = edges[i].source().id();
         target = edges[i].target().id();
-        o = [source, target, data.edge_type, data.content];
+        o = [source, target, data.edge_type, data.name, data.guard];
         exp_graph_json += "  " + JSON.stringify(o);
     }
     exp_graph_json += '\n ]\n}';
