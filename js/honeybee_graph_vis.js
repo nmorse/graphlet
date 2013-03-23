@@ -1,11 +1,11 @@
 var g;
 var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
     {"tag":"div","class":"control-group","children":[
-        {"tag":"label","class":"control-label","for":"node_input_name","html":"Node Name:"},
+        {"tag":"label","class":"control-label","for":"node_input_name_${id}","html":"Node Name:"},
         {"tag":"div","class":"controls","children":[
             {"tag":"input","id":"node_input_name_${id}","data-id":"${id}","type":"text","class":"input-small node_input_name","placeholder":"Node Name","html":"", "value":"${name}"}
           ]},
-        {"tag":"label","class":"control-label","for":"node_input_node_type","html":"Node Type"},
+        {"tag":"label","class":"control-label","for":"node_input_node_type_${id}","html":"Node Type"},
         {"tag":"div","class":"controls","children":[
           {"tag":"select","id":"node_input_node_type_${id}","data-id":"${id}","class":"input-small node_input_node_type","children":[
             {"tag":"option","html":"io"},
@@ -203,7 +203,7 @@ $(function(){
     $('#save').on("click", function() {
         $('#graph_out>pre').text( export_graph_json(g) );
     });
-    $("#ui_mode").on('click', function (e) {
+    $(".ui_mode").on('click', function (e) {
         var $btn = $(e.target);
         var id = "", fq = "";
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
@@ -227,11 +227,29 @@ $(function(){
         $.each(nodes_selected, function(i, o) {
             $('#node_input_node_type_'+o.id).val(o.node_type);
         });
-        $(".node_input_form").on("change", function(event) {
+        $(".node_input_name").on("change", function(event) {
             var node_id = $(this).data("id");
             var ele = g.elements("node[id='"+node_id+"']")[0];
-            //alert(node_id + " " + JSON.stringify(ele.data()));
-            ele.data().name = $(this).val();
+            if (ele) {
+                alert(node_id + " " + JSON.stringify(prune2level(ele.data(), 1)));
+                ele.data().name = $(this).val();
+                ele.show();
+            }
+            else {
+                alert(node_id + " no ele");
+            }
+        });
+        $(".node_input_node_type").on("change", function(event) {
+            var node_id = $(this).data("id");
+            var ele = g.elements("node[id='"+node_id+"']")[0];
+            if (ele) {
+                alert(node_id + " " + JSON.stringify(prune2level(ele.data(), 1)));
+                ele.data().node_type = $(this).val();
+                ele.show();
+            }
+            else {
+                alert(node_id + " no ele");
+            }
         });
     });
     $("#edge_input_form").on("update_form", function(event, edges_selected) {
