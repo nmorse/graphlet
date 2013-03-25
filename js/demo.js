@@ -65,12 +65,12 @@ graph={"nodes":[
  ]
 };
 graph={"nodes":[
-  {"name":"start","id":"n0","view":{"position":{"x":98,"y":68}}},
-  {"name":"convey","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":97,"y":185}}},
-  {"name":"contents","data":{"salutation":"Hello "},"id":"n2","view":{"position":{"x":318,"y":60}}},
-  {"name":"out","type":"io","node_type":"io","id":"n3","view":{"position":{"x":506,"y":227}}},
-  {"name":"name","type":"io","subtype":"POST","data":{"name":"World"},"node_type":"io","id":"n4","view":{"position":{"x":504,"y":117}}},
-  {"name":"end","id":"n5","view":{"position":{"x":97,"y":291}}}
+  {"name":"start","id":"n0","view":{"position":{"x":125.26381440203345,"y":78.79226141662504}},"node_type":"process"},
+  {"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124.26381440203345,"y":195.79226141662497}},"node_type":"process"},
+  {"name":"contents","data":{"salutation":"Hello "},"id":"n2","view":{"position":{"x":345.2638144020333,"y":68.15574793951224}},"node_type":"data"},
+  {"name":"out","type":"io","node_type":"io","id":"n3","view":{"position":{"x":402.2638144020333,"y":281.7922614166249}}},
+  {"name":"name","type":"io","subtype":"POST","data":{"name":"World"},"node_type":"io","id":"n4","view":{"position":{"x":445.57712639586674,"y":173.93124726609923}}},
+  {"name":"end","id":"n5","view":{"position":{"x":124.26381440203345,"y":301.7922614166249}},"node_type":"process"}
  ],
  "edges":[
   ["n0","n1","flo","",null],

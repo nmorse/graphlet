@@ -34,11 +34,10 @@ var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
         {"tag":"div","class":"controls","children":[
             {"tag":"input","id":"edge_input_guard_${id}","type":"text","class":"input-small","placeholder":"Edge Guard","html":"", "value":"${guard}"}
           ]}
-
       ]}
   ]};
 
-$(function(){
+$(function() {
 	var raw_nodes = graph.nodes;
 	var raw_edges = graph.edges;
 	var demoNodes = [];
@@ -218,7 +217,6 @@ $(function(){
         }
     });
     
-    
     $("#node_input_form").on("update_form", function(event, nodes_selected) {
         //alert(JSON.stringify(nodes_selected, null, " "));
         $("#node_input_header>span").text(""+nodes_selected.length);
@@ -227,30 +225,8 @@ $(function(){
         $.each(nodes_selected, function(i, o) {
             $('#node_input_node_type_'+o.id).val(o.node_type);
         });
-        $(".node_input_name").on("change", function(event) {
-            var node_id = $(this).data("id");
-            var ele = g.elements("node[id='"+node_id+"']")[0];
-            if (ele) {
-                alert(node_id + " " + JSON.stringify(prune2level(ele.data(), 1)));
-                ele.data().name = $(this).val();
-                ele.show();
-            }
-            else {
-                alert(node_id + " no ele");
-            }
-        });
-        $(".node_input_node_type").on("change", function(event) {
-            var node_id = $(this).data("id");
-            var ele = g.elements("node[id='"+node_id+"']")[0];
-            if (ele) {
-                alert(node_id + " " + JSON.stringify(prune2level(ele.data(), 1)));
-                ele.data().node_type = $(this).val();
-                ele.show();
-            }
-            else {
-                alert(node_id + " no ele");
-            }
-        });
+        $(".node_input_name").on("keyup", {"ele_type":"node", "data_field":"name"}, update_graph_ele);
+        $(".node_input_node_type").on("change", {"ele_type":"node", "data_field":"node_type"}, update_graph_ele);
     });
     $("#edge_input_form").on("update_form", function(event, edges_selected) {
         //alert(JSON.stringify(edges_selected, null, " "));
@@ -262,6 +238,17 @@ $(function(){
         });
     });
 });
+
+function update_graph_ele(event) {
+    var node_id = $(this).data("id");
+    var ele = g.elements(event.data.ele_type + "[id='" + node_id + "']")[0];
+    if (ele) {
+        ele.data(event.data.data_field, $(this).val());
+    }
+    else {
+        alert(node_id + " no ele");
+    }
+}
 
 function sync_selected(evt) {
     var nodes_selected = [];
@@ -324,4 +311,12 @@ function prune2level(obj, level) {
         }
     }
     return top_obj;
+}
+
+function reload_graph() {
+    var s = export_graph_json(g);
+    var g2 = JSON.parse(s);
+    alert(s);
+    g2 = {"elements": g2};
+    g.load(g2);
 }
