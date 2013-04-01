@@ -77,7 +77,7 @@ function load_hbg(graph) {
       edges: demoEdges
     };
 }
-    	
+
 
 function load_cy_graph(init_graph) {
     if (g) {
