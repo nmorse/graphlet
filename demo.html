@@ -7,19 +7,22 @@
             width:  600px;
             border: 1px solid #ddd;
         }
-        .left {float: left;}
-        .clear {clear: both;}
+
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+        <title>HoneyBee Demonstration</title>
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/cyto/cytoscape.js"></script>
         <script type="text/javascript" src="js/honeybee_graph_vis.js"></script>
         <script type="text/javascript" src="js/save_graph.js"></script>
         <script type="text/javascript" src="js/demo.js"></script>
-        <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+        
         <script type="text/javascript" src="js/json2html/json2html-0.4.1.js"></script>
         <script type="text/javascript" src="js/json2html/jquery.json2html.js"></script>
+        
+        <!-- Bootstrap -->
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+        <script src="bootstrap/js/bootstrap.min.js"></script>
     </head>
 <body>
     <h1>HoneyBee Demonstration</h1>
@@ -60,6 +63,15 @@
             </div>
         </div>
         <div id="graph_out" style="display: none;">
+            <form class="form-horizontal">
+
+            <div class="control-group">
+                <label class="control-label" for="node_input_name_n2">Graph Name:</label>
+                <div class="controls">
+                    <input id="graph_input_name" type="text" class="input-small graph_input_name" placeholder="Enter a Name" value="honeybee_1" />
+                </div>
+            </div>
+            </form>
             <pre></pre>
         </div>
         <div id="graph_in" style="display: none;">
