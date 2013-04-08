@@ -1,17 +1,24 @@
 HoneyBee
 ========
+The HoneyBee project combines: 
+ * code visualization (i.e. it can be expressed as a visual language);
+ * a network syntax for flow-control (i.e. coded elements form a network);
+ * an environment agnostic approach to programming.
 
-In the HoneyBee environment a "graph" is used as source code and is interpreted using a "event emitter pattern" 
-message queue to control the flow of an application across clients and/or servers. 
+In the HoneyBee environment a "graph" is used as source code and is interpreted using a "event emitter pattern."  
+A message queue manages the flow of an application. Both clients and servers can run a HoneyBee flow-control-graph, blurring the distinction 
+between the two traditional computing environments. 
 
-The source code or "control graph", is a "directed", "multi-graph" (for the mathematicians). 
-The nodes of a control graph represent executable steps or data sources/items, 
-while edges represent message pathways.
+The source code a "flow-control-graph", is a "directed", "multi-graph" (for the mathematicians). 
+The nodes of a flow-control-graph represent executable steps or data sources, 
+while graph's edges represent three types of message routing. Get, Set (data) and Flow-event messages are called in order to "run" a HoneyBee graph.
 
-When the HoneyBee environment loads a control graph, it registers "pubsub" style subscriptions for all edges in
-the graph. Control graph nodes marked as "input" or "output" are also registered with the local/internet environment. 
+When the HoneyBee environment loads a flow-control-graph, it registers "pubsub" style subscriptions for all edges in
+the graph. Nodes marked for data "i/o" are registered with the local server, DOM environment, or data services across Internet. 
 
-Visualization
+Code Visualization
 -------------
 
-Cytoscape.js facilitates graph visualization, allowing us to view, edit and debug a control graph.
+Cytoscape.js is used to facilitate graph visualization, by providing a view into HoneyBee flow-control-graphs the linking of data and process are presented in a high cognitive-bandwidth format. 
+Editing sharing and debugging are also enhanced by graph visualization.
+Other graph "renderers" (outside of Cytoscape.js) are possible, but plans to implement are only in a preliminary stage.

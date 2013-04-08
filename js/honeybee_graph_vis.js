@@ -316,7 +316,7 @@ function export_graph_json(g) {
         o = data;
         pos = nodes[i].renderedPosition();
         o.view = {};
-        o.view.position = {'x':pos.x, 'y':pos.y};
+        o.view.position = {'x':Math.round(pos.x), 'y':Math.round(pos.y)};
         exp_graph_json += "  " + JSON.stringify(o);
     }
     spacer = "";
