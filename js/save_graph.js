@@ -13,7 +13,7 @@ $(function() {
             local_hb_graphs = JSON.parse(localStorage.hb_graphs);
             if(local_hb_graphs[proposed_name]) {
                 if (overwrite) {
-                    local_hb_graphs[proposed_name] = export_graph_json(g);
+                    local_hb_graphs[proposed_name] = JSON.parse(export_graph_json(g));
                     localStorage.hb_graphs = JSON.stringify(local_hb_graphs);
                     $(document).trigger("hbg_save_status", [{"outcome": outcome[1], "dest": "local", "final":true}]);
                 }
@@ -22,7 +22,7 @@ $(function() {
                 }
             }
             else {
-                local_hb_graphs[proposed_name] = export_graph_json(g);
+                local_hb_graphs[proposed_name] = JSON.parse(export_graph_json(g));
                 localStorage.hb_graphs = JSON.stringify(local_hb_graphs);
                 $(document).trigger("hbg_save_status", [{"outcome": outcome[3], "dest": "local", "final":true}]);
             }
