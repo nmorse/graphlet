@@ -306,7 +306,9 @@ function sync_selected(evt) {
 function export_graph_json(g) {
     var nodes = g.nodes();
     var edges = g.edges();
-    var exp_graph_json = '{"nodes":[';
+    var exp_graph_json;
+    var graph_desc = g.graph || {};
+    exp_graph_json = '{"graph":' + JSON.stringify(graph_desc) + ', "nodes":[';
     
     var o, data, pos, source, target, spacer = "";
     for (i = nodes.length-1; i >= 0; i--) {
