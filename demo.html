@@ -68,7 +68,9 @@
             <div class="control-group">
                 <label class="control-label" for="node_input_name_n2">Graph Name:</label>
                 <div class="controls">
-                    <input id="graph_input_name" type="text" class="input-small graph_input_name" placeholder="Enter a Name" value="honeybee_1" /> <button id="to_storage" type="button" class="btn btn-primary">Store</button>
+                    <input id="graph_input_name" type="text" data-provide="typeahead" data-items="16" data-source="[]" placeholder="Enter a Name" />
+                    <button id="save_to_storage" type="button" class="btn btn-primary">Store</button> 
+                    <button id="delete_from_storage" type="button" class="btn btn-primary">Delete</button>
                 </div>
             </div>
             </form>
