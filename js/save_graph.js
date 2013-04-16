@@ -1,8 +1,7 @@
 $(function() {
     // load
-    $(document).on("load_hbg", function (event, g, online_service) {
+    $(document).on("load_hbg", function (event, path_name, online_service) {
         var outcome = ["storage not availible", "loaded", "not found", "load operation submitted"];
-        var proposed_name = g.graph.name;
         var local_hb_graphs;
         if (typeof Storage !== "undefined") {
             //use local storage
@@ -10,42 +9,40 @@ $(function() {
                 localStorage.hb_graphs = "{}";
             }
             local_hb_graphs = JSON.parse(localStorage.hb_graphs);
-            if(local_hb_graphs[proposed_name]) {
-                g = local_hb_graphs[proposed_name];
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true}]);
+            if(local_hb_graphs[path_name]) {
+                load_cy_graph(load_hbg(local_hb_graphs[path_name]));
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
             }
             else {
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true}]);
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":path_name}]);
             }
         }
         else {
-            $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true}]);
+            $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":path_name}]);
         }
         
         if (navigator.online) {
             if (online_service) {
                 //get from service
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[3], "target": "online", "final":false}]);
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[3], "target": "online", "final":false, "path_name":path_name}]);
             }
             else {
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true}]);
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":path_name}]);
             }
         }
         else {
-            $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true}]);
+            $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":path_name}]);
         }
     });
     
     $(document).on("hbg_load_status", function(event, arg) {
-        alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
+        //alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
     });
     
     $('#load_from_storage').on("click", function(event) {
-        var overwrite = false;
+        var path_name = $('#graph_input_name').val();
         var online_service = null;
-        if (!g.graph) {g.graph = {};}
-        g.graph.name = $('#graph_input_name').val();
-        $(document).trigger("load_hbg", [g, overwrite, online_service]);
+        $(document).trigger("load_hbg", [path_name, online_service]);
     });
     
     // save
