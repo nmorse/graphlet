@@ -34,9 +34,8 @@
         <div class="row">
           <div class="span3">
             <div id="ui_mode_1" class="btn-group ui_mode" data-toggle="buttons-radio">
-              <button id="save" type="button" class="btn btn-primary">Save</button>
               <button id="load" type="button" class="btn btn-primary">Load</button>
-              <button id="hsare" type="button" class="btn btn-primary">Share</button>
+              <button id="save" type="button" class="btn btn-primary">Store</button>
             </div>
           </div>
           <div class="span3">
@@ -68,9 +67,8 @@
             <div class="control-group">
                 <label class="control-label" for="node_input_name_n2">Graph Name:</label>
                 <div class="controls">
-                    <input id="graph_input_name" type="text" data-provide="typeahead" data-items="16" data-source="[]" placeholder="Enter a Name" />
-                    <button id="load_from_storage" type="button" class="btn btn-primary">Load</button> 
-                    <button id="save_to_storage" type="button" class="btn btn-primary">Store</button> 
+                    <input id="graph_input_name_n2" type="text" data-provide="typeahead" data-items="16" data-source="[]" placeholder="Enter a Name" />
+                    <button id="save_to_storage" type="button" class="btn btn-primary">Save</button> 
                     <button id="delete_from_storage" type="button" class="btn btn-primary">Delete</button>
                 </div>
             </div>
@@ -78,6 +76,15 @@
             <pre></pre>
         </div>
         <div id="graph_in" style="display: none;">
+            <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="node_input_name_n1">Graph Source:</label>
+                <div class="controls">
+                    <input id="graph_input_name_n1" type="text" data-provide="typeahead" data-items="16" data-source="[]" placeholder="Enter a Name" />
+                    <button id="load_from_storage" type="button" class="btn btn-primary">Load</button> 
+                </div>
+            </div>
+            </form>
             <textarea></textarea>
         </div>
 

@@ -10,7 +10,10 @@ $(function() {
             }
             local_hb_graphs = JSON.parse(localStorage.hb_graphs);
             if(local_hb_graphs[path_name]) {
+                g.zoom(local_hb_graphs[path_name].graph.view.zoom_level);
                 load_cy_graph(load_hbg(local_hb_graphs[path_name]));
+                //g.fit();
+                //g.zoom({"level":0.9, "renderedPosition":{"x":300, "y":200}});
                 $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
             }
             else {
@@ -40,7 +43,7 @@ $(function() {
     });
     
     $('#load_from_storage').on("click", function(event) {
-        var path_name = $('#graph_input_name').val();
+        var path_name = $('#graph_input_name_n1').val();
         var online_service = null;
         $(document).trigger("load_hbg", [path_name, online_service]);
     });
@@ -50,6 +53,13 @@ $(function() {
         var outcome = ["storage not availible", "saved to existing", "did not overwrite existing", "created new", "storage operation submitted"];
         var proposed_name = g.graph.name;
         var local_hb_graphs;
+        var zoom_level;
+        g.fit();
+        zoom_level = g.zoom() - 0.1;
+        zoom_level = Math.round(zoom_level*100.0)/100.0
+        g.zoom({"level":zoom_level, "renderedPosition":{"x":300, "y":200}});
+        if (!g.graph.view) {g.graph.view = {};}
+        g.graph.view.zoom_level = zoom_level;
         if (typeof Storage !== "undefined") {
             //use local storage
             if (!localStorage.hb_graphs) {
@@ -98,7 +108,7 @@ $(function() {
         var overwrite = false;
         var online_service = null;
         if (!g.graph) {g.graph = {};}
-        g.graph.name = $('#graph_input_name').val();
+        g.graph.name = $('#graph_input_name_n2').val();
         $(document).trigger("save_hbg", [g, overwrite, online_service]);
     });
     
@@ -143,13 +153,13 @@ $(function() {
     });
     
     $('#delete_from_storage').on("click", function(event) {
-        var path_name = $('#graph_input_name').val();
+        var path_name = $('#graph_input_name_n2').val();
         var online_service = null;
         
         $(document).trigger("delete_hbg", [path_name, online_service]);
     });
     
-    $('#graph_input_name').data("source", request_hbg_names()); 
+    $('#graph_input_name_n2').data("source", request_hbg_names()); 
 
 });
 

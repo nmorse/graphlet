@@ -234,11 +234,13 @@ $(function() {
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
         id = $btn.attr("id");
         if (id === "save") {
+            $('#graph_input_name_n2').data("source", request_hbg_names());
             $('#edit_mode_ui').hide();
             $('#graph_in').hide();
             $('#graph_out').show();
         }
         if (id === "load") {
+            $('#graph_input_name_n1').data("source", request_hbg_names());
             $('#edit_mode_ui').hide();
             $('#graph_in').show();
             $('#graph_out').hide();
