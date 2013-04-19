@@ -10,7 +10,7 @@ $(function() {
             }
             local_hb_graphs = JSON.parse(localStorage.hb_graphs);
             if(local_hb_graphs[path_name]) {
-                g.zoom(local_hb_graphs[path_name].graph.view.zoom_level);
+                //g.zoom(local_hb_graphs[path_name].graph.view.zoom_level);
                 load_cy_graph(load_hbg(local_hb_graphs[path_name]));
                 //g.fit();
                 //g.zoom({"level":0.9, "renderedPosition":{"x":300, "y":200}});
@@ -53,13 +53,13 @@ $(function() {
         var outcome = ["storage not availible", "saved to existing", "did not overwrite existing", "created new", "storage operation submitted"];
         var proposed_name = g.graph.name;
         var local_hb_graphs;
-        var zoom_level;
-        g.fit();
-        zoom_level = g.zoom() - 0.1;
-        zoom_level = Math.round(zoom_level*100.0)/100.0
-        g.zoom({"level":zoom_level, "renderedPosition":{"x":300, "y":200}});
-        if (!g.graph.view) {g.graph.view = {};}
-        g.graph.view.zoom_level = zoom_level;
+        //var zoom_level;
+        //g.fit();
+        //zoom_level = g.zoom() - 0.1;
+        //zoom_level = Math.round(zoom_level*100.0)/100.0
+        //g.zoom({"level":zoom_level, "renderedPosition":{"x":300, "y":200}});
+        //if (!g.graph.view) {g.graph.view = {};}
+        //g.graph.view.zoom_level = zoom_level;
         if (typeof Storage !== "undefined") {
             //use local storage
             if (!localStorage.hb_graphs) {

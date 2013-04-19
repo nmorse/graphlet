@@ -30,10 +30,10 @@ var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
             {"tag":"option","html":"flo"}
           ]}
         ]},
-                {"tag":"label","class":"control-label","for":"edge_input_guard_${id}","html":"Edge Guard:"},
+        {"tag":"label","class":"control-label","for":"edge_input_guard_${id}","html":"Edge Guard:"},
         {"tag":"div","class":"controls","children":[
             {"tag":"input","id":"edge_input_guard_${id}","data-id":"${id}","type":"text","class":"input-small edge_input_guard","placeholder":"Edge Guard","html":"", "value":"${guard}"}
-          ]}
+        ]}
       ]}
   ]};
 var add_edge_mode = false;
@@ -185,7 +185,14 @@ function load_cy_graph(init_graph) {
 }
 $(function() {
     var init_graph = load_hbg(graph);
-
+    $.fn.options = function(l) {
+        var html_options = "";
+        $.each(l, function(i, o) {
+            html_options += '<option value="'+o+'">' + o + '</option>\n';
+        });
+        $(this).html(html_options);
+    };
+    
     load_cy_graph(init_graph);
     $('#add_node').on("click", function() {
         //alert(g.nodes().length);
@@ -210,22 +217,15 @@ $(function() {
         var eles = g.elements("edge:selected");
         g.remove(eles);
     });
-    $('#save').on("click", function() {
+    $('#save_to_text').on("click", function() {
         $('#graph_out>pre').text( export_graph_json(g) );
     });
-    $('#load').on("click", function() {
+    $('#load_from_text').on("click", function() {
         var s = $('#graph_in>textarea').val();
         var cy_g;
         if (s !== "") {
             cy_g = load_hbg(JSON.parse(s));
             load_cy_graph(cy_g);
-            //alert(s);
-            //alert(JSON.stringify(cy_g, null , " "));
-            //g.load(cy_g, function(e){
-            //  console.log("cy loaded elements"+ g.nodes().length);
-            //}, function(e){
-            //  console.log("cy laid out elements");
-            //});
         }
     });
     $(".ui_mode").on('click', function (e) {
@@ -240,7 +240,7 @@ $(function() {
             $('#graph_out').show();
         }
         if (id === "load") {
-            $('#graph_input_name_n1').data("source", request_hbg_names());
+            $('#graph_input_name_n1').options(request_hbg_names());
             $('#edit_mode_ui').hide();
             $('#graph_in').show();
             $('#graph_out').hide();
