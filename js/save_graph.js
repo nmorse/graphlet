@@ -33,9 +33,7 @@ $(function() {
                 $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":path_name}]);
             }
         }
-        else {
-            $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":path_name}]);
-        }
+        
     });
     
     $(document).on("hbg_load_status", function(event, arg) {
@@ -95,9 +93,6 @@ $(function() {
                 $(document).trigger("hbg_save_status", [{"outcome": outcome[0], "target": "online", "final":true}]);
             }
         }
-        else {
-            $(document).trigger("hbg_save_status", [{"outcome": outcome[0], "target": "online", "final":true}]);
-        }
     });
     
     $(document).on("hbg_save_status", function(event, arg) {
@@ -142,9 +137,6 @@ $(function() {
             else {
                 $(document).trigger("hbg_delete_status", [{"outcome": outcome[0], "target": "online", "final":true}]);
             }
-        }
-        else {
-            $(document).trigger("hbg_delete_status", [{"outcome": outcome[0], "target": "online", "final":true}]);
         }
     });
     

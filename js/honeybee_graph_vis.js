@@ -275,6 +275,9 @@ $(function() {
         $(".edge_input_edge_type").on("change", {"ele_type": "edge", "data_field": "edge_type"}, update_graph_ele);
         $(".edge_input_guard").on("keyup", {"ele_type": "edge", "data_field": "guard"}, update_graph_ele);
     });
+    $("#view_all").on("click", function() {
+        g.fit();
+    });
 });
 
 function update_graph_ele(event) {
