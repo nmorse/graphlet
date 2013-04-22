@@ -1,4 +1,5 @@
 var g;
+var g_aux = {"name":""};
 var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
     {"tag":"div","class":"control-group","children":[
         {"tag":"label","class":"control-label","for":"node_input_name_${id}","html":"Node Name:"},
@@ -47,7 +48,9 @@ function load_hbg(graph) {
 	var i, o, name, id;
     var source, target;
     var id_mode = "provided";
-    
+    if (graph && graph.graph && graph.graph.name) {
+        g_aux = graph.graph;
+    }
     for (i = 0; i < raw_nodes.length; i++) {
         o = {data:raw_nodes[i]};
         if (o.data.id === undefined) {
@@ -233,17 +236,19 @@ $(function() {
         var id = "", fq = "";
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
         id = $btn.attr("id");
-        if (id === "store") {
-            $('#graph_input_name_n2').data("source", request_hbg_names());
-            $('#edit_mode_ui').hide();
-            $('#graph_in').hide();
-            $('#graph_out').show();
-        }
         if (id === "load") {
             $('#graph_input_name_n1').options(request_hbg_names());
+            $('#graph_input_name_n1').val(g_ax.graph.name);
             $('#edit_mode_ui').hide();
             $('#graph_in').show();
             $('#graph_out').hide();
+        }
+        if (id === "store") {
+            $('#graph_input_name_n2').data("source", request_hbg_names());
+            $('#graph_input_name_n2').val(g_ax.graph.name);
+            $('#edit_mode_ui').hide();
+            $('#graph_in').hide();
+            $('#graph_out').show();
         }
         if (id === "edit") {
             $('#edit_mode_ui').show();
