@@ -149,9 +149,9 @@ function load_cy_graph(init_graph) {
                 "background-color": "#FF0",
                 "line-color": "#FF0",
                 "width": "mapData(weight, 0, 100, 3, 6)"
-            })
-    , ready: function(){
-      	var nodeCount, nodes;
+            }),
+    ready: function(){
+        var nodeCount, nodes;
         var i, pos, data;
         g = $("#graph_vis").cytoscape("get");
         nodes = g.nodes();
@@ -217,7 +217,7 @@ $(function() {
         var eles = g.elements("edge:selected");
         g.remove(eles);
     });
-    $('#save_to_text').on("click", function() {
+    $('#store').on("click", function() {
         $('#graph_out>pre').text( export_graph_json(g) );
     });
     $('#load_from_text').on("click", function() {
@@ -233,7 +233,7 @@ $(function() {
         var id = "", fq = "";
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
         id = $btn.attr("id");
-        if (id === "save") {
+        if (id === "store") {
             $('#graph_input_name_n2').data("source", request_hbg_names());
             $('#edit_mode_ui').hide();
             $('#graph_in').hide();
@@ -277,6 +277,12 @@ $(function() {
     });
     $("#view_all").on("click", function() {
         g.fit();
+    });
+    $("#view_zoom_1").on("click", function() {
+        g.zoom({
+            level: 1.0,
+            renderedPosition: {"x":200, "y":300}
+        });
     });
 });
 

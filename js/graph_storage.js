@@ -100,7 +100,7 @@ $(function() {
     });
     
     $('#save_to_storage').on("click", function(event) {
-        var overwrite = false;
+        var overwrite = true;
         var online_service = null;
         if (!g.graph) {g.graph = {};}
         g.graph.name = $('#graph_input_name_n2').val();

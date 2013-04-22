@@ -15,7 +15,7 @@
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/cyto/cytoscape.js"></script>
         <script type="text/javascript" src="js/honeybee_graph_vis.js"></script>
-        <script type="text/javascript" src="js/save_graph.js"></script>
+        <script type="text/javascript" src="js/graph_storage.js"></script>
         <script type="text/javascript" src="js/demo.js"></script>
         
         <script type="text/javascript" src="js/json2html/json2html-0.4.1.js"></script>
@@ -30,7 +30,10 @@
     <div class="row">
       <div class="span8">
           <div id="graph_vis"></div>
-          <div class="row"><div class="span6"> <button id="view_all" type="button" class="btn btn-primary">View All</button> </div></div>
+          <div class="row"><div class="span6">
+            <button id="view_all" type="button" class="btn btn-primary">View All</button> 
+            <button id="view_zoom_1" type="button" class="btn btn-primary">Zoom 1.0</button>
+          </div></div>
       </div>
       
       <div class="span8">
@@ -38,7 +41,7 @@
           <div class="span3">
             <div id="ui_mode_1" class="btn-group ui_mode" data-toggle="buttons-radio">
               <button id="load" type="button" class="btn btn-primary">Load</button>
-              <button id="save" type="button" class="btn btn-primary">Store</button>
+              <button id="store" type="button" class="btn btn-primary">Store</button>
             </div>
           </div>
           <div class="span3">
@@ -88,6 +91,7 @@
             </div>
             </form>
             <textarea></textarea>
+            <button id="load_from_text" type="button" class="btn btn-primary">Load from Text</button>
         </div>
 
       </div>
