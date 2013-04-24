@@ -1,9 +1,9 @@
 HoneyBee
 ========
 The HoneyBee project combines: 
- * code visualization (i.e. it can be expressed as a visual language);
- * a network syntax for flow-control (i.e. coded elements form a network);
- * an environment agnostic approach to programming.
+ * a graph based syntax for flow-control and data storage (coded elements form a network)
+ * code visualization (graphs can be expressed as a visually)
+ * a portable language (an environment agnostic approach to programming)
 
 In the HoneyBee environment a "graph" is used as source code and is interpreted using a "event emitter pattern."  
 A message queue manages the flow of an application. Clients, servers and embedded controlers can all run HoneyBee flow-control-graphs, enableing shared code, and code inspection. 
