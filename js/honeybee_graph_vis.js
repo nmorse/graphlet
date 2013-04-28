@@ -40,6 +40,7 @@ var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
 var add_edge_mode = false;
 var add_edge_arr = [];
 
+// convert a stored graph into a from that is appropreate for Cytoscape.js
 function load_hbg(graph) {
     var raw_nodes = graph.nodes;
 	var raw_edges = graph.edges;
@@ -238,14 +239,14 @@ $(function() {
         id = $btn.attr("id");
         if (id === "load") {
             $('#graph_input_name_n1').options(request_hbg_names());
-            $('#graph_input_name_n1').val(g_ax.graph.name);
+            $('#graph_input_name_n1').val(g_aux.name);
             $('#edit_mode_ui').hide();
             $('#graph_in').show();
             $('#graph_out').hide();
         }
         if (id === "store") {
             $('#graph_input_name_n2').data("source", request_hbg_names());
-            $('#graph_input_name_n2').val(g_ax.graph.name);
+            $('#graph_input_name_n2').val(g_aux.name);
             $('#edit_mode_ui').hide();
             $('#graph_in').hide();
             $('#graph_out').show();
@@ -323,7 +324,7 @@ function export_graph_json(g) {
     var nodes = g.nodes();
     var edges = g.edges();
     var exp_graph_json;
-    var graph_desc = g.graph || {};
+    var graph_desc = g.graph || g_aux || {};
     exp_graph_json = '{"graph":' + JSON.stringify(graph_desc) + ', "nodes":[';
     
     var o, data, pos, source, target, spacer = "";
@@ -352,6 +353,8 @@ function export_graph_json(g) {
     return exp_graph_json;
 }
 
+// Prune to Level is a debugging aid for opjects that 
+// are too deep or cause a circular reference error in JSON.stringify 
 function prune2level(obj, level) {
     var top_obj = {};
     var t;
