@@ -9,6 +9,7 @@ var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
         {"tag":"label","class":"control-label","for":"node_input_node_type_${id}","html":"Node Type"},
         {"tag":"div","class":"controls","children":[
           {"tag":"select","id":"node_input_node_type_${id}","data-id":"${id}","class":"input-small node_input_node_type","children":[
+            {"tag":"option","html":""},
             {"tag":"option","html":"io"},
             {"tag":"option","html":"process"},
             {"tag":"option","html":"data"}
@@ -25,6 +26,7 @@ var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
         {"tag":"label","class":"control-label","for":"edge_input_edge_type_${id}","html":"Edge Type"},
         {"tag":"div","class":"controls","children":[
           {"tag":"select","id":"edge_input_edge_type_${id}","data-id":"${id}","class":"input-small edge_input_edge_type","children":[
+            {"tag":"option","html":""},
             {"tag":"option","html":"get"},
             {"tag":"option","html":"set"},
             {"tag":"option","html":"evt"},
@@ -188,7 +190,7 @@ function load_cy_graph(init_graph) {
     });
 }
 $(function() {
-    var init_graph = load_hbg(graph);
+    //var init_graph = load_hbg(graph);
     $.fn.options = function(l) {
         var html_options = "";
         $.each(l, function(i, o) {
@@ -197,7 +199,7 @@ $(function() {
         $(this).html(html_options);
     };
     
-    load_cy_graph(init_graph);
+    //load_cy_graph(init_graph);
     $('#add_node').on("click", function() {
         //alert(g.nodes().length);
         var ns = g.add({"nodes":[ {"data":{"view":{"position":{"x":30,"y":30}}}} ]});
