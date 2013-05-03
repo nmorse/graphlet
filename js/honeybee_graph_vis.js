@@ -98,15 +98,15 @@ function load_cy_graph(init_graph) {
                 "font-size": 16,
                 "shape": "ellipse",
                 "border-width": 3,
-                "background-color": "#DDD",
-                "border-color": "#888",
+                "background-color": "#E9E2D4",
+                "border-color": "#B29E7C",
                 "text-valign":"center",
                 "width": 60
             })
         .selector("node[node_type='io']")
             .css({
-                "background-color": "#DDF",
-                "border-color": "#88B",
+                "background-color": "#DDE2FF",
+                "border-color": "#8890BB",
                 "shape": "roundrectangle",
                 "width": 80
             })
@@ -120,17 +120,17 @@ function load_cy_graph(init_graph) {
                 "opacity": 0.65,
                 "text-opacity": 1.0,
                 "text-outline-opacity": 0.5,
-                "color": "#000",
+                "color": "#776655",
                 "width": "mapData(weight, 0, 100, 1, 4)",
                 "source-arrow-shape": "circle",
                 "target-arrow-shape": "triangle",
-                "line-color": "#444",
+                "line-color": "#4C412F",
             })
         .selector("edge[edge_type='get']")
             .css({
-                "line-color": "#2B2",
-                "source-arrow-color": "#2B2",
-                "target-arrow-color": "#2B2",
+                "line-color": "#1A1",
+                "source-arrow-color": "#1A1",
+                "target-arrow-color": "#1A1",
                 "source-arrow-shape": "diamond",
                 "target-arrow-shape": "triangle"
             })
@@ -144,9 +144,9 @@ function load_cy_graph(init_graph) {
             })
         .selector("edge[edge_type='flo'], edge[edge_type='evt']")
             .css({
-                "line-color": "#22B",
-                "source-arrow-color": "#22B",
-                "target-arrow-color": "#22B",
+                "line-color": "#22C",
+                "source-arrow-color": "#22C",
+                "target-arrow-color": "#22C",
                 "source-arrow-shape": "tee",
                 "target-arrow-shape": "triangle"
             })
