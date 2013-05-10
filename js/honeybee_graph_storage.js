@@ -1,3 +1,10 @@
+var storage_ctl_template = {
+    "tag":"div", "id":"ui_mode_1", "class":"btn-group ui_mode", "data-toggle":"buttons-radio", "children":[
+        {"tag":"button", "id":"load", "type":"button", "class":"btn btn-primary", "html":"Load"},
+        {"tag":"button", "id":"store", "type":"button", "class":"btn btn-primary", "html":"Store"}
+    ]
+};
+
 $(function() {
     // load
     $(document).on("load_hbg", function (event, path_name, online_service) {
