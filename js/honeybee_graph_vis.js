@@ -239,20 +239,6 @@ $(function() {
         var id = "", fq = "";
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
         id = $btn.attr("id");
-        if (id === "load") {
-            $('#graph_input_name_n1').options(request_hbg_names());
-            $('#graph_input_name_n1').val(g_aux.name);
-            $('#edit_mode_ui').hide();
-            $('#graph_in').show();
-            $('#graph_out').hide();
-        }
-        if (id === "store") {
-            $('#graph_input_name_n2').data("source", request_hbg_names());
-            $('#graph_input_name_n2').val(g_aux.name);
-            $('#edit_mode_ui').hide();
-            $('#graph_in').hide();
-            $('#graph_out').show();
-        }
         if (id === "edit") {
             $('#edit_mode_ui').show();
             $('#graph_in').hide();

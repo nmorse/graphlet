@@ -4,8 +4,68 @@ var storage_ctl_template = {
         {"tag":"button", "id":"store", "type":"button", "class":"btn btn-primary", "html":"Store"}
     ]
 };
+var load_graph_template = [
+    {"tag":"form", "class":"form-horizontal", "children":[
+        {"tag":"div", "class":"control-group", "children":[
+            {"tag":"label", "class":"control-label", "for":"node_input_name_n1", "html":"Graph Source:", "children":[
+                {"tag":"div", "class":"controls", "children":[
+                    {"tag":"select", "id":"graph_input_name_n1"},
+                    {"tag":"button", "id":"load_from_storage", "type":"button", "class":"btn btn-primary", "html":"Load"} 
+                ]}
+            ]}
+        ]}
+    ]},
+    {"tag":"textarea"},
+    {"tag":"button", "id":"load_from_text", "type":"button", "class":"btn btn-primary", "html":"Load from Text"}
+];
+var store_graph_template = [
+    {"tag":"form", "class":"form-horizontal", "children":[
+        {"tag":"div", "class":"control-group", "children":[
+            {"tag":"label", "class":"control-label", "for":"node_input_name_n2", "html":"Graph Name:", "children":[
+                {"tag":"div", "class":"controls", "children":[
+                    {"tag":"input", "id":"graph_input_name_n2", "type":"text", "data-provide":"typeahead", "data-items":16, "placeholder":"Enter a Name"},
+                    {"tag":"button", "id":"save_to_storage", "type":"button", "class":"btn btn-primary", "html":"Save"},
+                    {"tag":"button", "id":"delete_from_storage", "type":"button", "class":"btn btn-primary", "html":"Delete"} 
+                ]}
+            ]}
+        ]}
+    ]},
+    {"tag":"pre"}
+];
+
+
+//                    <="" ="16" data-source="[]"  />
 
 $(function() {
+
+    // Insert the UI
+    $("#storage_ctl").json2html({}, storage_ctl_template);
+    $("#graph_in").json2html({}, load_graph_template);
+    $("#graph_out").json2html({}, store_graph_template);
+    // hook up ctl events
+    $(".ui_mode").on('click', function (e) {
+        var $btn = $(e.target);
+        var id = "", fq = "";
+        if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
+        id = $btn.attr("id");
+        if (id === "load") {
+            $('#graph_input_name_n1').options(request_hbg_names());
+            $('#graph_input_name_n1').val(g_aux.name);
+            $('#edit_mode_ui').hide();
+            $('#graph_in').show();
+            $('#graph_out').hide();
+        }
+        if (id === "store") {
+            $('#graph_input_name_n2').data("source", request_hbg_names());
+            $('#graph_input_name_n2').val(g_aux.name);
+            $('#edit_mode_ui').hide();
+            $('#graph_in').hide();
+            $('#graph_out').show();
+        }
+    });
+
+
+
     // load
     $(document).on("load_hbg", function (event, path_name, online_service) {
         var outcome = ["storage not availible", "loaded", "not found", "load operation submitted"];
