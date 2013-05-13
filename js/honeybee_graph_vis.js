@@ -223,17 +223,6 @@ $(function() {
         var eles = g.elements("edge:selected");
         g.remove(eles);
     });
-    $('#store').on("click", function() {
-        $('#graph_out>pre').text( export_graph_json(g) );
-    });
-    $('#load_from_text').on("click", function() {
-        var s = $('#graph_in>textarea').val();
-        var cy_g;
-        if (s !== "") {
-            cy_g = load_hbg(JSON.parse(s));
-            load_cy_graph(cy_g);
-        }
-    });
     $(".ui_mode").on('click', function (e) {
         var $btn = $(e.target);
         var id = "", fq = "";

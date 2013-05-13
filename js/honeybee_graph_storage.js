@@ -49,46 +49,49 @@ $(function() {
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
         id = $btn.attr("id");
         if (id === "load") {
-            $('#graph_input_name_n1').options(request_hbg_names());
+            $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"));
             $('#graph_input_name_n1').val(g_aux.name);
             $('#edit_mode_ui').hide();
             $('#graph_in').show();
             $('#graph_out').hide();
         }
         if (id === "store") {
-            $('#graph_input_name_n2').data("source", request_hbg_names());
+            $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
             $('#graph_input_name_n2').val(g_aux.name);
             $('#edit_mode_ui').hide();
             $('#graph_in').hide();
             $('#graph_out').show();
         }
     });
+    $('#store').on("click", function() {
+        $('#graph_out>pre').text( export_graph_json(g) );
+    });
+    $('#load_from_text').on("click", function() {
+        var s = $('#graph_in>textarea').val();
+        var cy_g;
+        if (s !== "") {
+            cy_g = load_hbg(JSON.parse(s));
+            load_cy_graph(cy_g);
+        }
+    });
+
 
 
 
     // load
     $(document).on("load_hbg", function (event, path_name, online_service) {
         var outcome = ["storage not availible", "loaded", "not found", "load operation submitted"];
-        var local_hb_graphs;
-        if (typeof Storage !== "undefined") {
-            //use local storage
-            if (!localStorage.hb_graphs) {
-                localStorage.hb_graphs = "{}";
-            }
-            local_hb_graphs = JSON.parse(localStorage.hb_graphs);
-            if(local_hb_graphs[path_name]) {
-                //g.zoom(local_hb_graphs[path_name].graph.view.zoom_level);
-                load_cy_graph(load_hbg(local_hb_graphs[path_name]));
-                //g.fit();
-                //g.zoom({"level":0.9, "renderedPosition":{"x":300, "y":200}});
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
-            }
-            else {
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":path_name}]);
-            }
+        var local_hbg = get_from_local_storage("hb_graphs", path_name);
+
+        if (local_hbg) {
+            load_cy_graph(load_hbg(local_hbg));
+            $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
+        }
+        else if (local_hbg === false) {
+            $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":path_name}]);
         }
         else {
-            $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":path_name}]);
+            $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":path_name}]);            
         }
         
         if (navigator.online) {
@@ -218,18 +221,30 @@ $(function() {
         $(document).trigger("delete_hbg", [path_name, online_service]);
     });
     
-    $('#graph_input_name_n2').data("source", request_hbg_names()); 
+    $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs")); 
 
 });
 
-function request_hbg_names () {
+// Local Storage functions.
+function request_local_storage_names(group) {
     var names = [];
     if (typeof Storage !== "undefined") {
-        //use local storage
-        if (localStorage.hb_graphs) {
-        }
-        local_hb_graphs = JSON.parse(localStorage.hb_graphs);
-        return $.map(local_hb_graphs, function(v,k){return k;});
+        return $.map(JSON.parse(localStorage[group]), function(v,k){return k;});
     }
     return names;
+}
+
+function get_from_local_storage(group, path_name) {
+    var local_hb_graphs;
+    if (typeof Storage !== "undefined") {
+        //use local storage
+        if (!localStorage.hb_graphs) {
+            localStorage.hb_graphs = "{}";
+        }
+        local_hb_graphs = JSON.parse(localStorage[group]);
+        return local_hb_graphs[path_name];
+    }
+    else {
+        return false;
+    }
 }
