@@ -8,12 +8,17 @@ The HoneyBee project combines:
 
 A Graph Based Syntax
 --------------------
-In the HoneyBee environment a "graph" is used as source code and is interpreted using a "event emitter pattern."  
-A message queue manages the flow of an application. Clients, servers and embedded controllers can all run HoneyBee flow-control-graphs, enabling shared code, and code inspection. 
 
-The source code a "flow-control-graph", is a "directed", "multi-graph" (for the mathematicians). 
+In the HoneyBee environment a "graph" is used as source code and is interpreted using a "event emitter pattern."  
+A message queue manages the flow of an application. Clients, servers and embedded controllers can all run 
+HoneyBee flow-control-graphs, enabling shared code, and code inspection. 
+
+A "flow-control-graph", is a "directed, multi-graph" (for the mathematicians). 
 The nodes of a flow-control-graph represent executable steps or data sources, 
 while graph's edges represent three types of message routing. Get, Set (data) and Flow-event messages are called in order to "run" a HoneyBee graph.
+
+>So, Do you mean "There are no flow-control elements in this language!" , how can that be???
+>>It is true that there are no flow-control elements. But flow-control is achieved by configuring the graphs arrangement of nodes and edges (topology).
 
 
 Code Visualization
