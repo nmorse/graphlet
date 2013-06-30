@@ -86,6 +86,7 @@ $(function() {
         if (local_hbg) {
             load_cy_graph(load_hbg(local_hbg));
             $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
+            $('#graph_storage').html("local");
             $('#graph_title').html(path_name);
         }
         else if (local_hbg === false) {
@@ -140,6 +141,7 @@ $(function() {
                     local_hb_graphs[proposed_name] = JSON.parse(export_graph_json(g));
                     localStorage.hb_graphs = JSON.stringify(local_hb_graphs);
                     $(document).trigger("hbg_save_status", [{"outcome": outcome[1], "target": "local", "final":true}]);
+                    $('#graph_storage').html("local");
                     $('#graph_title').html(proposed_name);
                 }
                 else {
@@ -150,6 +152,7 @@ $(function() {
                 local_hb_graphs[proposed_name] = JSON.parse(export_graph_json(g));
                 localStorage.hb_graphs = JSON.stringify(local_hb_graphs);
                 $(document).trigger("hbg_save_status", [{"outcome": outcome[3], "target": "local", "final":true}]);
+                $('#graph_storage').html("local");
                 $('#graph_title').html(proposed_name);
             }
         }

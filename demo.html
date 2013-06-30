@@ -8,7 +8,7 @@
             border: 1px solid #E4D9C6;
             margin-left: 20px;
         }
-        #graph_title {
+        #graph_storage {
             margin-left: 28px;
         }
         </style>
@@ -33,7 +33,8 @@
       <div class="span8">
           <div id="graph_vis"></div>
           <div class="row">
-              <div id="graph_title" class="span3">No graph loaded ;P</div>
+              <div class="span1" id="graph_storage"></div>
+              <div class="span2" id="graph_title">No graph loaded ;P</div>
               <div class="span4">
                 <button id="view_all" type="button" class="btn btn-primary">View All</button> 
                 <button id="view_zoom_1" type="button" class="btn btn-primary">Zoom 1.0</button>
@@ -43,9 +44,7 @@
       
       <div class="span8">
         <div class="row">
-          <div class="span3" id="storage_ctl">
-            
-          </div>
+          <div class="span3" id="storage_ctl"></div>
           <div class="span3">
             <div id="ui_mode_2" class="btn-group ui_mode" data-toggle="buttons-radio">
               <button id="edit" type="button" class="btn btn-primary active">Edit</button>
