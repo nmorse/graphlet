@@ -1,19 +1,23 @@
 HoneyBee
 ========
 The HoneyBee project combines: 
- * a graph based syntax for flow-control and data storage (coded elements form a network)
- * code visualization (graphs may be expressed visually, enabling spacial reasoning)
+ * a graph based syntax for flow-control and data access (i.e. a network of code and data elements)
+ * program visualization (graphs expressed visually, enabling spacial reasoning)
  * a portable (environment agnostic) approach to programming for many platforms
 
 
 A Graph Based Syntax
 --------------------
-In the HoneyBee environment a "graph" is used as source code and is interpreted using a "event emitter pattern."  
-A message queue manages the flow of an application. Clients, servers and embedded controllers can all run HoneyBee flow-control-graphs, enabling shared code, and code inspection. 
+>The syntax for this language is based on several types of nodes and edges. Nodes represent storage or a coded process. Edges route messages that "fetch" or "store" data, or transfer control between nodes. The graph topology determins flow-contol of the program execution.
 
-The source code a "flow-control-graph", is a "directed", "multi-graph" (for the mathematicians). 
+In the HoneyBee environment a "graph" is used as source code and is interpreted using a "event emitter pattern."  
+A message queue manages the flow of an application. Clients, servers and embedded controllers can all run 
+HoneyBee flow-control-graphs, enabling shared code, and code inspection. 
+
+A "flow-control-graph", is a "directed, multi-graph" (for the mathematicians). 
 The nodes of a flow-control-graph represent executable steps or data sources, 
 while graph's edges represent three types of message routing. Get, Set (data) and Flow-event messages are called in order to "run" a HoneyBee graph.
+ment of nodes and edges (topology).
 
 
 Code Visualization
