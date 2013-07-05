@@ -191,6 +191,8 @@ function load_cy_graph(init_graph) {
 }
 $(function() {
     //var init_graph = load_hbg(graph);
+    // jQuery should add this to the API
+    // adds options to a select tag from a list.
     $.fn.options = function(l) {
         var html_options = "";
         $.each(l, function(i, o) {

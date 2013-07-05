@@ -9,8 +9,7 @@ var load_graph_template = [
         {"tag":"div", "class":"control-group", "children":[
             {"tag":"label", "class":"control-label", "for":"node_input_name_n1", "html":"Graph Source:", "children":[
                 {"tag":"div", "class":"controls", "children":[
-                    {"tag":"select", "id":"graph_input_name_n1"},
-                    {"tag":"button", "id":"load_from_storage", "type":"button", "class":"btn btn-primary", "html":"Load"} 
+                    {"tag":"select", "id":"graph_input_name_n1"} 
                 ]}
             ]}
         ]}
@@ -112,7 +111,7 @@ $(function() {
         //alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
     });
     
-    $('#load_from_storage').on("click", function(event) {
+    $('#graph_input_name_n1').on("change", function(event) {
         var path_name = $('#graph_input_name_n1').val();
         var online_service = null;
         $(document).trigger("load_hbg", [path_name, online_service]);
