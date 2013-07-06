@@ -231,12 +231,14 @@ $(function() {
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
         id = $btn.attr("id");
         if (id === "edit") {
-            $('#edit_mode_ui').show();
-            $('#graph_in').hide();
-            $('#graph_out').hide();
+            $(document).trigger("edit_mode");
         }
     });
-    
+    $(document).on("edit_mode", function (e) {
+        $('#edit_mode_ui').show();
+        $('#graph_in').hide();
+        $('#graph_out').hide();
+    });
     $("#node_input_form").on("update_form", function(event, nodes_selected) {
         //alert(JSON.stringify(nodes_selected, null, " "));
         $("#node_input_header>span").text(""+nodes_selected.length);
@@ -286,6 +288,7 @@ function sync_selected(evt) {
     var nodes_selected = [];
     var edges_selected = [];
     var eles = g.elements("node:selected");
+    $(document).trigger("edit_mode");
     $.each(eles, function(i, o){
         nodes_selected.push(o.data());
     });
