@@ -233,9 +233,19 @@ $(function() {
         if (id === "edit") {
             $(document).trigger("edit_mode");
         }
+        if (id === "run") {
+            $(document).trigger("run_mode");
+        }
     });
     $(document).on("edit_mode", function (e) {
         $('#edit_mode_ui').show();
+        $('#run_mode_ui').hide();
+        $('#graph_in').hide();
+        $('#graph_out').hide();
+    });
+    $(document).on("run_mode", function (e) {
+        $('#run_mode_ui').show();
+        $('#edit_mode_ui').hide();
         $('#graph_in').hide();
         $('#graph_out').hide();
     });

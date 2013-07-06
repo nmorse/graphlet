@@ -51,6 +51,7 @@ $(function() {
             $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"));
             $('#graph_input_name_n1').val(g_aux.name);
             $('#edit_mode_ui').hide();
+            $('#run_mode_ui').hide();
             $('#graph_in').show();
             $('#graph_out').hide();
         }
@@ -58,6 +59,7 @@ $(function() {
             $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
             $('#graph_input_name_n2').val(g_aux.name);
             $('#edit_mode_ui').hide();
+            $('#run_mode_ui').hide();
             $('#graph_in').hide();
             $('#graph_out').show();
         }
