@@ -18,9 +18,11 @@ HoneyBee flow-control-graphs, enabling shared code, and code inspection.
 A "flow-control-graph", is a "directed, multi-graph" (for the mathematicians). 
 The nodes of a flow-control-graph represent executable steps or data sources or IO ports, 
 while graph's edges represent message routing. Get, Set (data) and Flow-event messages are called in this order each time a process node is visited (or "run").
+
 The flow of control is entirely determined by the topology of nodes and edges.
 >You will not find an "IF" or "WHILE" control structure in HoneyBee. All flow control is determined by the topology that you create.
-All Access to Data is clearly shown by connectivity in the HoneyBee Graph structure.
+
+All Access to data is clearly shown by the (data nodes) connectivity (via edges) in the HoneyBee Graph structure.
 >If you need to understand what are all the ways that some datum or IO element is read from or written to, it is plainly represented by adjacency.
 
 Code Visualization
