@@ -194,7 +194,7 @@ $(function() {
     // jQuery should add this to the API
     // adds options to a select tag from a list.
     $.fn.options = function(l) {
-        var html_options = "";
+        var html_options = '<option value=""></option>\n';
         $.each(l, function(i, o) {
             html_options += '<option value="'+o+'">' + o + '</option>\n';
         });
