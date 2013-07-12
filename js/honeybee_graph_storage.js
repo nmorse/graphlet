@@ -89,6 +89,10 @@ $(function() {
             $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
             $('#graph_storage').html("local");
             $('#graph_title').html(path_name);
+            g_aux.name = path_name;
+            ///$('#graph_input_name_n1').val(path_name);
+            ///$('#graph_input_name_n2').val(path_name);
+
         }
         else if (local_hbg === false) {
             $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":path_name}]);
@@ -144,6 +148,9 @@ $(function() {
                     $(document).trigger("hbg_save_status", [{"outcome": outcome[1], "target": "local", "final":true}]);
                     $('#graph_storage').html("local");
                     $('#graph_title').html(proposed_name);
+                    g_aux.name = proposed_name;
+                    ///$('#graph_input_name_n1').val(proposed_name);
+                    ///$('#graph_input_name_n2').val(proposed_name);
                 }
                 else {
                     $(document).trigger("hbg_save_status", [{"outcome": outcome[2], "target": "local", "final":true}]);
@@ -155,6 +162,9 @@ $(function() {
                 $(document).trigger("hbg_save_status", [{"outcome": outcome[3], "target": "local", "final":true}]);
                 $('#graph_storage').html("local");
                 $('#graph_title').html(proposed_name);
+                g_aux.name = proposed_name;
+                ///$('#graph_input_name_n1').val(proposed_name);
+                ///$('#graph_input_name_n2').val(proposed_name);
             }
         }
         else {
