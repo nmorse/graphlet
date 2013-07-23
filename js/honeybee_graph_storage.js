@@ -7,7 +7,14 @@ var storage_ctl_template = {
 var load_graph_template = [
     {"tag":"form", "class":"form-horizontal", "children":[
         {"tag":"div", "class":"control-group", "children":[
-            {"tag":"label", "class":"control-label", "for":"node_input_name_n1", "html":"Graph Source:", "children":[
+            {"tag":"label", "class":"control-label", "for":"node_input_name_n0", "html":"Example Graphs:", "children":[
+                {"tag":"div", "class":"controls", "children":[
+                    {"tag":"select", "id":"graph_input_name_n0"} 
+                ]}
+            ]}
+        ]},
+        {"tag":"div", "class":"control-group", "children":[
+            {"tag":"label", "class":"control-label", "for":"node_input_name_n1", "html":"Local Graph Source:", "children":[
                 {"tag":"div", "class":"controls", "children":[
                     {"tag":"select", "id":"graph_input_name_n1"} 
                 ]}
@@ -32,11 +39,9 @@ var store_graph_template = [
     {"tag":"pre"}
 ];
 
-
 //                    <="" ="16" data-source="[]"  />
 
 $(function() {
-
     // Insert the UI
     $("#storage_ctl").json2html({}, storage_ctl_template);
     $("#graph_in").json2html({}, load_graph_template);
@@ -48,6 +53,7 @@ $(function() {
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
         id = $btn.attr("id");
         if (id === "load") {
+            $('#graph_input_name_n0').options(request_local_storage_names("examples"));
             $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"));
             $('#graph_input_name_n1').val(g_aux.name);
             $('#edit_mode_ui').hide();
@@ -76,51 +82,61 @@ $(function() {
         }
     });
 
-
-
-
     // load
-    $(document).on("load_hbg", function (event, path_name, online_service) {
+    $(document).on("load_hbg", function (event, path_name, storage_services) {
         var outcome = ["storage not availible", "loaded", "not found", "load operation submitted"];
-        var local_hbg = get_from_local_storage("hb_graphs", path_name);
-
-        if (local_hbg) {
-            load_cy_graph(load_hbg(local_hbg));
-            $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
-            $('#graph_storage').html("local");
-            $('#graph_title').html(path_name);
-            g_aux.name = path_name;
-            ///$('#graph_input_name_n1').val(path_name);
-            ///$('#graph_input_name_n2').val(path_name);
-
-        }
-        else if (local_hbg === false) {
-            $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":path_name}]);
-        }
-        else {
-            $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":path_name}]);            
-        }
         
-        if (navigator.online) {
-            if (online_service) {
-                //get from service
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[3], "target": "online", "final":false, "path_name":path_name}]);
+        $.each(storage_services, function (i, o) {
+            var select_hbg;
+            if (o === 'local') {
+                local_hbg = get_from_local_storage("hb_graphs", path_name);
+            }
+            if (o === 'examples') {
+                local_hbg = graph_examples[path_name];
+                alert(JSON.stringify(local_hbg));
+            }
+            if (local_hbg) {
+                load_cy_graph(load_hbg(local_hbg));
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
+                $('#graph_storage').html("local");
+                $('#graph_title').html(path_name);
+                g_aux.name = path_name;
+                return false;
+            }
+            else if (local_hbg === false) {
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":path_name}]);
             }
             else {
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":path_name}]);
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":path_name}]);            
             }
-        }
-        
+            
+            if (navigator.online) {
+                if (o === "online") {
+                    //get from service
+                    $(document).trigger("hbg_load_status", [{"outcome": outcome[3], "target": "online", "final":false, "path_name":path_name}]);
+                }
+                else {
+                    $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":path_name}]);
+                }
+            }
+
+            
+        });        
     });
     
     $(document).on("hbg_load_status", function(event, arg) {
         //alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
     });
     
+    $('#graph_input_name_n0').on("change", function(event) {
+        var path_name = $('#graph_input_name_n0').val();
+        var storage_services = ["examples"];
+        $(document).trigger("load_hbg", [path_name, storage_services]);
+    });
     $('#graph_input_name_n1').on("change", function(event) {
         var path_name = $('#graph_input_name_n1').val();
-        var online_service = null;
-        $(document).trigger("load_hbg", [path_name, online_service]);
+        var storage_services = ["local", "online"];
+        $(document).trigger("load_hbg", [path_name, storage_services]);
     });
     
     // save
@@ -128,13 +144,6 @@ $(function() {
         var outcome = ["storage not availible", "saved to existing", "did not overwrite existing", "created new", "storage operation submitted"];
         var proposed_name = g.graph.name;
         var local_hb_graphs;
-        //var zoom_level;
-        //g.fit();
-        //zoom_level = g.zoom() - 0.1;
-        //zoom_level = Math.round(zoom_level*100.0)/100.0
-        //g.zoom({"level":zoom_level, "renderedPosition":{"x":300, "y":200}});
-        //if (!g.graph.view) {g.graph.view = {};}
-        //g.graph.view.zoom_level = zoom_level;
         if (typeof Storage !== "undefined") {
             //use local storage
             if (!localStorage.hb_graphs) {
@@ -245,6 +254,7 @@ $(function() {
 // Local Storage functions.
 function request_local_storage_names(group) {
     var names = [];
+    if (group === 'examples') {return $.map(graph_examples, function(v,k){return k;});}
     if (typeof Storage !== "undefined") {
         return $.map(JSON.parse(localStorage[group]), function(v,k){return k;});
     }
@@ -253,6 +263,7 @@ function request_local_storage_names(group) {
 
 function get_from_local_storage(group, path_name) {
     var local_hb_graphs;
+    if (group === 'examples') {return graph_examples[path_name] || false;}
     if (typeof Storage !== "undefined") {
         //use local storage
         if (!localStorage.hb_graphs) {
