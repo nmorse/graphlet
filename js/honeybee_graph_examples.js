@@ -16,11 +16,21 @@ var graph_examples = {
   ["n1","n5","evt","",null]
  ]
 },
-"Hello World version 2":
-{"graph":{"name":"process_of_"}, "nodes":[
-  {"view":{"position":{"x":280,"y":104}},"id":"n4","name":"df"}
+"shake 2":
+{"graph":{"name":"shake 2"}, "nodes":[
+  {"view":{"position":{"x":89,"y":74}},"id":"n4","name":"2000 ms"},
+  {"view":{"position":{"x":449,"y":237}},"id":"n3","name":"finally"},
+  {"view":{"position":{"x":280,"y":276}},"id":"n2","name":"''"},
+  {"view":{"position":{"x":321,"y":113}},"id":"n1","name":"text box","node_type":"io"},
+  {"view":{"position":{"x":145,"y":178}},"id":"n0","name":"timer","node_type":"process"}
  ],
  "edges":[
+  ["n1","n0","evt","on change","change"],
+  ["n0","n2","evt","on finish","finish"],
+  ["n2","n3","flo","next",""],
+  ["n2","n1","set","",null],
+  ["n3","n1","evt","shake",null],
+  ["n0","n4","get","as seconds",null]
  ]
 }};
 

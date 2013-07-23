@@ -93,7 +93,6 @@ $(function() {
             }
             if (o === 'examples') {
                 local_hbg = graph_examples[path_name];
-                alert(JSON.stringify(local_hbg));
             }
             if (local_hbg) {
                 load_cy_graph(load_hbg(local_hbg));
