@@ -3,26 +3,24 @@ HoneyBee
 The HoneyBee project combines: 
  * a graph based syntax for flow-control and data access (i.e. a network of code and data elements)
  * program visualization (graphs expressed visually, enabling spatial reasoning)
- * a portable (environment agnostic) approach to programming for many platforms
+ * a portable (environment agnostic) high-level approach to programming for many platforms
  * event oriented (a visual syntax for PubSub)
 
 A Graph Based Syntax
 --------------------
->The syntax for this language is based on several types of nodes and edges. Nodes represent data storage and/or coded processes. Edges route messages that "get", or "set" data, or publish (and subscribe to) messages, or transfer control between nodes. 
-The graph topology determines flow-control of the program execution.
+>The syntax for this language is based on several types of nodes and edges. Nodes represent data storage and/or coded 
+processes. Edges route messages that "get", or "set" data, or publish and subscribe to messages, or transfer the flow 
+of control between nodes. 
 
-In the HoneyBee environment a "graph" is used as source code and is interpreted using a "event-emitter pattern."  
+In the HoneyBee environment a graph is the source code and is interpreted using a "event-emitter pattern."  
 A message queue manages the flow of an application. Clients, servers and embedded controllers can all run 
-HoneyBee flow-control-graphs, enabling shared code, and code inspection. 
-
-A "flow-control-graph", is a "directed, multi-graph" (for the mathematicians). 
-The nodes of a flow-control-graph represent executable steps or data sources or IO ports, 
-while graph's edges represent message routing. Get, Set (data) and Flow-event messages are called in this order each time a process node is visited (or "run").
+HoneyBee flow-control-graphs. 
 
 The flow of control is entirely determined by the topology of nodes and edges.
 >You will not find an "IF" or "WHILE" control structure in HoneyBee. All flow control is determined by the topology that you create.
 
 All Access to data is clearly shown by the (data nodes) connectivity (via edges) in the HoneyBee Graph structure.
+This visual approach enables sharing code, and code inspection (by graph analisys, or visually).
 >If you need to understand what are all the ways that some datum or IO element is read from or written to, it is plainly represented by adjacency.
 
 Code Visualization
