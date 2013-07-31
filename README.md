@@ -57,14 +57,16 @@ Node types
 
 Edge types
 ----------
- * Get
+ * Get (*ordered)
  * Set
  * Message
- * Transition
+ * Transition (*ordered)
  
-Process Steps
--------------
- * Get data (from all "get" adjacent nodes)
+Process Steps for a Node
+------------------------
+When a node is activated by a message or transition, these 4 processing steps are executed in this order.
+ * Get data (via all immediate "get" edges)
  * Process the internal function or operation of the node
- * Set data or publish events (to all "set" adjacent nodes)
- * Transition to the next node (through a process of Guard protected transitions)
+ * Set data or publish events (via all immediate "set" edges)
+ * Transition to the next node (via one selected "Guard protected" transitions edges)
+
