@@ -16,29 +16,40 @@ var test_graph = {"graph":{"name":"max"}, "nodes":[
   ["n1","n5","flo","",null]
  ]
 };
-
-function compile(graph) {
-    var listeners = graph("node type=process");
-    var get_emiters = graph("edge type=get");
-    var set_emiters = graph("edge type=set");
-    var flow_emiters = graph("edge type=flow");
-    var js_str = '';
-    $.each(listener, function(i, o) {
-        if (o.process) {
-            js_str += '\
-on("' + o.id + '", function() {\
-    var args = get_all();\
-    var result = ' + o.process + '.map(args);\
-    var next_node_id = '';\
-    set_all(result);\
-    next_node_id = flow_to(result, graph("edge type=flow from=' + o.id + '"));\
-    if (next_node_id) {\
-        emit("honeybee "+next_node_id);\
-    }\
-    else {\
-        emit("honeybee halt")\
-    }\
-});';
+function filter(arr, key, val) {
+    var ret_arr = [];
+    var i = 0, len = arr.length;
+    for (i = 0; i < len; i += 1) {
+        if (arr[i][key] === val) {
+            ret_arr[ret_arr.length] = arr[i];
         }
+    }
+    return ret_arr;
+}
+function compile(graph) {
+    var listeners = filter(graph.nodes, "node_type", "process");
+    var js_str = '';
+    $.each(listeners, function(i, o) {
+        js_str += '\
+on("' + o.id + '", function() {\n\
+    var next_node_id = "";\n\
+    var args = hbg.get_all("' + o.id + '");\n';
+        if (o.process) {
+            js_str += '    var result = ' + o.process + '.apply(this, args);\n';
+        }
+        else {
+            js_str += '    var result = args;\n';
+        }
+        js_str += '\
+    hbg.set_all("' + o.id + '", result);\n\
+    next_node_id = hbg.flow_to(result, hbg.filter("edge type=flow from=' + o.id + '"));\n\
+    if (next_node_id) {\n\
+        emit("honeybee "+next_node_id);\n\
+    }\n\
+    else {\n\
+        emit("honeybee halt");\n\
+    }\n\
+});\n';
     });
+    return js_str;
 }
