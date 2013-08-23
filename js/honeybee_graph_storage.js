@@ -253,9 +253,14 @@ $(function() {
 // Local Storage functions.
 function request_local_storage_names(group) {
     var names = [];
+    var ls_obj, ls_str;
     if (group === 'examples') {return $.map(graph_examples, function(v,k){return k;});}
     if (typeof Storage !== "undefined") {
-        return $.map(JSON.parse(localStorage[group]), function(v,k){return k;});
+        ls_str = localStorage[group];
+        if (ls_str) {ls_obj = JSON.parse(ls_str);}
+        if (ls_obj) {
+            return $.map(ls_obj, function(v,k){return k;});
+        }
     }
     return names;
 }
