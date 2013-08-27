@@ -2,13 +2,14 @@
 // 
 
 $(function() {
-
+    var hbg;
     init_run = function(hbg) {
         var listeners = this.graph_selector(hbg, {"element":"node", "type":"process"});
         //var get_emiters = graph("edge type=get");
         //var set_emiters = graph("edge type=set");
         //var flow_emiters = graph("edge type=flow");
         //var js_str = '';
+        this.hbg = graphize(hbg);
         $.each(listener, function(i, o) {
             if (o.process) {
                 $("#run_mode_graph_io").on("honeybee " + o.id, function() {
@@ -29,7 +30,31 @@ $(function() {
         });
         $("#run_mode_graph_io").trigger("honeybee start");
     };
-
+    
+    // classize by function a graph literal.
+    var graphize = function(graph) {
+        var g = {nodes:[], edges:[]};
+        $.each(graph.nodes, function(i, o) {
+            var no = $.extend(true, o);
+            no.get_value = function(name) {
+                var key, args, values;
+                if (no.node_type === 'process') {
+                    args = no.all_gets();
+                    values = no.process(args);
+                    no.data = $.extend(true, {}, no.data, values);
+                }
+                key = name || no.name;
+                if (no.data) {
+                    return no.data[key];
+                }
+                return no[key];
+            };
+            g.nodes.push(no);
+        });
+        // copy edges
+        return g;
+    };
+    
     var graph_selector = function(hbg, sel) {
         var res = [];
         if (sel.element === "node") {
