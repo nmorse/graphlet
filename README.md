@@ -1,23 +1,23 @@
 HoneyBee
 ========
 The HoneyBee project combines: 
- * a graph based syntax for flow-control and data access (i.e. a network of code and data elements)
- * program visualization (graphs expressed visually, enabling spatial reasoning)
+ * a graph based syntax for flow-control and data access and I/O (i.e. a network of function, data and I/O elements)
+ * visual programming (enabling spatial reasoning via visual renderings of graph networks)
  * a portable (environment agnostic) high-level approach to programming for many platforms
- * event oriented (a visual syntax for PubSub)
+ * event oriented (a visual syntax for the Publish-Subscribe programming pattern)
 
 A Graph Based Syntax
 --------------------
->The syntax for this language is based on several types of nodes and edges. Nodes represent data storage and/or coded 
-processes. Edges route messages that "get", or "set" data, or publish and subscribe to messages, or transfer the flow 
-of control between nodes. 
+>The syntax for this language is based on a few types of nodes and edges in a graph. Nodes represent data storage and/or coded 
+processes. Edges either "get", or "set" data, or send messages to and from I/O nodes, or transfer the flow 
+of control to other nodes. 
 
-In the HoneyBee environment a graph is the source code and is interpreted using a "event-emitter pattern."  
-A message queue manages the flow of an application. Clients, servers and embedded controllers can all run 
-HoneyBee flow-control-graphs. 
+In the HoneyBee environment this graph of nodes and edges is the source code. Execution is interpreted using a "event-emitter pattern"
+using a message queue to manage the flow of an application. Client browsers, servers and embedded controllers can all run 
+these HoneyBee flow-control-graphs. 
 
 The flow of control is entirely determined by the topology of nodes and edges.
->You will not find an "IF" or "WHILE" control structure in HoneyBee. All flow control is determined by the topology that you create.
+>You will not find an "IF" or "WHILE" control structure in HoneyBee. All flow control is determined by the topology of the graph that you create.
 
 All Access to data is clearly shown by the (data nodes) connectivity (via edges) in the HoneyBee Graph structure.
 This visual approach enables sharing code, and code inspection (by graph analisys, or visually).
@@ -59,7 +59,7 @@ Edge types
 ----------
  * Get (*ordered)
  * Set
- * Message
+ * Msg (Message)
  * Transition (*ordered)
  
 Process Steps for a Node
@@ -67,6 +67,6 @@ Process Steps for a Node
 When a node is activated by a message or transition, these 4 processing steps are executed in this order.
  * Get data (via all immediate "get" edges)
  * Process the internal function or operation of the node
- * Set data or publish events (via all immediate "set" edges)
+ * Set data or publish events (via all immediate "set" or "msg" edges)
  * Transition to the next node (via one selected "Guard protected" transitions edges)
 
