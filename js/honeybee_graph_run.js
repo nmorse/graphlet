@@ -36,11 +36,11 @@ $(function() {
         var g = {nodes:[], edges:[]};
         $.each(graph.nodes, function(i, o) {
             var no = $.extend(true, o);
-            no.get_value = function(name) {
+            no.get_value = function(name, gr) {
                 var key, args, values;
                 if (no.node_type === 'process') {
-                    args = no.all_gets();
-                    values = no.process(args);
+                    args = all_gets(gr, no);
+                    values = process(no, args);
                     no.data = $.extend(true, {}, no.data, values);
                 }
                 key = name || no.name;
