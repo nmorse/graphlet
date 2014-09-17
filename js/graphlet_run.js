@@ -1,70 +1,67 @@
 // graphlet run
-// pubsub message style, setup listeners (note that listners can return values or send back messages)
+// pubsub message style, setup listeners (note: get edge listners will return values and/or send back messages, unlike standard pubsub)
+// 
+//   Sub
+// process nodes subscribe to in-coming (transition/event edge.id) messages. 
+// data/io nodes subscribe to in-coming (get/set edge.id) messages.
 //
-// process nodes subscribe to in-coming (transition edge.id) messages. 
-// calc nodes subscribe to in-coming (get edge.id) messages. 
-// data/io nodes subscribe to in-coming (set edge.id) messages.
-//
-// data/io are able to publish out-going (set edge.id) messages when data is changed...
-// process nodes publish an out-going (begin_process edge.id) events before starting the get-process-set-transition sequence.
-// process nodes are able to publish out-going (get, set and transition edge.id) messages during processing.
-//
-// if a start node exists it publishes an out-going (transition edge.id) message, to start the ball rolling,
+//   Pub
+// data/io are able to publish out-going (get/set edge.id) messages when data is requested/changed...
+// process nodes first publish an out-going (begin_process edge.id) events before starting the get-process-set-transitionSelection sequence.
+// process nodes are able to publish out-going (get, set edge.id) messages during processing.
+// process nodes publish an out-going (end_process edge.id) events after get-process-set-transitionSelection sequence is done.
+// process nodes lastly publish out-going (transition edge.id) messages
+// if a start node exists it publishes an out-going (transition edge.id) message, to start the ball rolling: main()
 // 
 
 (function(_) {
     run = function(g) {
-        var listeners = this.graph_selector(hbg, {"element":"node", "type":"process"});
+        var listening_node = this.graph_selector(hbg, {"element":"node", "type":"process"});
         //var get_emiters = graph("edge type=get");
         //var set_emiters = graph("edge type=set");
         //var flow_emiters = graph("edge type=flow");
         //var js_str = '';
         this.hbg = graphize(g);
-        _.each(listener, function(i, node) {
+        _.each(listening_node, function(i, node) {
             if (node.process) {
-                _.sub(g.id+"node_"+node.id, function() {
-                    var this_id = "honeybee " + o.id;
+                _.subscribe(g.id+"node_"+node.id, function() {
+                    var this_id = g.id+"node_"+node.id;
                     var args = get_all(hbg, o.id);
                     var result = o.process.map(args);
                     var next_node_id = '';
                     set_all(this_id, result);
-                    next_node_id = flow_to(this_id, result, this.graph_selector(hbg, {"element":"edge", "type":"flo", "from":o.id});
-                    if (next_node_id) {
-                        emit("honeybee "+next_node_id);
+                    next_edge_id = flow_to(this_id, result, this.graph_selector(hbg, {"element":"edge", "type":"flo", "from":o.id});
+                    if (next_edge_id) {
+                        _.publish(g.id+"trans_edge_"+next_edge_id);
                     }
                     else {
-                        emit("honeybee halt");
+                        _.publish(g.id+"event_halt");
                     }
                 });
             }
         });
-        $("#run_mode_graph_io").trigger("honeybee start");
-    };
-    
-    // classize by function a graph literal.
-    var graphize = function(graph) {
-        var g = {nodes:[], edges:[]};
-        _.each(graph.nodes, function(i, o) {
-            var no = _.extend(true, o);
-            no.get_value = function(name, gr) {
-                var key, args, values;
-                if (no.node_type === 'process') {
-                    args = all_gets(gr, no);
-                    values = process(no, args);
-                    no.data = _.extend(true, {}, no.data, values);
-                }
-                key = name || no.name;
-                if (no.data) {
-                    return no.data[key];
-                }
-                return no[key];
-            };
-            g.nodes.push(no);
+
+        listening_node = this.graph_selector(hbg, {"element":"node", "type":["io", "data"]});
+        //var get_emiters = graph("edge type=get");
+        //var set_emiters = graph("edge type=set");
+        //var flow_emiters = graph("edge type=flow");
+        //var js_str = '';
+        this.hbg = graphize(g);
+        _.each(listening_node, function(i, node) {
+            var id = node.id;
+            var edges = this.graph_selector(g, {"element":"edge", "type":"get", "to":id});
+            _.each(edges, function(j, edge) {
+                _.subscribe(g.id+"get_edge_"+edge.id, function() {
+                    // run get edges
+                    // node.data = _.extend(node.data, gottten.data)
+                    return node.data;
+                });
+            });
         });
-        // copy edges
-        return g;
+
+        // start
     };
-    
+
     var graph_selector = function(hbg, sel) {
         var res = [];
         if (sel.element === "node") {
