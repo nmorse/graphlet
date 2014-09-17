@@ -5,7 +5,8 @@
 // calc nodes subscribe to in-coming (get edge.id) messages. 
 // data/io nodes subscribe to in-coming (set edge.id) messages.
 //
-// data/io are able to publish out-going (set edge.id) messages when data is changed... 
+// data/io are able to publish out-going (set edge.id) messages when data is changed...
+// process nodes publish an out-going (begin_process edge.id) events before starting the get-process-set-transition sequence.
 // process nodes are able to publish out-going (get, set and transition edge.id) messages during processing.
 //
 // if a start node exists it publishes an out-going (transition edge.id) message, to start the ball rolling,
