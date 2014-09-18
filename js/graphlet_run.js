@@ -1,27 +1,18 @@
-// graphlet run
-// pubsub message style, setup listeners (note that listners can return values or send back messages)
-//
-// process nodes subscribe to in-coming (transition edge.id) messages. 
-// calc nodes subscribe to in-coming (get edge.id) messages. 
-// data/io nodes subscribe to in-coming (set edge.id) messages.
-//
-// data/io are able to publish out-going (set edge.id) messages when data is changed... 
-// process nodes are able to publish out-going (get, set and transition edge.id) messages during processing.
-//
-// if a start node exists it publishes an out-going (transition edge.id) message, to start the ball rolling,
+// honeybee graph run
 // 
 
-(function(_) {
-    run = function(g) {
+$(function() {
+    var hbg;
+    init_run = function(hbg) {
         var listeners = this.graph_selector(hbg, {"element":"node", "type":"process"});
         //var get_emiters = graph("edge type=get");
         //var set_emiters = graph("edge type=set");
         //var flow_emiters = graph("edge type=flow");
         //var js_str = '';
-        this.hbg = graphize(g);
-        _.each(listener, function(i, node) {
-            if (node.process) {
-                _.sub(g.id+"node_"+node.id, function() {
+        this.hbg = graphize(hbg);
+        $.each(listener, function(i, o) {
+            if (o.process) {
+                $("#run_mode_graph_io").on("honeybee " + o.id, function() {
                     var this_id = "honeybee " + o.id;
                     var args = get_all(hbg, o.id);
                     var result = o.process.map(args);
@@ -43,14 +34,14 @@
     // classize by function a graph literal.
     var graphize = function(graph) {
         var g = {nodes:[], edges:[]};
-        _.each(graph.nodes, function(i, o) {
-            var no = _.extend(true, o);
+        $.each(graph.nodes, function(i, o) {
+            var no = $.extend(true, o);
             no.get_value = function(name, gr) {
                 var key, args, values;
                 if (no.node_type === 'process') {
                     args = all_gets(gr, no);
                     values = process(no, args);
-                    no.data = _.extend(true, {}, no.data, values);
+                    no.data = $.extend(true, {}, no.data, values);
                 }
                 key = name || no.name;
                 if (no.data) {
