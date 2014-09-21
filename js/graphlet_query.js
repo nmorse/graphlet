@@ -12,26 +12,41 @@
 		},
 		
 		"find": function(sel) {
-			var res = [];
+			var res = {};
 			if (sel.element === "node") {
-				if (sel.id) {}
+				res.nodes = [];
 				$.each(graphlet.nodes, function(i, o) {
 					if (sel.id && sel.id === o.id) {
-						res.push(o);
+						res.nodes.push(o);
 					}
 					if (sel.type && sel.type === o.node_type) {
-						res.push(o);
+						res.nodes.push(o);
 					}
 				});
 			}
-			else {
+			else if (sel.element === "edge") {
+				res.edges = [];
 				$.each(graphlet.edges, function(i, o) {
-					if (o[2] === sel.type && o[0] === sel.from) {
-						res.push(o);
+					if ((!sel.type || sel.type === 'all' || o[2] === sel.type) && 
+						(sel.from || sel.to) &&  
+						(!sel.from || o[0] === sel.from) &&
+						(!sel.to || o[1] === sel.to)						
+					) {
+						res.edges.push(o);
 					}
 				});
 			}
-			return res;
+			graphlet = res;
+			return this;
+		},
+		"edges": function() {
+			return graphlet.edges;
+		},
+		"nodes": function() {
+			return graphlet.nodes;
+		},
+		"graph": function() {
+			return graphlet;
 		}
 	};
     
