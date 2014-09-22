@@ -28,7 +28,6 @@
 				res.edges = [];
 				$.each(graphlet.edges, function(i, o) {
 					if ((!sel.type || sel.type === 'all' || o[2] === sel.type) && 
-						(sel.from || sel.to) &&  
 						(!sel.from || o[0] === sel.from) &&
 						(!sel.to || o[1] === sel.to)						
 					) {
