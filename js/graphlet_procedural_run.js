@@ -18,20 +18,27 @@
         return got_obj;
     };
     var set_all = function(id, result) {
-        var set_edges = gq.using(this.g).find({"element":"edge", "type":"set", "from":id}).edges();
+		var g = this.g;
+        var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
         $.each(set_edges, function(i, o) {
-            var end_node = graph_selector(this.g, {"element":"node", "id":id, "ordinal":true});
-            var name = o.alias | end_node.name | "data";
-            this.g.nodes[end_node.ordinal].data[name] = result[name]; 
+            var end_node = gq.using(g).find({"element":"node", "id":o[1]}).nodes()[0];
+            var name = o.alias || end_node.name || "data";
+            if (!end_node.data) { end_node.data = {};}
+            end_node.data[name] = result[name];
+            if (end_node.io && end_node.io.selector) {
+				$(end_node.io.selector).text(end_node.data[name]);
+			}
         });
     }
     var run_node = function(target_node) {
 		var get_data = get_all(target_node.id);
-		alert(JSON.stringify(target_node.process[0]));
-		alert(JSON.stringify(get_data));
+		//alert(JSON.stringify(target_node.process[0]));
+		//alert(JSON.stringify(get_data));
 		var result = run_node_process(get_data, target_node.process[0]);
-		alert(JSON.stringify(get_data));
-		alert(JSON.stringify(result));
+		//alert(JSON.stringify(get_data));
+		//alert(JSON.stringify(result));
+		set_all(target_node.id, result);
+		//alert(JSON.stringify(gq.using(this.g).find({"element":"node", "id":"n3"}).nodes()[0]));
 	};
 	
 	// sandbox for functional (saferEval)
@@ -73,10 +80,15 @@
 
 	
 
-    run = function(g) {
+    init_graphlet = function(g) {
         var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
         var io_events = gq.using(g).find({"element":"edge", "type":"evt"}).edges();
         this.g = g;
+        if (g.graph && g.graph.template) {
+			$(function() {
+				$("#graphlet").html(g.graph.template);
+			});
+		}
         $.each(flo_edges, function(i, o) {
 			$("body").on("edge_" + o[5], function () {
 				var to_node_id = o[1];
