@@ -29,7 +29,18 @@
 				$(end_node.io.selector).text(end_node.data[name]);
 			}
         });
-    }
+    };
+    var transition_to = function(id, get_result) {
+		var g = this.g;
+        var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
+        $.each(trans_edges, function(i, e) {
+			var guard_expression = e[4];
+			var guard = run_edge_guard(get_result, guard_expression);
+			if (guard.result) {
+				setTimeout(function() {$("body").trigger("edge_" + e[5]);}, 10);
+			}
+        });
+    };
     var run_node = function(target_node) {
 		var get_data = get_all(target_node.id);
 		//alert(JSON.stringify(target_node.process[0]));
@@ -39,6 +50,7 @@
 		//alert(JSON.stringify(result));
 		set_all(target_node.id, result);
 		//alert(JSON.stringify(gq.using(this.g).find({"element":"node", "id":"n3"}).nodes()[0]));
+		transition_to(target_node.id, result);
 	};
 	
 	// sandbox for functional (saferEval)
@@ -64,6 +76,41 @@
 			}
 
 			var context = Array.prototype.concat.call(env, params, code); // create the parameter list for the sandbox
+			var sandbox = new (Function.prototype.bind.apply(Function, context)); // create the sandbox function
+			context = Array.prototype.concat.call(env, args); // create the argument list for the sandbox
+
+			return Function.prototype.bind.apply(sandbox, context); // bind the local variables to the sandbox
+		};
+
+		// result is the 'this' object for the code
+		var result = {};
+		var sandbox = createSandbox(result, code, locals); // create a sandbox
+
+		sandbox(); // call the user code in the sandbox
+		return result;
+	};
+
+	var run_edge_guard = function (env, code) {
+		// Shadow some sensitive global objects
+		var locals = {
+			window: {},
+			document: {}
+		};
+		// and mix in the environment
+		locals = $.extend(locals, env);
+
+		var createSandbox = function (env, code, locals) {
+			var params = []; // the names of local variables
+			var args = []; // the local variables
+
+			for (var param in locals) {
+				if (locals.hasOwnProperty(param)) {
+					args.push(locals[param]);
+					params.push(param);
+				}
+			}
+
+			var context = Array.prototype.concat.call(env, params, "this.result = (" + code + ");"); // create the parameter list for the sandbox
 			var sandbox = new (Function.prototype.bind.apply(Function, context)); // create the sandbox function
 			context = Array.prototype.concat.call(env, args); // create the argument list for the sandbox
 

@@ -18,14 +18,14 @@
 	  {"name":"Hello","data":{"salutation":"Hello"},"id":"n2","view":{"position":{"x":316,"y":105}},"node_type":"data"},
 	  {"name":"greeting","node_type":"io", "io":{"selector":".greeting"},"id":"n3","view":{"position":{"x":446,"y":304}}},
 	  {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4","view":{"position":{"x":446,"y":196}}},
-	  {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}},"node_type":"process"}
+	  {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}},"node_type":"process","process":["alert('done');"]}
 	 ],
 	 "edges":[
 	  ["n0","n1","evt","click",null,0],
 	  ["n1","n2","get","salutation",null,1],
 	  ["n1","n4","get","name",null,2],
 	  ["n1","n3","set","greeting",null,3],
-	  ["n1","n5","flo","",null,4]
+	  ["n1","n5","flo","","greeting === 'Hello World'",4]
 	 ]
   });
   </script>
