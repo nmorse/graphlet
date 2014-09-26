@@ -22,11 +22,37 @@
         var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
         $.each(set_edges, function(i, o) {
             var end_node = gq.using(g).find({"element":"node", "id":o[1]}).nodes()[0];
-            var name = o.alias || end_node.name || "data";
-            if (!end_node.data) { end_node.data = {};}
-            end_node.data[name] = result[name];
-            if (end_node.io && end_node.io.selector) {
-				$(end_node.io.selector).text(end_node.data[name]);
+            var start_node;
+            var alias = o[3];
+            var name = alias || end_node.name || "data";
+            if (name.charAt(0) === ".") {
+				if (end_node.io && end_node.io.selector) {
+					start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
+					switch (name)  {
+						case ".css":
+							$(end_node.io.selector).css(start_node.data);
+							break;
+						case ".attr":
+							$(end_node.io.selector).attr(start_node.data);
+							break;
+						case ".hide":
+							$(end_node.io.selector).hide(start_node.data.speed);
+							break;
+						case ".show":
+							$(end_node.io.selector).show(start_node.data.speed);
+							break;
+						default:
+							alert("jQuery function " +name + " is not supported at this time.");
+					}
+					
+				}				
+			}
+			else {
+				if (!end_node.data) { end_node.data = {};}
+				end_node.data[name] = result[name];
+				if (end_node.io && end_node.io.selector) {
+					$(end_node.io.selector).text(end_node.data[name]);
+				}
 			}
         });
     };
@@ -45,7 +71,10 @@
 		var get_data = get_all(target_node.id);
 		//alert(JSON.stringify(target_node.process[0]));
 		//alert(JSON.stringify(get_data));
-		var result = run_node_process(get_data, target_node.process[0]);
+		var result = target_node.data;
+		if (target_node.node_type === "process") {
+			result = run_node_process(get_data, target_node.process[0]);
+		}
 		//alert(JSON.stringify(get_data));
 		//alert(JSON.stringify(result));
 		set_all(target_node.id, result);
