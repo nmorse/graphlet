@@ -30,7 +30,11 @@ var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
             {"tag":"option","html":"get"},
             {"tag":"option","html":"set"},
             {"tag":"option","html":"evt"},
-            {"tag":"option","html":"flo"}
+            {"tag":"option","html":"flo"},
+            {"tag":"option","html":".css"},
+            {"tag":"option","html":".attr"},
+            {"tag":"option","html":".hide"},
+            {"tag":"option","html":".show"}
           ]}
         ]},
         {"tag":"label","class":"control-label","for":"edge_input_guard_${id}","html":"Edge Guard:"},
