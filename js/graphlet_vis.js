@@ -252,6 +252,11 @@ $(function() {
         $('#edit_mode_ui').hide();
         $('#graph_in').hide();
         $('#graph_out').hide();
+        
+        // set the run env.
+          init_graphlet(export_graph_json(g));
+
+        
     });
     $("#node_input_form").on("update_form", function(event, nodes_selected) {
         //alert(JSON.stringify(nodes_selected, null, " "));
