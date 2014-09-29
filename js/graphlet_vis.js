@@ -1,5 +1,7 @@
+(function () {
 var g;
-var g_aux = {"name":""};
+g_aux = {"name":""};
+var g_template = ""
 var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
     {"tag":"div","class":"control-group","children":[
         {"tag":"label","class":"control-label","for":"node_input_name_${id}","html":"Node Name:"},
@@ -14,7 +16,11 @@ var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
             {"tag":"option","html":"process"},
             {"tag":"option","html":"data"}
           ]}
-        ]}
+        ]},
+        {"tag":"label","class":"control-label","for":"node_input_io-selector_${id}","html":"Node I/O Selector:"},
+        {"tag":"div","class":"controls","children":[
+            {"tag":"input","id":"node_input_io-selector_${id}","data-id":"${id}","type":"text","class":"input-small node_input_name","placeholder":"Node I/O Selector","html":"", "value":"${io.selector}"}
+          ]}
       ]}
   ]};
 var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
@@ -47,7 +53,7 @@ var add_edge_mode = false;
 var add_edge_arr = [];
 
 // convert a stored graph into a from that is appropreate for Cytoscape.js
-function load_hbg(graph) {
+load_hbg = function (graph) {
     var raw_nodes = graph.nodes;
 	var raw_edges = graph.edges;
 	var demoNodes = [];
@@ -57,6 +63,7 @@ function load_hbg(graph) {
     var id_mode = "provided";
     if (graph && graph.graph && graph.graph.name) {
         g_aux = graph.graph;
+        g_template = graph.graph.template;
     }
     for (i = 0; i < raw_nodes.length; i++) {
         o = {data:raw_nodes[i]};
@@ -71,7 +78,7 @@ function load_hbg(graph) {
     }
     for (i = 0; i < raw_edges.length; i++) {
         name = raw_edges[i][3] || "";
-        id = "e" + (i * 2);
+        id = "e"+i;
         source = raw_edges[i][0];
         target = raw_edges[i][1];
         if (id_mode === "generated") {
@@ -79,17 +86,20 @@ function load_hbg(graph) {
             target = "n"+raw_edges[i][1];
         }
         
-        o = {"data":{"id":id, "name": name, "source": source, "target": target, "edge_type": raw_edges[i][2], "weight": 20}};
+        o = {"data":{"id":id, "name": name, "source": source, "target": target, "edge_type": raw_edges[i][2], "guard": raw_edges[i][4], "weight": 20}};
         demoEdges.push(o);
     }
     return { 
       nodes: demoNodes,
       edges: demoEdges
     };
-}
+};
 
+get_current_cyto_graph = function () {
+	return g;
+};
 
-function load_cy_graph(init_graph) {
+load_cy_graph = function (init_graph) {
     if (g) {
         g.remove(g.elements("node"));
     }
@@ -192,7 +202,8 @@ function load_cy_graph(init_graph) {
         //this.on("mouseup", sync_selected);
       }
     });
-}
+};
+
 $(function() {
     //var init_graph = load_hbg(graph);
     // jQuery should add this to the API
@@ -248,13 +259,14 @@ $(function() {
         $('#graph_out').hide();
     });
     $(document).on("run_mode", function (e) {
+		var graph_json_str = export_graph_json(g);
         $('#run_mode_ui').show();
         $('#edit_mode_ui').hide();
         $('#graph_in').hide();
         $('#graph_out').hide();
         
         // set the run env.
-          init_graphlet(export_graph_json(g));
+          init_graphlet(JSON.parse(graph_json_str));
 
         
     });
@@ -321,11 +333,12 @@ function sync_selected(evt) {
     $("#edge_input_form").trigger("update_form", [edges_selected]);
 }
 
-function export_graph_json(g) {
+export_graph_json = function (g) {
     var nodes = g.nodes();
     var edges = g.edges();
     var exp_graph_json;
     var graph_desc = g.graph || g_aux || {};
+    graph_desc.template = g.template || g_template || "<button id='start_button'>Say Hello</button><div class='greeting'></div>";
     exp_graph_json = '{"graph":' + JSON.stringify(graph_desc) + ', "nodes":[';
     
     var o, data, pos, source, target, spacer = "";
@@ -347,12 +360,12 @@ function export_graph_json(g) {
         data = edges[i].data();
         source = edges[i].source().id();
         target = edges[i].target().id();
-        o = [source, target, data.edge_type, data.name, data.guard];
+        o = [source, target, data.edge_type, data.name, data.guard, parseInt(data.id.substr(1), 10)];
         exp_graph_json += "  " + JSON.stringify(o);
     }
     exp_graph_json += '\n ]\n}';
     return exp_graph_json;
-}
+};
 
 // Prune to Level is a debugging aid for opjects that 
 // are too deep or cause a circular reference error in JSON.stringify 
@@ -378,3 +391,4 @@ function reload_graph() {
     g2 = {"elements": g2};
     g.load(g2);
 }
+})();

@@ -1,21 +1,22 @@
 var graph_examples = {
 "Hello World version 1":
-{"graph":{"name":"Hello World"},"nodes":[
-  {"name":"start","id":"n0","view":{"position":{"x":124,"y":80}},"node_type":"process"},
-  {"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"},
-  {"name":"Hello","data":{"salutation":"Hello "},"id":"n2","view":{"position":{"x":316,"y":105}},"node_type":"data"},
-  {"name":"out","type":"io","node_type":"io","id":"n3","view":{"position":{"x":446,"y":304}}},
-  {"name":"name","type":"io","subtype":"POST","data":{"name":"World"},"node_type":"io","id":"n4","view":{"position":{"x":446,"y":196}}},
-  {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}},"node_type":"process"}
- ],
- "edges":[
-  ["n0","n1","flo","",null],
-  ["n1","n2","get","salutation",null],
-  ["n1","n4","get","name",null],
-  ["n1","n3","set","greeting",null],
-  ["n1","n5","evt","",null]
- ]
-},
+{"graph":{"name":"Hello World", "template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"},"nodes":[
+	  {"name":"start","id":"n0", "io":{"selector":"#start_button", "event":"click"},"view":{"position":{"x":124,"y":80}},"node_type":"io"},
+	  {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"},
+	  {"name":"Hello","data":{"salutation":"Hello"},"id":"n2","view":{"position":{"x":316,"y":105}},"node_type":"data"},
+	  {"name":"greeting","node_type":"io", "io":{"selector":".greeting"},"id":"n3","view":{"position":{"x":446,"y":304}}},
+	  {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4","view":{"position":{"x":446,"y":196}}},
+	  {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}},"node_type":"data", "data":{"color": "rgb(255, 0, 0)"}}
+	 ],
+	 "edges":[
+	  ["n0","n1","evt","click",null,0],
+	  ["n1","n2","get","salutation",null,1],
+	  ["n1","n4","get","name",null,2],
+	  ["n1","n3","set","greeting",null,3],
+	  ["n1","n5","flo","","greeting === 'Hello World'",4],
+	  ["n5","n3","set",".css",null,5]
+	 ]
+  },
 "shake 2":
 {"graph":{"name":"shake 2"}, "nodes":[
   {"view":{"position":{"x":89,"y":74}},"id":"n4","name":"2000 ms"},

@@ -2,11 +2,11 @@
 // 
 
 (function($, gq) {
-    var g;
+    var glt;
     // get all values from get edges and return as an object
     var get_all = function(id) {
         var got_obj = {};
-        var g = this.g;
+        var g = this.glt;
         var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
         $.each(get_edges, function(i, o) {
 			var to_node = o[1];
@@ -18,7 +18,7 @@
         return got_obj;
     };
     var set_all = function(id, result) {
-		var g = this.g;
+		var g = this.glt;
         var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
         $.each(set_edges, function(i, o) {
             var end_node = gq.using(g).find({"element":"node", "id":o[1]}).nodes()[0];
@@ -57,7 +57,7 @@
         });
     };
     var transition_to = function(id, get_result) {
-		var g = this.g;
+		var g = this.glt;
         var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
         $.each(trans_edges, function(i, e) {
 			var guard_expression = e[4];
@@ -159,7 +159,7 @@
     init_graphlet = function(g) {
         var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
         var io_events = gq.using(g).find({"element":"edge", "type":"evt"}).edges();
-        this.g = g;
+        this.glt = g;
         if (g.graph && g.graph.template) {
 			$(function() {
 				$("#graphlet").html(g.graph.template);

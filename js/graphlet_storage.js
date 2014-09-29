@@ -71,7 +71,7 @@ $(function() {
         }
     });
     $('#store').on("click", function() {
-        $('#graph_out>pre').text( export_graph_json(g) );
+        $('#graph_out>pre').text( export_graph_json(get_current_cyto_graph()) );
     });
     $('#load_from_text').on("click", function() {
         var s = $('#graph_in>textarea').val();
@@ -151,7 +151,7 @@ $(function() {
             local_hb_graphs = JSON.parse(localStorage.hb_graphs);
             if(local_hb_graphs[proposed_name]) {
                 if (overwrite) {
-                    local_hb_graphs[proposed_name] = JSON.parse(export_graph_json(g));
+                    local_hb_graphs[proposed_name] = JSON.parse(export_graph_json(get_current_cyto_graph()));
                     localStorage.hb_graphs = JSON.stringify(local_hb_graphs);
                     $(document).trigger("hbg_save_status", [{"outcome": outcome[1], "target": "local", "final":true}]);
                     $('#graph_storage').html("local");
@@ -165,7 +165,7 @@ $(function() {
                 }
             }
             else {
-                local_hb_graphs[proposed_name] = JSON.parse(export_graph_json(g));
+                local_hb_graphs[proposed_name] = JSON.parse(export_graph_json(get_current_cyto_graph()));
                 localStorage.hb_graphs = JSON.stringify(local_hb_graphs);
                 $(document).trigger("hbg_save_status", [{"outcome": outcome[3], "target": "local", "final":true}]);
                 $('#graph_storage').html("local");
