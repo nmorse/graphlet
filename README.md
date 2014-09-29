@@ -1,10 +1,12 @@
 Graphlet
 ========
 The Graphlet project combines: 
- * a graph based syntax for flow-control and data access and I/O (i.e. a network of function, data and I/O elements)
+ * a graph based syntax for __Functions__, __Data Access__ and __I/O Elements__
  * visual programming (enabling spatial reasoning via visual renderings of graph networks)
  * a portable (environment agnostic) high-level approach to programming for many platforms
  * event oriented (a visual syntax for the Publish-Subscribe programming pattern)
+
+See a Demonstation === http://nmorse.github.io/Graphlet/editor.html
 
 A Graph Based Syntax
 --------------------
@@ -12,16 +14,16 @@ A Graph Based Syntax
 processes. Edges either "get", or "set" data, or send messages to and from I/O nodes, or transfer the flow 
 of control to other nodes. 
 
-In the Graphlet environment this graph of nodes and edges is the source code. Execution is interpreted using a "event-emitter pattern"
+In the Graphlet environment a graph of nodes and edges is the source code. Execution is interpreted using a "event emitter" pattern
 using a message queue to manage the flow of an application. Client browsers, servers and embedded controllers can all run 
 these Graphlet flow-control-graphs. 
 
 The flow of control is entirely determined by the topology of nodes and edges.
->You will not find an "IF" or "WHILE" control structure in Graphlet. All flow control is determined by the topology of the graph that you create.
+>You will not find an "WHILE" or "FOR" (loop) control structures in Graphlet. All flow control is determined by the topology of the graph that you create.
 
-All Access to data is clearly shown by the (data nodes) connectivity (via edges) in the Graphlet Graph structure.
-This visual approach enables sharing code, and code inspection (by graph analisys, or visually).
->If you need to understand what are all the ways that some datum or IO element is read from or written to, it is plainly represented by adjacency.
+All Access to data is clearly defined by edges that connect to data nodes. These data conduit (edges) have a great benefit in relieving the programmer in the burden of repetitive variable naming. 
+This visual approach enables sharing code, and code inspection (by graph analysis, or visually).
+>If you need to understand what are all the ways that some data node or i/o element is accessed, it is plainly represented in the graph by edge (adjacency).
 
 Code Visualization
 ------------------
@@ -69,4 +71,3 @@ When a node is activated by a message or transition, these 4 processing steps ar
  * Process the internal function or operation of the node
  * Set data or publish events (via all immediate "set" or "msg" edges)
  * Transition to the next node (via one selected "Guard protected" transitions edges)
-
