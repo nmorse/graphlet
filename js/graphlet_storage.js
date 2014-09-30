@@ -197,6 +197,7 @@ $(function() {
     $('#save_to_storage').on("click", function(event) {
         var overwrite = true;
         var online_service = null;
+        var g = get_current_cyto_graph();
         if (!g.graph) {g.graph = {};}
         g.graph.name = $('#graph_input_name_n2').val();
         $(document).trigger("save_hbg", [g, overwrite, online_service]);
