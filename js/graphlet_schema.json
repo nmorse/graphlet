@@ -1,0 +1,64 @@
+{
+  "title": "Graph",
+  "type": "object",
+  "properties": {
+    "graph": {
+      "type": "string",
+      "description": "First and Last name",
+      "minLength": 4,
+      "default": "Jeremy Dorn"
+    },
+    "nodes": {
+      "type": "object",
+      "title": "Nodes",
+      "properties": {
+        "name": {
+          "type": "string",
+          "default": "Start"
+        },
+        "id": {
+          "type": "string",
+          "default": "n1"
+        },
+        "data": {
+          "type": "object"
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "format": "table",
+      "title": "Edges",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "title": "Edge",
+        "properties": {
+          "from":{
+            "type": "string"
+          } ,
+          "to": {
+            "type": "string"
+          },
+"edge_type":{
+            "type": "string",
+            "enum": [
+              "get",
+              "set",
+              "flo",
+              "evt",
+              ".css"
+            ],
+            "default": "get"
+          },
+          "alias": {
+            "type": "string"
+          },
+          "guard": {
+            "type": "string"
+          }
+        }
+      }      
+    }
+  }
+}
