@@ -24,7 +24,33 @@
         
         <script type="text/javascript" src="js/json2html/json2html-0.4.1.js"></script>
         <script type="text/javascript" src="js/json2html/jquery.json2html.js"></script>
-        
+        <script type="text/javascript" src="js/jsoneditor.js"></script>
+        <script>
+		$(function() {
+			var node_editor = new JSONEditor($('#node_editor')[0], {
+			  theme: 'bootstrap3',
+			  schema: {
+				  "type": "object",
+				  "title": "Nodes",
+				  "properties": {
+					"name": {
+					  "type": "string",
+					  "default": "Start"
+					},
+					"id": {
+					  "type": "string",
+					  "default": "n1"
+					},
+					"data": {
+					  "type": "object"
+					}
+				  }
+				}
+			  ,
+			startval: {"name": "end", "id":"n444" }
+		  });
+		});
+        </script>
         <!-- Bootstrap -->
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
         <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -62,8 +88,8 @@
                              <div class="span2"><button id="delete_edge" type="button" class="btn btn-primary">delete edge</button></div>
             </div>
             <div><h4 id="node_input_header">Node data (<span>0</span> Selected)</h4>
-                <form id="node_input_form" class="form-horizontal">
-                </form>
+                <div id="node_editor">
+                </div>
             </div>
             <div><h4 id="edge_input_header">Edge data (<span>0</span> Selected)</h4>
                 <form id="edge_input_form" class="form-horizontal">
