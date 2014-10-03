@@ -27,28 +27,34 @@
         <script type="text/javascript" src="js/jsoneditor.js"></script>
         <script>
 		$(function() {
-			var node_editor = new JSONEditor($('#node_editor')[0], {
-			  theme: 'bootstrap3',
-			  schema: {
-				  "type": "object",
-				  "title": "Nodes",
-				  "properties": {
-					"name": {
-					  "type": "string",
-					  "default": "Start"
-					},
-					"id": {
-					  "type": "string",
-					  "default": "n1"
-					},
-					"data": {
-					  "type": "object"
+			nodes_editor = new JSONEditor($('#node_editor')[0], {
+				  theme: 'bootstrap3',
+				  schema: {
+					"type": "array",
+					"title": "All Selected Nodes",
+					"uniqueItems": true,
+					"items": {
+					  "type": "object",
+					  "title": "Selected Node",
+					  "properties": {
+						"name": {
+						  "type": "string",
+						  "default": "Start"
+						},
+						"node_type": {
+						  "type": "string"
+						},
+						"id": {
+						  "type": "string",
+						  "default": "n1"
+						},
+						"data": {
+						  "type": "object"
+						}
+					  }
 					}
-				  }
 				}
-			  ,
-			startval: {"name": "end", "id":"n444" }
-		  });
+			  });
 		});
         </script>
         <!-- Bootstrap -->

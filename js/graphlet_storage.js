@@ -191,7 +191,7 @@ $(function() {
     });
     
     $(document).on("hbg_save_status", function(event, arg) {
-        alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
+        //alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
     });
     
     $('#save_to_storage').on("click", function(event) {
@@ -237,7 +237,7 @@ $(function() {
     });
     
     $(document).on("hbg_delete_status", function(event, arg) {
-        alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
+        //alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
     });
     
     $('#delete_from_storage').on("click", function(event) {

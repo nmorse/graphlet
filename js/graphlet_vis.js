@@ -1,5 +1,6 @@
 (function () {
 	var g;
+	//var nodes_editor = null;
 	g_aux = {"name":""};
 	var g_template = ""
 	var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
@@ -105,6 +106,9 @@
 
 	get_current_cyto_graph = function () {
 		return g;
+	};
+	set_nodes_editor = function (ed) {
+		nodes_editor = ed;
 	};
 
 	load_cy_graph = function (init_graph) {
@@ -278,16 +282,16 @@
 
 			
 		});
-		$("#node_input_form").on("update_form", function(event, nodes_selected) {
+		$('#node_editor').on("update_form", function(event, nodes_selected) {
 			//alert(JSON.stringify(nodes_selected, null, " "));
 			$("#node_input_header>span").text(""+nodes_selected.length);
-			$("#node_input_form").empty();
-			$("#node_input_form").json2html(nodes_selected, node_form_template);
-			$.each(nodes_selected, function(i, o) {
-				$('#node_input_node_type_'+o.id).val(o.node_type);
-			});
-			$(".node_input_name").on("keyup", {"ele_type": "node", "data_field": "name"}, update_graph_ele);
-			$(".node_input_node_type").on("change", {"ele_type": "node", "data_field": "node_type"}, update_graph_ele);
+			//$('#node_editor').empty();
+			nodes_editor.setValue(nodes_selected);
+			//$.each(nodes_selected, function(i, o) {
+			//	$('#node_input_node_type_'+o.id).val(o.node_type);
+			//});
+			//$(".node_input_name").on("keyup", {"ele_type": "node", "data_field": "name"}, update_graph_ele);
+			//$(".node_input_node_type").on("change", {"ele_type": "node", "data_field": "node_type"}, update_graph_ele);
 		});
 		$("#edge_input_form").on("update_form", function(event, edges_selected) {
 			//alert(JSON.stringify(edges_selected, null, " "));
@@ -333,7 +337,7 @@
 		});
 		//alert(JSON.stringify(nodes_selected, null, " "));
 		//alert(JSON.stringify(prune2level(evt, 2), null, " "));
-		$("#node_input_form").trigger("update_form", [nodes_selected]);
+		$('#node_editor').trigger("update_form", [nodes_selected]);
 		eles = g.elements("edge:selected");
 		$.each(eles, function(i, o){
 			edges_selected.push(o.data());
