@@ -42,18 +42,40 @@
 						  "default": "Start"
 						},
 						"node_type": {
-						  "type": "string"
+						  "type": "string",
+						  "default":"data"
 						},
 						"id": {
-						  "type": "string",
-						  "default": "n1"
+						  "type": "string"
 						},
 						"data": {
 						  "type": "object"
-						}
+						},
+						"io": {
+						  "type": "object",
+						  "properties": {"selector":{"type":"string"}}
+						},
+						"process": {
+						  "type": "array",
+						  "items": {"type":"string"} 
+						},
+						"view": {
+						  "type":"object",
+						  "properties": {
+							"position": {
+								"type": "object",
+								"properties": {"x":{"type":"integer"}, "y":{"type":"integer"}}
+							}  
+						  }
+						} 
 					  }
 					}
-				}
+				},
+				disable_array_add:true,
+				disable_array_delete:true,
+				disable_array_reorder:true,
+				disable_edit_json:true,
+				disable_properties:true
 			  });
 		});
         </script>

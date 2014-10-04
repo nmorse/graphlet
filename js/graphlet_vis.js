@@ -109,6 +109,7 @@
 	};
 	set_nodes_editor = function (ed) {
 		nodes_editor = ed;
+		// editor feedback to the graph
 	};
 
 	load_cy_graph = function (init_graph) {
@@ -287,6 +288,10 @@
 			$("#node_input_header>span").text(""+nodes_selected.length);
 			//$('#node_editor').empty();
 			nodes_editor.setValue(nodes_selected);
+			nodes_editor.on('change',function() {
+				update_graph_ele({"ele_type": "node", "data_field": "name"});
+			});
+
 			//$.each(nodes_selected, function(i, o) {
 			//	$('#node_input_node_type_'+o.id).val(o.node_type);
 			//});
@@ -314,7 +319,21 @@
 				renderedPosition: {"x":200, "y":300}
 			});
 		});
+		
 	});
+
+	function update_graph_nodes(nodes) {
+		$.each(nodes, function (i, node) {
+			var node_id = node["id"];
+			var ele = g.elements(event.data.ele_type + "[id='" + node_id + "']")[0];
+			if (ele) {
+				ele.data(event.data.data_field, $(this).val());
+			}
+			else {
+				alert(node_id + " no ele");
+			}
+		}
+	}
 
 	function update_graph_ele(event) {
 		var node_id = $(this).data("id");
