@@ -289,7 +289,8 @@
 			//$('#node_editor').empty();
 			nodes_editor.setValue(nodes_selected);
 			nodes_editor.on('change',function() {
-				update_graph_ele({"ele_type": "node", "data_field": "name"});
+				update_graph_nodes(nodes_editor.root);
+				//update_graph_ele({"ele_type": "node", "data_field": "name"});
 			});
 
 			//$.each(nodes_selected, function(i, o) {
@@ -327,12 +328,12 @@
 			var node_id = node["id"];
 			var ele = g.elements(event.data.ele_type + "[id='" + node_id + "']")[0];
 			if (ele) {
-				ele.data(event.data.data_field, $(this).val());
+				ele.data = node;
 			}
 			else {
 				alert(node_id + " no ele");
 			}
-		}
+		});
 	}
 
 	function update_graph_ele(event) {
