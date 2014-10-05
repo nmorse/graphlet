@@ -289,7 +289,7 @@
 			//$('#node_editor').empty();
 			nodes_editor.setValue(nodes_selected);
 			nodes_editor.on('change',function() {
-				update_graph_nodes(nodes_editor.root);
+				update_graph_nodes(nodes_editor.root.value);
 				//update_graph_ele({"ele_type": "node", "data_field": "name"});
 			});
 
@@ -326,9 +326,9 @@
 	function update_graph_nodes(nodes) {
 		$.each(nodes, function (i, node) {
 			var node_id = node["id"];
-			var ele = g.elements(event.data.ele_type + "[id='" + node_id + "']")[0];
+			var ele = g.elements("node" + "[id='" + node_id + "']")[0];
 			if (ele) {
-				ele.data = node;
+				ele.data(node);
 			}
 			else {
 				alert(node_id + " no ele");
