@@ -279,25 +279,15 @@
 			$('#graph_out').hide();
 			
 			// set the run env.
-			  init_graphlet(JSON.parse(graph_json_str));
-
-			
+			init_graphlet(JSON.parse(graph_json_str));
 		});
 		$('#node_editor').on("update_form", function(event, nodes_selected) {
-			//alert(JSON.stringify(nodes_selected, null, " "));
 			$("#node_input_header>span").text(""+nodes_selected.length);
-			//$('#node_editor').empty();
 			nodes_editor.setValue(nodes_selected);
 			nodes_editor.on('change',function() {
 				update_graph_nodes(nodes_editor.root.value);
-				//update_graph_ele({"ele_type": "node", "data_field": "name"});
+				//reload_graph();
 			});
-
-			//$.each(nodes_selected, function(i, o) {
-			//	$('#node_input_node_type_'+o.id).val(o.node_type);
-			//});
-			//$(".node_input_name").on("keyup", {"ele_type": "node", "data_field": "name"}, update_graph_ele);
-			//$(".node_input_node_type").on("change", {"ele_type": "node", "data_field": "node_type"}, update_graph_ele);
 		});
 		$("#edge_input_form").on("update_form", function(event, edges_selected) {
 			//alert(JSON.stringify(edges_selected, null, " "));
@@ -322,13 +312,14 @@
 		});
 		
 	});
-
+	// send node data to the cy graph (visualization)
 	function update_graph_nodes(nodes) {
 		$.each(nodes, function (i, node) {
 			var node_id = node["id"];
 			var ele = g.elements("node" + "[id='" + node_id + "']")[0];
 			if (ele) {
 				ele.data(node);
+				ele.position({x: node.view.position.x, y: node.view.position.y});
 			}
 			else {
 				alert(node_id + " no ele");
@@ -346,14 +337,21 @@
 			alert(node_id + " no ele");
 		}
 	}
-
+	// pull data from cy and trigger the form update events
 	function sync_selected(evt) {
 		var nodes_selected = [];
 		var edges_selected = [];
 		var eles = g.elements("node:selected");
 		$(document).trigger("edit_mode");
-		$.each(eles, function(i, o){
-			nodes_selected.push(o.data());
+		$.each(eles, function(i, ele){
+			// update the view information (position etc.)
+			var node_data = ele.data();
+			var pos = ele.renderedPosition();
+			if (!node_data.view) {
+				node_data.view = {};
+			}
+			node_data.view.position = pos;
+			nodes_selected.push(node_data);
 		});
 		//alert(JSON.stringify(nodes_selected, null, " "));
 		//alert(JSON.stringify(prune2level(evt, 2), null, " "));
