@@ -111,6 +111,10 @@
 		nodes_editor = ed;
 		// editor feedback to the graph
 	};
+	set_edges_editor = function (ed) {
+		edges_editor = ed;
+		// editor feedback to the graph
+	};
 
 	load_cy_graph = function (init_graph) {
 		if (g) {
@@ -286,20 +290,14 @@
 			nodes_editor.setValue(nodes_selected);
 			nodes_editor.on('change',function() {
 				update_graph_nodes(nodes_editor.root.value);
-				//reload_graph();
 			});
 		});
-		$("#edge_input_form").on("update_form", function(event, edges_selected) {
-			//alert(JSON.stringify(edges_selected, null, " "));
+		$("#edge_editor").on("update_form", function(event, edges_selected) {
 			$("#edge_input_header>span").text(""+edges_selected.length);
-			$("#edge_input_form").empty();
-			$("#edge_input_form").json2html(edges_selected, edge_form_template);
-			$.each(edges_selected, function(i, o) {
-				$('#edge_input_edge_type_'+o.id).val(o.edge_type);
+			edges_editor.setValue(edges_selected);
+			edges_editor.on('change',function() {
+				update_graph_edges(edges_editor.root.value);
 			});
-			$(".edge_input_name").on("keyup", {"ele_type": "edge", "data_field": "name"}, update_graph_ele);
-			$(".edge_input_edge_type").on("change", {"ele_type": "edge", "data_field": "edge_type"}, update_graph_ele);
-			$(".edge_input_guard").on("keyup", {"ele_type": "edge", "data_field": "guard"}, update_graph_ele);
 		});
 		$("#view_all").on("click", function() {
 			g.fit();
@@ -323,6 +321,20 @@
 			}
 			else {
 				alert(node_id + " no ele");
+			}
+		});
+	}
+
+	// send edge data to the cy graph (visualization)
+	function update_graph_edges(edges) {
+		$.each(edges, function (i, edge) {
+			var edge_id = edge["id"];
+			var ele = g.elements("edge" + "[id='" + edge_id + "']")[0];
+			if (ele) {
+				ele.data(edge);
+			}
+			else {
+				alert(edge_id + " no ele");
 			}
 		});
 	}
@@ -353,14 +365,15 @@
 			node_data.view.position = pos;
 			nodes_selected.push(node_data);
 		});
-		//alert(JSON.stringify(nodes_selected, null, " "));
-		//alert(JSON.stringify(prune2level(evt, 2), null, " "));
 		$('#node_editor').trigger("update_form", [nodes_selected]);
+		
+		// next handle edges
 		eles = g.elements("edge:selected");
-		$.each(eles, function(i, o){
-			edges_selected.push(o.data());
+		$.each(eles, function(i, ele){
+			var edge_data = ele.data();
+			edges_selected.push(edge_data);
 		});
-		$("#edge_input_form").trigger("update_form", [edges_selected]);
+		$("#edge_editor").trigger("update_form", [edges_selected]);
 	}
 
 	export_graph_json = function (g) {

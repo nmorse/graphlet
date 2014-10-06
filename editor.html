@@ -36,6 +36,7 @@
 					"items": {
 					  "type": "object",
 					  "title": "Selected Node",
+					  "headerTemplate": "{{ self.id }} - {{ self.name }} ({{ self.node_type }})",
 					  "properties": {
 						"name": {
 						  "type": "string",
@@ -53,7 +54,10 @@
 						},
 						"io": {
 						  "type": "object",
-						  "properties": {"selector":{"type":"string"}}
+						  "properties": {
+							  "selector":{"type":"string"},
+							  "event":{"type":"string"}
+						  }
 						},
 						"process": {
 						  "type": "array",
@@ -68,7 +72,47 @@
 							}  
 						  }
 						} 
-					  }
+					  },
+					  "format": "grid"
+					}
+				},
+				disable_array_add:true,
+				disable_array_delete:true,
+				disable_array_reorder:true,
+				disable_edit_json:true,
+				disable_properties:true
+			  });
+			edges_editor = new JSONEditor($('#edge_editor')[0], {
+				  theme: 'bootstrap3',
+				  schema: {
+					"type": "array",
+					"title": "Selected Edges",
+					"items": {
+					  "type": "object",
+					  "title": "Selected Edge",
+					  "headerTemplate": "{{ self.source }} -> {{ self.target }} ({{ self.edge_type }}) {{ self.name }} ",
+					  "properties": {
+						 "name": {
+						  "type": "string"
+						},
+						"source": {
+						  "type": "string"
+						},
+						"target": {
+						  "type": "string"
+						},
+						"edge_type": {
+						  "type": "string",
+						  "enum": ['get', 'set', 'flo', 'evt']
+						},
+						"guard": {
+						  "type": "string"
+						},
+						"weight": {
+						  "type": "integer"
+						} 
+					  },
+					  "format": "grid"
 					}
 				},
 				disable_array_add:true,
@@ -120,8 +164,8 @@
                 </div>
             </div>
             <div><h4 id="edge_input_header">Edge data (<span>0</span> Selected)</h4>
-                <form id="edge_input_form" class="form-horizontal">
-                </form>
+                <div id="edge_editor">
+                </div>
             </div>
         </div>
         <div id="run_mode_ui" style="display: none;">
