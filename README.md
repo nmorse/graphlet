@@ -6,7 +6,7 @@ The Graphlet project combines:
  * a portable (environment agnostic) high-level approach to programming for many platforms
  * event oriented (a visual syntax for the Publish-Subscribe programming pattern)
 
-See a Demonstation === http://nmorse.github.io/Graphlet/editor.html
+See a Demonstation === http://nmorse.github.io/graphlet/editor.html
 
 A Graph Based Syntax
 --------------------
