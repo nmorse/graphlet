@@ -43,8 +43,10 @@
 						  "default": "Start"
 						},
 						"node_type": {
+						  "required": true,
 						  "type": "string",
-						  "default":"data"
+						  "default":"process",
+						  "enum": ['io', 'process', 'data']
 						},
 						"id": {
 						  "type": "string"
