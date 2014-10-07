@@ -3,61 +3,6 @@
 	//var nodes_editor = null;
 	g_aux = {"name":""};
 	var g_template = ""
-	var node_form_template = {"tag":"div","id":"node_select_${id}","children":[
-		{"tag":"div","class":"control-group","children":[
-			{"tag":"label","class":"control-label","for":"node_input_name_${id}","html":"Node Name:"},
-			{"tag":"div","class":"controls","children":[
-				{"tag":"input","id":"node_input_name_${id}","data-id":"${id}","type":"text","class":"input-small node_input_name","placeholder":"Node Name","html":"", "value":"${name}"}
-			  ]},
-			{"tag":"label","class":"control-label","for":"node_input_node_type_${id}","html":"Node Type"},
-			{"tag":"div","class":"controls","children":[
-			  {"tag":"select","id":"node_input_node_type_${id}","data-id":"${id}","class":"input-small node_input_node_type","children":[
-				{"tag":"option","html":""},
-				{"tag":"option","html":"io"},
-				{"tag":"option","html":"process"},
-				{"tag":"option","html":"data"}
-			  ]}
-			]},
-			{"tag":"label","class":"control-label","for":"node_input_io-selector_${id}","html":"Node I/O Selector:"},
-			{"tag":"div","class":"controls","children":[
-				{"tag":"input","id":"node_input_io-selector_${id}","data-id":"${id}","type":"text","class":"input-small node_input_name","placeholder":"Node I/O Selector","html":"", "value":"${io.selector}"}
-			  ]},
-			{"tag":"label","class":"control-label","for":"node_input_process_${id}","html":"Node Process:"},
-			{"tag":"div","class":"controls","children":[
-				{"tag":"input","id":"node_input_process_${id}","data-id":"${id}","type":"text","class":"input-small node_input_name","placeholder":"Node Process","html":"", "value":"${process}"}
-			  ]},
-			{"tag":"label","class":"control-label","for":"node_input_data_${id}","html":"Node Data:"},
-			{"tag":"div","class":"controls","children":[
-				{"tag":"input","id":"node_input_data_${id}","data-id":"${id}","type":"text","class":"input-small node_input_name","placeholder":"Node Data","html":"", "value":"${data}"}
-			  ]}
-		  ]}
-	  ]};
-	var edge_form_template = {"tag":"div","id":"edge_select_${id}","children":[
-		{"tag":"div","class":"control-group","children":[
-			{"tag":"label","class":"control-label","for":"edge_input_name_${id}","html":"Name:"},
-			{"tag":"div","class":"controls","children":[
-				{"tag":"input","id":"edge_input_name_${id}","data-id":"${id}","type":"text","class":"input-small edge_input_name","placeholder":"Name","html":"", "value":"${name}"}
-			  ]},
-			{"tag":"label","class":"control-label","for":"edge_input_edge_type_${id}","html":"Edge Type"},
-			{"tag":"div","class":"controls","children":[
-			  {"tag":"select","id":"edge_input_edge_type_${id}","data-id":"${id}","class":"input-small edge_input_edge_type","children":[
-				{"tag":"option","html":""},
-				{"tag":"option","html":"get"},
-				{"tag":"option","html":"set"},
-				{"tag":"option","html":"evt"},
-				{"tag":"option","html":"flo"},
-				{"tag":"option","html":".css"},
-				{"tag":"option","html":".attr"},
-				{"tag":"option","html":".hide"},
-				{"tag":"option","html":".show"}
-			  ]}
-			]},
-			{"tag":"label","class":"control-label","for":"edge_input_guard_${id}","html":"Edge Guard:"},
-			{"tag":"div","class":"controls","children":[
-				{"tag":"input","id":"edge_input_guard_${id}","data-id":"${id}","type":"text","class":"input-small edge_input_guard","placeholder":"Edge Guard","html":"", "value":"${guard}"}
-			]}
-		  ]}
-	  ]};
 	var add_edge_mode = false;
 	var add_edge_arr = [];
 
@@ -173,7 +118,7 @@
 					"source-arrow-shape": "circle",
 					"target-arrow-shape": "triangle"
 				})
-			.selector("edge[edge_type='flo'], edge[edge_type='evt']")
+			.selector("edge[edge_type='flo'], edge[edge_type='sub'], edge[edge_type='pub']")
 				.css({
 					"line-color": "#22C",
 					"source-arrow-color": "#22C",

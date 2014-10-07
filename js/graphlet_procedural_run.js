@@ -158,7 +158,7 @@
 
     init_graphlet = function(g) {
         var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
-        var io_events = gq.using(g).find({"element":"edge", "type":"evt"}).edges();
+        var subscribe_edges = gq.using(g).find({"element":"edge", "type":"sub"}).edges();
         this.glt = g;
         if (g.graph && g.graph.template) {
 			$(function() {
@@ -172,12 +172,13 @@
 				run_node(target_node);
 			});
 		});
-        $.each(io_events, function(i, o) {
-			var from_node_id = o[0];
-			var target_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
-			var io = target_node.io;
-			$(function(){$(io.selector).on(io.event, function() {
-				var to_node_id = o[1];
+        $.each(subscribe_edges, function(i, edge) {
+			var from_node_id = edge[0];
+			var event_name = edge[3];
+			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
+			var io = source_node.io;
+			$(function(){$(io.selector).on(event_name, function() {
+				var to_node_id = edge[1];
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
 				run_node(target_node);
 			});});

@@ -79,11 +79,11 @@
 					  "format": "grid"
 					}
 				},
-				disable_array_add:true,
-				disable_array_delete:true,
+				disable_array_add:false,
+				disable_array_delete:false,
 				disable_array_reorder:true,
 				disable_edit_json:true,
-				disable_properties:true
+				disable_properties:false
 			  });
 			edges_editor = new JSONEditor($('#edge_editor')[0], {
 				  theme: 'bootstrap3',
@@ -106,7 +106,7 @@
 						},
 						"edge_type": {
 						  "type": "string",
-						  "enum": ['get', 'set', 'flo', 'evt']
+						  "enum": ['get', 'set', 'flo', 'sub', 'pub']
 						},
 						"guard": {
 						  "type": "string"
