@@ -69,17 +69,27 @@
     };
     var run_node = function(target_node) {
 		var get_data = get_all(target_node.id);
+		var transition_defered = false;
 		//alert(JSON.stringify(target_node.process[0]));
 		//alert(JSON.stringify(get_data));
-		var result = target_node.data;
+		//var result; // = target_node.data;
 		if (target_node.node_type === "process") {
-			result = run_node_process(get_data, target_node.process[0]);
+			get_data.transition = transition_to;
+			get_data.target_node = target_node;
+			get_data.wait = function() {transition_defered = true;};
+			//alert(get_data.transition);
+			//alert(JSON.stringify(get_data));
+			$.each(target_node.process, function(i, process) {
+				get_data = run_node_process(get_data, process);
+			});
 		}
 		//alert(JSON.stringify(get_data));
 		//alert(JSON.stringify(result));
-		set_all(target_node.id, result);
+		set_all(target_node.id, get_data);
 		//alert(JSON.stringify(gq.using(this.g).find({"element":"node", "id":"n3"}).nodes()[0]));
-		transition_to(target_node.id, result);
+		if (!transition_defered) {
+			transition_to(target_node.id, get_data);
+		}
 	};
 	
 	// sandbox for functional (saferEval)

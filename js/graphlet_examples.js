@@ -23,7 +23,7 @@ var graph_examples = {
   {"view":{"position":{"x":450,"y":251}},"id":"n3","name":"finally","node_type":"data","data":{"action":"shake"}},
   {"view":{"position":{"x":281,"y":290}},"id":"n2","name":"''","node_type":"data","data":{"s":""}},
   {"view":{"position":{"x":322,"y":127}},"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
-  {"view":{"position":{"x":146,"y":192}},"id":"n0","name":"timer","node_type":"process","process":["setTimeout(this.transition, this.timeout);","this.wait();"]}
+  {"view":{"position":{"x":146,"y":192}},"id":"n0","name":"timer","node_type":"process","process":["setTimeout(this.transition(target_node.id, this), this.timeout);","wait();"]}
  ],
  "edges":[
   ["n1","n0","sub","change",null,0],
@@ -31,7 +31,7 @@ var graph_examples = {
   ["n2","n3","flo","next",null,2],
   ["n2","n1","set","s",null,3],
   ["n3","n1","pub","shake",null,4],
-  ["n0","n4","get","as seconds",null,5]
+  ["n0","n4","get","timeout",null,5]
  ]
 }};
 
