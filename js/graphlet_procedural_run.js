@@ -9,8 +9,8 @@
         var g = this.glt;
         var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
         $.each(get_edges, function(i, o) {
-			var to_node = o[1];
-            var end_node = gq.using(g).find({"element":"node", "id":to_node}).nodes()[0];
+			var to_node_id = o[1];
+            var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
             var alias = o[3];
             var name = alias || end_node.name;
             got_obj[name] = end_node.data[name];
@@ -52,6 +52,7 @@
 				end_node.data[name] = result[name];
 				if (end_node.io && end_node.io.selector) {
 					$(end_node.io.selector).text(end_node.data[name]);
+					$(end_node.io.selector).val(end_node.data[name]);
 				}
 			}
         });
@@ -61,7 +62,10 @@
         var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
         $.each(trans_edges, function(i, e) {
 			var guard_expression = e[4];
-			var guard = run_edge_guard(get_result, guard_expression);
+			var guard = {"result":true};
+			if (guard_expression) {
+				guard = run_edge_guard(get_result, guard_expression);
+			}
 			if (guard.result) {
 				setTimeout(function() {$("body").trigger("edge_" + e[5]);}, 10);
 			}
@@ -69,25 +73,29 @@
     };
     var run_node = function(target_node) {
 		var get_data = get_all(target_node.id);
-		var transition_defered = false;
+		var trans_options = {"defered": false};
+		
 		//alert(JSON.stringify(target_node.process[0]));
 		//alert(JSON.stringify(get_data));
 		//var result; // = target_node.data;
 		if (target_node.node_type === "process") {
 			get_data.transition = transition_to;
 			get_data.target_node = target_node;
-			get_data.wait = function() {transition_defered = true;};
+			get_data.trans_options = trans_options;
 			//alert(get_data.transition);
 			//alert(JSON.stringify(get_data));
 			$.each(target_node.process, function(i, process) {
-				get_data = run_node_process(get_data, process);
+				get_data = $.extend(get_data, run_node_process(get_data, process));
 			});
+		}
+		else {
+			get_data = $.extend(get_data, target_node.data);
 		}
 		//alert(JSON.stringify(get_data));
 		//alert(JSON.stringify(result));
 		set_all(target_node.id, get_data);
 		//alert(JSON.stringify(gq.using(this.g).find({"element":"node", "id":"n3"}).nodes()[0]));
-		if (!transition_defered) {
+		if (!get_data.defered_transition) {
 			transition_to(target_node.id, get_data);
 		}
 	};
