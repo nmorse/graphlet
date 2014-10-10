@@ -73,7 +73,6 @@
     };
     var run_node = function(target_node) {
 		var get_data = get_all(target_node.id);
-		var trans_options = {"defered": false};
 		
 		//alert(JSON.stringify(target_node.process[0]));
 		//alert(JSON.stringify(get_data));
@@ -81,11 +80,11 @@
 		if (target_node.node_type === "process") {
 			get_data.transition = transition_to;
 			get_data.target_node = target_node;
-			get_data.trans_options = trans_options;
+			get_data.defered_transition = false;
 			//alert(get_data.transition);
 			//alert(JSON.stringify(get_data));
 			$.each(target_node.process, function(i, process) {
-				get_data = $.extend(get_data, run_node_process(get_data, process));
+				get_data = run_node_process(get_data, process);
 			});
 		}
 		else {
