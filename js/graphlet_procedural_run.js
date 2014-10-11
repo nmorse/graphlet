@@ -67,22 +67,23 @@
 				guard = run_edge_guard(get_result, guard_expression);
 			}
 			if (guard.result) {
+				console.log("trigger transition "+e[0]+" -> "+e[1]);
 				setTimeout(function() {$("body").trigger("edge_" + e[5]);}, 10);
 			}
         });
     };
+    var wait = function(id, milliseconds) {
+		console.log("defer transition to "+id+" by "+milliseconds);
+		setTimeout(function() {transition_to(id, {});}, milliseconds);
+	};
     var run_node = function(target_node) {
 		var get_data = get_all(target_node.id);
 		
-		//alert(JSON.stringify(target_node.process[0]));
-		//alert(JSON.stringify(get_data));
-		//var result; // = target_node.data;
+		get_data.defered_transition = false;
 		if (target_node.node_type === "process") {
-			get_data.transition = transition_to;
-			get_data.target_node = target_node;
-			get_data.defered_transition = false;
-			//alert(get_data.transition);
-			//alert(JSON.stringify(get_data));
+			get_data.wait = wait;
+			get_data.target_node_id = target_node.id;
+			
 			$.each(target_node.process, function(i, process) {
 				get_data = run_node_process(get_data, process);
 			});
@@ -90,10 +91,9 @@
 		else {
 			get_data = $.extend(get_data, target_node.data);
 		}
-		//alert(JSON.stringify(get_data));
-		//alert(JSON.stringify(result));
+
 		set_all(target_node.id, get_data);
-		//alert(JSON.stringify(gq.using(this.g).find({"element":"node", "id":"n3"}).nodes()[0]));
+
 		if (!get_data.defered_transition) {
 			transition_to(target_node.id, get_data);
 		}
@@ -183,7 +183,7 @@
 			});
 		}
         $.each(flo_edges, function(i, o) {
-			$("body").on("edge_" + o[5], function () {
+			$("body").one("edge_" + o[5], function () {
 				var to_node_id = o[1];
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
 				run_node(target_node);
@@ -194,7 +194,7 @@
 			var event_name = edge[3];
 			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
 			var io = source_node.io;
-			$(function(){$(io.selector).on(event_name, function() {
+			$(function(){$(io.selector).one(event_name, function() {
 				var to_node_id = edge[1];
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
 				run_node(target_node);
