@@ -1,31 +1,19 @@
-// graphlet run
-// pubsub message style, setup listeners (note: get edge listners will return values and/or send back messages, unlike standard pubsub)
-// 
-//   Sub
-// process nodes subscribe to in-coming (transition/event edge.id) messages. 
-// data/io nodes subscribe to in-coming (get/set edge.id) messages.
-//
-//   Pub
-// data/io are able to publish out-going (get/set edge.id) messages when data is requested/changed...
-// process nodes first publish an out-going (begin_process edge.id) events before starting the get-process-set-transitionSelection sequence.
-// process nodes are able to publish out-going (get, set edge.id) messages during processing.
-// process nodes publish an out-going (end_process edge.id) events after get-process-set-transitionSelection sequence is done.
-// process nodes lastly publish out-going (transition edge.id) messages
-// if a start node exists it publishes an out-going (transition edge.id) message, to start the ball rolling: main()
+// honeybee graph run
 // 
 
-(function(_) {
-    run = function(g) {
-        var listening_node = this.graph_selector(hbg, {"element":"node", "type":"process"});
+$(function() {
+    var hbg;
+    init_run = function(hbg) {
+        var listeners = this.graph_selector(hbg, {"element":"node", "type":"process"});
         //var get_emiters = graph("edge type=get");
         //var set_emiters = graph("edge type=set");
         //var flow_emiters = graph("edge type=flow");
         //var js_str = '';
-        this.hbg = graphize(g);
-        _.each(listening_node, function(i, node) {
-            if (node.process) {
-                _.subscribe(g.id+"node_"+node.id, function() {
-                    var this_id = g.id+"node_"+node.id;
+        this.hbg = graphize(hbg);
+        $.each(listener, function(i, o) {
+            if (o.process) {
+                $("#run_mode_graph_io").on("honeybee " + o.id, function() {
+                    var this_id = "honeybee " + o.id;
                     var args = get_all(hbg, o.id);
                     var result = o.process.map(args);
                     var next_node_id = '';
@@ -40,23 +28,28 @@
                 });
             }
         });
-
-        listening_node = this.graph_selector(hbg, {"element":"node", "type":["io", "data"]});
-        //var get_emiters = graph("edge type=get");
-        //var set_emiters = graph("edge type=set");
-        //var flow_emiters = graph("edge type=flow");
-        //var js_str = '';
-        this.hbg = graphize(g);
-        _.each(listening_node, function(i, node) {
-            var id = node.id;
-            var edges = this.graph_selector(g, {"element":"edge", "type":"get", "to":id});
-            _.each(edges, function(j, edge) {
-                _.subscribe(g.id+"get_edge_"+edge.id, function() {
-                    // run get edges
-                    // node.data = _.extend(node.data, gottten.data)
-                    return node.data;
-                });
-            });
+        $("#run_mode_graph_io").trigger("honeybee start");
+    };
+    
+    // classize by function a graph literal.
+    var graphize = function(graph) {
+        var g = {nodes:[], edges:[]};
+        $.each(graph.nodes, function(i, o) {
+            var no = $.extend(true, o);
+            no.get_value = function(name, gr) {
+                var key, args, values;
+                if (no.node_type === 'process') {
+                    args = all_gets(gr, no);
+                    values = process(no, args);
+                    no.data = $.extend(true, {}, no.data, values);
+                }
+                key = name || no.name;
+                if (no.data) {
+                    return no.data[key];
+                }
+                return no[key];
+            };
+            g.nodes.push(no);
         });
 
         // start
