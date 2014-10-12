@@ -304,6 +304,8 @@
 			// update the view information (position etc.)
 			var node_data = ele.data();
 			var pos = ele.renderedPosition();
+			pos.x = Math.round(pos.x);
+			pos.y = Math.round(pos.y);
 			if (!node_data.view) {
 				node_data.view = {};
 			}
