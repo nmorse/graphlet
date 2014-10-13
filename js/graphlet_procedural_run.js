@@ -57,10 +57,10 @@
 				}
 			}
         });
-        $.each(set_edges, function(i, e) {
+        $.each(pub_edges, function(i, e) {
             var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
             var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
-            $(end_node.io.selector).effect("shake");
+            $(end_node.io.selector).effect(start_node.data);
             
 		});
     };
@@ -190,6 +190,7 @@
 			});
 		}
         $.each(flo_edges, function(i, o) {
+			$("body").off("edge_" + o[5]);
 			$("body").on("edge_" + o[5], function () {
 				var to_node_id = o[1];
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
@@ -201,11 +202,12 @@
 			var event_name = edge[3];
 			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
 			var io = source_node.io;
-			$(function(){$(io.selector).on(event_name, function() {
+			$(io.selector).off(event_name);
+			$(io.selector).on(event_name, function() {
 				var to_node_id = edge[1];
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
 				run_node(target_node);
-			});});
+			});
 			
 		});
     };

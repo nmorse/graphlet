@@ -20,7 +20,7 @@ var graph_examples = {
 "shake 2":
 {"graph":{"name":"shake 2.5","template":"<input type='text' id='textbox' value='type here' />"}, "nodes":[
   {"view":{"position":{"x":90,"y":88}},"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":2000}},
-  {"view":{"position":{"x":450,"y":251}},"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake"}},
+  {"view":{"position":{"x":450,"y":251}},"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake", "distance":5}},
   {"view":{"position":{"x":281,"y":290}},"id":"n2","name":"new text","node_type":"data","data":{"s":"new text now"}},
   {"view":{"position":{"x":322,"y":127}},"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
   {"view":{"position":{"x":146,"y":192}},"id":"n0","name":"timer","node_type":"process","process":["this.defered_transition = true; wait(target_node_id, timeout);"]}
