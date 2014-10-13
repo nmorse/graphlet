@@ -20,6 +20,7 @@
     var set_all = function(id, result) {
 		var g = this.glt;
         var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
+        var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
         $.each(set_edges, function(i, o) {
             var end_node = gq.using(g).find({"element":"node", "id":o[1]}).nodes()[0];
             var start_node;
@@ -56,6 +57,12 @@
 				}
 			}
         });
+        $.each(set_edges, function(i, e) {
+            var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
+            var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
+            $(end_node.io.selector).effect("shake");
+            
+		});
     };
     var transition_to = function(id, get_result) {
 		var g = this.glt;
@@ -183,7 +190,7 @@
 			});
 		}
         $.each(flo_edges, function(i, o) {
-			$("body").one("edge_" + o[5], function () {
+			$("body").on("edge_" + o[5], function () {
 				var to_node_id = o[1];
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
 				run_node(target_node);
@@ -194,7 +201,7 @@
 			var event_name = edge[3];
 			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
 			var io = source_node.io;
-			$(function(){$(io.selector).one(event_name, function() {
+			$(function(){$(io.selector).on(event_name, function() {
 				var to_node_id = edge[1];
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
 				run_node(target_node);
