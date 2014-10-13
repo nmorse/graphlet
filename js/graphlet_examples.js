@@ -26,7 +26,7 @@ var graph_examples = {
   {"view":{"position":{"x":146,"y":192}},"id":"n0","name":"timer","node_type":"process","process":["this.defered_transition = true; wait(target_node_id, timeout);"]}
  ],
  "edges":[
-  ["n1","n0","sub","change",null,0],
+  ["n1","n0","sub","keyup",null,0],
   ["n0","n2","flo","when done",null,1],
   ["n2","n3","flo","next",null,2],
   ["n2","n1","set","s",null,3],

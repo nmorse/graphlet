@@ -129,8 +129,7 @@
 			.selector(":selected")
 				.css({
 					"background-color": "#FF0",
-					"line-color": "#FF0",
-					"width": "mapData(weight, 0, 100, 3, 6)"
+					"line-color": "#FF0"
 				}),
 		ready: function(){
 			var nodeCount, nodes;
@@ -250,7 +249,7 @@
 		$("#view_zoom_1").on("click", function() {
 			g.zoom({
 				level: 1.0,
-				renderedPosition: {"x":200, "y":300}
+				position: {"x":200, "y":300}
 			});
 		});
 		
@@ -303,7 +302,7 @@
 		$.each(eles, function(i, ele){
 			// update the view information (position etc.)
 			var node_data = ele.data();
-			var pos = ele.renderedPosition();
+			var pos = ele.position();
 			pos.x = Math.round(pos.x);
 			pos.y = Math.round(pos.y);
 			if (!node_data.view) {
@@ -337,7 +336,7 @@
 			spacer = ',';
 			data = nodes[i].data();
 			o = data;
-			pos = nodes[i].renderedPosition();
+			pos = nodes[i].position();
 			o.view = {};
 			o.view.position = {'x':Math.round(pos.x), 'y':Math.round(pos.y)};
 			exp_graph_json += "  " + JSON.stringify(o);

@@ -1,0 +1,34 @@
+{
+  "name": "graphlet",
+  "version": "0.0.1",
+  "homepage": "https://github.com/nmorse/graphlet",
+  "authors": [
+    "Nate Morse <morse.nate@gmail.com>"
+  ],
+  "description": "A graph programing system.",
+  "main": "editor.html",
+  "keywords": [
+    "graph",
+    "network",
+    "nodes",
+    "edges",
+    "events",
+    "visual",
+    "editor",
+    "scripting",
+    "language",
+    "IoT"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "cytoscape": "git://github.com/cytoscape/cytoscape.js.git#~2.3.3",
+    "qunit": "~1.15.0"
+  }
+}
