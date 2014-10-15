@@ -29,6 +29,7 @@
   ],
   "dependencies": {
     "cytoscape": "git://github.com/cytoscape/cytoscape.js.git#~2.3.3",
-    "qunit": "~1.15.0"
+    "qunit": "~1.15.0",
+    "jquery": "#2.1.1"
   }
 }
