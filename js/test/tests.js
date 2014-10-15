@@ -102,27 +102,27 @@ asyncTest( "Graphlet procedural run test on the demo 'shake 2' graphlet", functi
   var $env = $('#qunit-work-area');
   var $fixture = $env.append('<div id="graphlet">loading</div>');
  
-  init_graphlet({"graph":{"name":"shake 2.5","template":"<input type='text' id='textbox' value='type here' />"}, "nodes":[
+  init_graphlet({"graph":{"name":"shake 2.5","template":"<input type='text' id='textbox' value='' placeholder='type here' />"}, "nodes":[
   {"view":{"position":{"x":90,"y":88}},"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":2000}},
-  {"view":{"position":{"x":450,"y":251}},"id":"n3","name":"finally","node_type":"data","data":{"action":"shake"}},
-  {"view":{"position":{"x":281,"y":290}},"id":"n2","name":"new text","node_type":"data","data":{"s":"new text now"}},
+  {"view":{"position":{"x":450,"y":251}},"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake", "distance":5}},
+  {"view":{"position":{"x":281,"y":290}},"id":"n2","name":"new text","node_type":"data","data":{"string":"new text"}},
   {"view":{"position":{"x":322,"y":127}},"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
   {"view":{"position":{"x":146,"y":192}},"id":"n0","name":"timer","node_type":"process","process":["this.defered_transition = true; wait(target_node_id, timeout);"]}
  ],
  "edges":[
-  ["n1","n0","sub","change",null,0],
+  ["n1","n0","sub","keyup",null,0],
   ["n0","n2","flo","when done",null,1],
   ["n2","n3","flo","next",null,2],
-  ["n2","n1","set","s",null,3],
-  ["n3","n1","pub","shake",null,4],
+  ["n2","n1","set","string",null,3],
+  ["n3","n1","pub","effect",null,4],
   ["n0","n4","get","timeout",null,5]
  ]
 });
  
   // trigger event
-  $('#textbox').trigger("change");
+  $('#textbox').trigger("keyup");
   setTimeout(function() {
-	  assert.equal( $('#textbox').val(), "new text now", "the graphlet ran and set the textbox to '' (empty string)" );
+	  assert.equal( $('#textbox').val(), "new text", "the graphlet ran and set the textbox to 'new text'" );
     QUnit.start();
     $('#qunit-work-area').empty();
   }, 3000);
