@@ -13,7 +13,9 @@
             var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
             var alias = o[3];
             var name = alias || end_node.name;
-            got_obj[name] = end_node.data[name];
+            if (end_node.data) {
+				got_obj[name] = end_node.data[name];
+			}
         });
         return got_obj;
     };
@@ -60,7 +62,10 @@
         $.each(pub_edges, function(i, e) {
             var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
             var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
-            $(end_node.io.selector).effect(start_node.data);
+            var effect_options = $.extend({"complete":function() {
+				console.log("jump"); //this.data['effect state'] = "done"
+			}}, start_node.data);
+            $(end_node.io.selector).effect(effect_options);
             
 		});
     };

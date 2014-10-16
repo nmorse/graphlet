@@ -98,23 +98,29 @@
 					  "headerTemplate": "{{ self.source }} -> {{ self.target }} ({{ self.edge_type }}) {{ self.name }} ",
 					  "properties": {
 						 "name": {
-						  "type": "string"
+						  "type": "string",
+						  "required": true
 						},
 						"source": {
-						  "type": "string"
+						  "type": "string",
+						  "required": true
 						},
 						"target": {
-						  "type": "string"
+						  "type": "string",
+						  "required": true
 						},
 						"edge_type": {
 						  "type": "string",
-						  "enum": ['get', 'set', 'flo', 'sub', 'pub']
+						  "enum": ['get', 'set', 'flo', 'sub', 'pub'],
+						  "required": true
 						},
 						"guard": {
-						  "type": "string"
+						  "type": "string",
+						  "required": true
 						},
 						"weight": {
-						  "type": "integer"
+						  "type": "integer",
+						  "required": true
 						} 
 					  },
 					  "format": "grid"
