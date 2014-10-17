@@ -146,6 +146,7 @@
 				}
 			}
 			this.on('click', 'node', function(evt) {
+			  var new_edge;
 			  if (add_edge_mode) {
 				if(!add_edge_arr[0]) {
 					add_edge_arr[0] = this.data().id;
@@ -154,8 +155,16 @@
 				else {
 					add_edge_arr[1] = this.data().id;
 					//alert("second node" + node.data().id);
-					g.add({"edges":[ {"data":{"source":add_edge_arr[0], "target":add_edge_arr[1]}}]});
 					add_edge_mode = false;
+					g.$('*').unselect();
+					new_edge = g.add({"edges":[ {"data":{"weight":20, "source":add_edge_arr[0], "target":add_edge_arr[1]}}]});
+					new_edge[0].select();
+					setTimeout(function() {
+						g.$('*').unselect();
+						new_edge[0].select();
+					}, 50);
+
+					
 				}
 			  }
 			});
@@ -180,10 +189,14 @@
 		//load_cy_graph(init_graph);
 		$('#add_node').on("click", function() {
 			//alert(g.nodes().length);
-			var ns = g.add({"nodes":[ {"data":{"view":{"position":{"x":30,"y":30}}}} ]});
+			var ns = g.add({"nodes":[ {"data":{"view":{"position":{"x":80,"y":60}}}} ]});
 			var d = ns[0].data();
 			var pos = d.view.position;
 			ns[0].position({x: pos.x, y: pos.y});
+			setTimeout(function() {
+				g.$('*').unselect();
+				ns[0].select();
+			}, 50);
 		});
 		$('#add_edge').on("click", function() {
 			// toggle edge mode
