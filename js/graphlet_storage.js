@@ -252,6 +252,10 @@ $(function() {
 });
 
 // Local Storage functions.
+// given the argument (group === 'examples') the preloaded examples are returned.
+// otherwise, group is a given name in the localstorage for this browser then any
+// local graphs will be returned.
+// returns eg. [{"first graph name": ["view 1", "view 2"]}, {"second graph name": ["view name"]}, "older graph with a single hardcoded view"]  
 function request_local_storage_names(group) {
     var names = [], ls_obj, ls_str,
     graph_plus_views = function(v, k) {

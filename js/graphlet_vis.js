@@ -189,8 +189,9 @@
 					var keys;
 					if (type_o === 'object') {
 						keys = $.map(o, function (v, k) { return k; });
-						html_options += '<optgroup label="'+keys[0]+'">' + keys[0] + '</optgroup>\n';
+						html_options += '<optgroup label="'+keys[0]+'">\n';
 						recursive_groups(o[keys[0]]);
+						html_options += '</optgroup>\n';
 					}
 					else {
 						make_option(i, o);
