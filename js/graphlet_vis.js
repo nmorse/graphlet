@@ -180,9 +180,24 @@
 		// adds options to a select tag from a list.
 		$.fn.options = function(l) {
 			var html_options = '<option value=""></option>\n';
-			$.each(l, function(i, o) {
+			var make_option = function(i, o) {
 				html_options += '<option value="'+o+'">' + o + '</option>\n';
-			});
+			};
+			var recursive_groups = function (l) {
+				$.each(l, function(i, o) {
+					var type_o = $.type(o);
+					var keys;
+					if (type_o === 'object') {
+						keys = $.map(o, function (v, k) { return k; });
+						html_options += '<optgroup label="'+keys[0]+'">' + keys[0] + '</optgroup>\n';
+						recursive_groups(o[keys[0]]);
+					}
+					else {
+						make_option(i, o);
+					}
+				});
+			};
+			recursive_groups(l);
 			$(this).html(html_options);
 		};
 		

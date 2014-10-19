@@ -253,14 +253,23 @@ $(function() {
 
 // Local Storage functions.
 function request_local_storage_names(group) {
-    var names = [];
-    var ls_obj, ls_str;
-    if (group === 'examples') {return $.map(graph_examples, function(v,k){return k;});}
-    if (typeof Storage !== "undefined") {
+    var names = [], ls_obj, ls_str,
+    graph_plus_views = function(v, k) {
+		var return_obj = {};
+		if (v.views && $.type(v.views) === 'object') {
+			return_obj[k] = $.map(v.views, graph_plus_views);
+			return return_obj;
+		}
+		return k;
+	};
+    if (group === 'examples') {
+		names = $.map(graph_examples, graph_plus_views);
+	}
+    else if (typeof Storage !== "undefined") {
         ls_str = localStorage[group];
         if (ls_str) {ls_obj = JSON.parse(ls_str);}
         if (ls_obj) {
-            return $.map(ls_obj, function(v,k){return k;});
+            names = $.map(ls_obj, graph_plus_views);
         }
     }
     return names;
