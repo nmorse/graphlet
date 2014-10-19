@@ -1,24 +1,24 @@
 var graph_examples = {
 "Hello World":
 {"views":{
-	"wow1":{"nodes":[
-  {"id":"n0","view":{"position":{"x":124,"y":80}}},
-  {"id":"n1","view":{"position":{"x":124,"y":196}}},
-  {"id":"n2","view":{"position":{"x":316,"y":105}}},
-  {"id":"n3","view":{"position":{"x":446,"y":302}}},
-  {"id":"n4","view":{"position":{"x":446,"y":196}}},
-  {"id":"n5","view":{"position":{"x":124,"y":302}}}
- ],
- "edges":[]}, 
- "wow2":{"nodes":[
-  {"id":"n0","view":{"position":{"x":114,"y":80}}},
-  {"id":"n1","view":{"position":{"x":134,"y":196}}},
-  {"id":"n2","view":{"position":{"x":326,"y":105}}},
-  {"id":"n3","view":{"position":{"x":436,"y":302}}},
-  {"id":"n4","view":{"position":{"x":426,"y":196}}},
-  {"id":"n5","view":{"position":{"x":144,"y":302}}}
- ],
- "edges":[]}},
+	"wow1":{"nodes":{
+  "n0":{"position":{"x":124,"y":80}},
+  "n1":{"position":{"x":124,"y":196}},
+  "n2":{"position":{"x":316,"y":105}},
+  "n3":{"position":{"x":446,"y":302}},
+  "n4":{"position":{"x":446,"y":196}},
+  "n5":{"position":{"x":124,"y":302}}
+ },
+ "edges":{}}, 
+ "wow2":{"nodes":{
+  "n0":{"position":{"x":114,"y":80}},
+  "n1":{"position":{"x":134,"y":196}},
+  "n2":{"position":{"x":326,"y":105}},
+  "n3":{"position":{"x":436,"y":302}},
+  "n4":{"position":{"x":426,"y":196}},
+  "n5":{"position":{"x":144,"y":302}}
+ },
+ "edges":{}}},
 "graph":{"name":"Hello World version 1","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
   {"name":"start","id":"n0","io":{"selector":"#start_button"},"view":{"position":{"x":124,"y":80}},"node_type":"io"},
   {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"},
