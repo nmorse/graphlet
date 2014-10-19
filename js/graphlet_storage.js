@@ -43,7 +43,7 @@ var store_graph_template = [
 $(function() {
 	var mix_in_view = function(graph, view) {
 		var view_obj;
-		if (!view || view === 'default') {
+		if (!view || view === 'primary') {
 			return graph;
 		}
 		view_obj = graph.views[view];
@@ -102,6 +102,9 @@ $(function() {
             var select_hbg;
             if (o === 'local') {
                 select_hbg = get_from_local_storage("hb_graphs", graph_view.graph);
+                if (graph_view.view) {
+					select_hbg = mix_in_view(select_hbg, graph_view.view);
+				}
             }
             if (o === 'examples') {
                 select_hbg = graph_examples[graph_view.graph];
@@ -110,7 +113,7 @@ $(function() {
 				}
             }
             if (select_hbg) {
-                load_cy_graph(load_hbg(select_hbg));
+                load_cy_graph(load_hbg(select_hbg, graph_view));
                 $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":graph_view.graph}]);
                 $('#graph_storage').html(o);
                 $('#graph_title').html(graph_view.graph);
@@ -143,14 +146,14 @@ $(function() {
     });
     
     $('#graph_input_name_n0').on("change", function(event) {
-        var graph_view = JSON.parse($('#graph_input_name_n0').val());
+        var graph_designator = JSON.parse($('#graph_input_name_n0').val());
         var storage_services = ["examples"];
-        $(document).trigger("load_hbg", [graph_view, storage_services]);
+        $(document).trigger("load_hbg", [graph_designator, storage_services]);
     });
     $('#graph_input_name_n1').on("change", function(event) {
-        var graph_view = JSON.parse($('#graph_input_name_n1').val());
+        var graph_designator = JSON.parse($('#graph_input_name_n1').val());
         var storage_services = ["local", "online"];
-        $(document).trigger("load_hbg", [graph_view, storage_services]);
+        $(document).trigger("load_hbg", [graph_designator, storage_services]);
     });
     
     // save
