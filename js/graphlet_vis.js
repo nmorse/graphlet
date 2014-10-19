@@ -186,7 +186,7 @@
 					html_options += "<option value='{\"graph\":\""+graph+"\", \"view\":\"default\"}'>" + graph + "</option>\n";
 				}
 				else {
-					html_options += "<option value='{\"graph\":\""+graph+"\", \"view\":\""+view+"\"}'>" + view + "</option>\n";
+					html_options += "<option value='{\"graph\":\""+graph+"\", \"view\":\""+view+"\"}'>" + view + " (view)</option>\n";
 				}
 			};
 			var make_groups = function (group, l) {
