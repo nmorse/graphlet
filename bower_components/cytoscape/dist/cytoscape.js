@@ -15530,15 +15530,15 @@ var cytoscape;
 
     switch( type ){
       case 'dotted':
-        canvasCxt.setLineDash([ 1, 1 ]);
+        //canvasCxt.setLineDash([ 1, 1 ]);
         break;
 
       case 'dashed':
-        canvasCxt.setLineDash([ 6, 3 ]);
+        //canvasCxt.setLineDash([ 6, 3 ]);
         break;
 
       case 'solid':
-        canvasCxt.setLineDash([ ]);
+        //canvasCxt.setLineDash([ ]);
         break;
     }
 
@@ -15564,7 +15564,7 @@ var cytoscape;
     }
   
     // reset any line dashes
-    context.setLineDash([ ]);
+    //context.setLineDash([ ]);
 
   };
 
@@ -16095,16 +16095,16 @@ var cytoscape;
 
       switch( borderStyle ){
         case 'dotted':
-          context.setLineDash([ 1, 1 ]);
+          //context.setLineDash([ 1, 1 ]);
           break;
 
         case 'dashed':
-          context.setLineDash([ 4, 2 ]);
+          //context.setLineDash([ 4, 2 ]);
           break;
 
         case 'solid':
         case 'double':
-          context.setLineDash([ ]);
+          //context.setLineDash([ ]);
           break;
       }
 
@@ -16245,7 +16245,7 @@ var cytoscape;
       }
 
       // reset in case we changed the border style
-      context.setLineDash([ ]);
+      //context.setLineDash([ ]);
 
     // draw the overlay
     } else {
