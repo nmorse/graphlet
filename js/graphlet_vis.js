@@ -7,7 +7,7 @@
 	var add_edge_arr = [];
 
 	// convert a stored graph into a from that is appropreate for Cytoscape.js
-	load_hbg = function (graph) {
+	load_hbg = function (graph, graph_designator) {
 		var raw_nodes = graph.nodes;
 		var raw_edges = graph.edges;
 		var demoNodes = [];
@@ -15,8 +15,11 @@
 		var i, o, name, id;
 		var source, target;
 		var id_mode = "provided";
-		if (graph && graph.graph && graph.graph.name) {
+		var active_view_name = graph_designator.view || 'primary';
+		//var active_view = graph.views[active_view_name] || {};
+		if (graph && graph.graph) {
 			g_aux = graph.graph;
+			g_aux.active_view = active_view_name;
 			g_template = graph.graph.template;
 		}
 		for (i = 0; i < raw_nodes.length; i++) {
@@ -180,24 +183,31 @@
 		// adds options to a select tag from a list.
 		$.fn.options = function(l) {
 			var html_options = '<option value=""></option>\n';
-			var make_option = function(i, o) {
-				html_options += '<option value="'+o+'">' + o + '</option>\n';
+			var make_option = function(graph, view) {
+				if (!graph) {
+					graph = view;
+					html_options += "<option value='{\"graph\":\""+graph+"\", \"view\":\"primary\"}'>" + graph + "</option>\n";
+				}
+				else {
+					html_options += "<option value='{\"graph\":\""+graph+"\", \"view\":\""+view+"\"}'>" + view + " (view)</option>\n";
+				}
 			};
-			var recursive_groups = function (l) {
+			var make_groups = function (group, l) {
 				$.each(l, function(i, o) {
 					var type_o = $.type(o);
 					var keys;
 					if (type_o === 'object') {
 						keys = $.map(o, function (v, k) { return k; });
-						html_options += '<optgroup label="'+keys[0]+'">' + keys[0] + '</optgroup>\n';
-						recursive_groups(o[keys[0]]);
+						html_options += '<optgroup label="'+keys[0]+'">\n';
+						make_groups(keys[0], o[keys[0]]);
+						html_options += '</optgroup>\n';
 					}
 					else {
-						make_option(i, o);
+						make_option(group, o);
 					}
 				});
 			};
-			recursive_groups(l);
+			make_groups("", l);
 			$(this).html(html_options);
 		};
 		
@@ -356,33 +366,37 @@
 		var exp_graph_json;
 		var graph_desc = g.graph || g_aux || {};
 		var graph_template = g.template || g_template;
-		var graph_view = {};
+		var active_view_name = graph_desc.active_view || 'primary';
+		var graph_views = g_aux.views || {};
 		var o, data, pos, source, target, spacer = "";
-
+		
+		if (!graph_views[active_view_name]) {
+			graph_views[active_view_name] = {}
+		}
 		if (!options || !options.separate) {
 			graph_desc.template = graph_template;
 		}
 		exp_graph_json = '{"graph":' + JSON.stringify(graph_desc) + ', "nodes":[';
-		graph_view.nodes = [];
+		graph_views[active_view_name].nodes = {};
 		for (i = nodes.length-1; i >= 0; i--) {
 			exp_graph_json += spacer + '\n';
 			spacer = ',';
 			data = nodes[i].data();
 			o = data;
 			pos = nodes[i].position();
-			if (options && options.separate) {
-				graph_view.nodes.push({"id":data.id , "view":{"possition":pos}});
+//			if (options && options.separate) {
+				graph_views[active_view_name].nodes[data.id] = {"possition":pos};
 				delete o.view;
-			}
-			else {
-				o.view = {};
-				o.view.position = {'x':Math.round(pos.x), 'y':Math.round(pos.y)};
-			}
+//			}
+//			else {
+//				o.view = {};
+//				o.view.position = {'x':Math.round(pos.x), 'y':Math.round(pos.y)};
+//			}
 			exp_graph_json += "  " + JSON.stringify(o);
 		}
 		spacer = "";
-		exp_graph_json += '\n ],\n "edges":['
-		graph_view.edges = [];
+		exp_graph_json += '\n ],\n "edges":[';
+		graph_views[active_view_name].edges = {};
 		for (i = 0; i < edges.length; i++) {
 			exp_graph_json += spacer + '\n';
 			spacer = ',';
@@ -390,15 +404,16 @@
 			source = edges[i].source().id();
 			target = edges[i].target().id();
 			o = [source, target, data.edge_type, data.name, data.guard, parseInt(data.id.substr(1), 10)];
-			if (options && options.separate) {
-				graph_view.edges.push({"id":data.id , "view":{"width":data.width}});
-				// delete data.width;
-			}
+			//if (options && options.separate) {
+			//	graph_views[active_view_name].edges[data.id] = {"width":data.width};
+			//	// delete data.width;
+			//}
 			exp_graph_json += "  " + JSON.stringify(o);
 		}
-		exp_graph_json += '\n ]\n}';
+		exp_graph_json += '\n ],\n "views":' + JSON.stringify(graph_views)
+		exp_graph_json += '\n}';
 		if (options && options.separate) {
-			source = JSON.stringify(graph_view);
+			source = JSON.stringify(graph_views);
 			return {"graph_json":exp_graph_json, "graph_view":source, "graph_template":graph_template};
 		}
 		else {
