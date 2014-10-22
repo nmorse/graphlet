@@ -16,7 +16,7 @@ var graph_examples = {
   ["n1","n5","flo","next",null,4]
  ],
  "views":{
-	"primary":{"nodes":{
+	"first view":{"nodes":{
   "n0":{"position":{"x":124,"y":80}},
   "n1":{"position":{"x":124,"y":196}},
   "n2":{"position":{"x":316,"y":105}},
@@ -25,7 +25,7 @@ var graph_examples = {
   "n5":{"position":{"x":124,"y":302}}
  },
  "edges":{}}, 
- "second":{"nodes":{
+ "second view":{"nodes":{
   "n0":{"position":{"x":114,"y":80}},
   "n1":{"position":{"x":134,"y":196}},
   "n2":{"position":{"x":326,"y":105}},

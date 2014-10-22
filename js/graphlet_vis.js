@@ -20,6 +20,13 @@
 		if (graph && graph.graph) {
 			g_aux = graph.graph;
 			g_aux.active_view = active_view_name;
+			g_aux.views = graph.views;
+			g_template = graph.graph.template;
+		}
+		if (graph && graph.graph) {
+			g_aux = graph.graph;
+			g_aux.active_view = active_view_name;
+			g_aux.views = graph.views;
 			g_template = graph.graph.template;
 		}
 		for (i = 0; i < raw_nodes.length; i++) {
@@ -384,8 +391,10 @@
 			data = nodes[i].data();
 			o = data;
 			pos = nodes[i].position();
+			pos.x = Math.round(pos.x);
+			pos.y = Math.round(pos.y);
 //			if (options && options.separate) {
-				graph_views[active_view_name].nodes[data.id] = {"possition":pos};
+				graph_views[active_view_name].nodes[data.id] = {"position":pos};
 				delete o.view;
 //			}
 //			else {
