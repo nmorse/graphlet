@@ -103,14 +103,14 @@ $(function() {
             if (o === 'local') {
                 select_hbg = get_from_local_storage("hb_graphs", graph_view.graph);
                 if (graph_view.view) {
-        					select_hbg = mix_in_view(select_hbg, graph_view.view);
-        				}
+                  select_hbg = mix_in_view(select_hbg, graph_view.view);
+                }
             }
             if (o === 'examples') {
                 select_hbg = graph_examples[graph_view.graph];
                 if (graph_view.view) {
-        					select_hbg = mix_in_view(select_hbg, graph_view.view);
-        				}
+                  select_hbg = mix_in_view(select_hbg, graph_view.view);
+                }
             }
             if (select_hbg) {
                 load_cy_graph(load_hbg(select_hbg, graph_view));
@@ -118,7 +118,12 @@ $(function() {
                 $('#graph_storage').html(o);
                 $('#graph_title').html(graph_view.graph);
                 g_aux.name = graph_view.graph;
+                $('#graph_view>select').off();
                 $('#graph_view>select').options($.map(select_hbg.views||{"primary":1}, function(v,k) {return k;}));
+                $('#graph_view>select').on('click', function(event) {
+                    var view_name = $('#graph_view>select option').filter(":selected").first().text();
+                    $(document).trigger("set_view", [view_name]);
+                });
                 return false;
             }
             else if (select_hbg === false) {
@@ -140,6 +145,14 @@ $(function() {
 
 
         });
+    });
+    // change view
+    $(document).on("set_view", function (event, view_name) {
+      var json_str = export_graph_json(get_current_cyto_graph());
+      var select_hbg = JSON.parse(json_str);
+      var graph_view = {"view":view_name};
+      select_hbg = mix_in_view(select_hbg, view_name);
+      load_cy_graph(load_hbg(select_hbg, graph_view));
     });
 
     $(document).on("hbg_load_status", function(event, arg) {

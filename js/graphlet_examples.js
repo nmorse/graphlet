@@ -1,6 +1,6 @@
 var graph_examples = {
 "Hello World": {
-"graph":{"name":"Hello World version 1","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
+"graph":{"name":"Hello World version 1","active_view":"first view","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
   {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
   {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","node_type":"process"},
   {"name":"Hello","data":{"salutation":"Hello"},"id":"n2","node_type":"data"},
@@ -24,7 +24,7 @@ var graph_examples = {
   "n4":{"position":{"x":446,"y":196}},
   "n5":{"position":{"x":124,"y":302}}
  },
- "edges":{}}, 
+ "edges":{}},
  "second view":{"nodes":{
   "n0":{"position":{"x":114,"y":80}},
   "n1":{"position":{"x":134,"y":196}},
@@ -137,5 +137,3 @@ var graph_examples = {
   ["n5","n3","set","","",4]
  ]
 }};
-
-
