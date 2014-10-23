@@ -23,7 +23,7 @@
         <script type="text/javascript" src="js/graphlet_examples.js"></script>
 		<script type="text/javascript" src="js/graphlet_query.js"></script>
         <script type="text/javascript" src="js/graphlet_procedural_run.js"></script>
-        
+
         <script type="text/javascript" src="js/json2html/json2html-0.4.1.js"></script>
         <script type="text/javascript" src="js/json2html/jquery.json2html.js"></script>
         <script type="text/javascript" src="js/jsoneditor.js"></script>
@@ -66,7 +66,7 @@
 						},
 						"process": {
 						  "type": "array",
-						  "items": {"type":"string"} 
+						  "items": {"type":"string"}
 						},
 						"view": {
 						  "type":"object",
@@ -74,9 +74,9 @@
 							"position": {
 								"type": "object",
 								"properties": {"x":{"type":"integer"}, "y":{"type":"integer"}}
-							}  
+							}
 						  }
-						} 
+						}
 					  },
 					  "format": "grid"
 					}
@@ -121,7 +121,7 @@
 						"weight": {
 						  "type": "integer",
 						  "required": true
-						} 
+						}
 					  },
 					  "format": "grid"
 					}
@@ -146,13 +146,14 @@
           <div class="row">
               <div class="span1" id="graph_storage"></div>
               <div class="span2" id="graph_title">No graph loaded ;P</div>
-              <div class="span4">
-                <button id="view_all" type="button" class="btn btn-primary">View All</button> 
+              <div class="span2" id="graph_view"><select></select></div>
+              <div class="span3">
+                <button id="view_all" type="button" class="btn btn-primary">View All</button>
                 <button id="view_zoom_1" type="button" class="btn btn-primary">Zoom 1.0</button>
               </div>
           </div>
       </div>
-      
+
       <div class="span8">
         <div class="row">
           <div class="span3" id="storage_ctl"></div>
@@ -190,6 +191,6 @@
 
       </div>
       </div>
-    
+
 </body>
 </html>
