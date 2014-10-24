@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="en">
     <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Graphlet IDE</title>
         <style>
         #graph_vis {
             height: 400px;
@@ -12,21 +16,24 @@
             margin-left: 28px;
         }
         </style>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Graphlet Demonstration</title>
+
         <!--  script type="text/javascript" src="js/jquery.min.js"></script -->
         <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-		<script type="text/javascript" src="js/jqueryui/jquery-ui.js"></script>
+		<!-- script type="text/javascript" src="js/jqueryui/jquery-ui.js"></script -->
         <script type="text/javascript" src="bower_components/cytoscape/dist/cytoscape.js"></script>
         <script type="text/javascript" src="js/graphlet_vis.js"></script>
         <script type="text/javascript" src="js/graphlet_storage.js"></script>
         <script type="text/javascript" src="js/graphlet_examples.js"></script>
-		<script type="text/javascript" src="js/graphlet_query.js"></script>
+		    <script type="text/javascript" src="js/graphlet_query.js"></script>
         <script type="text/javascript" src="js/graphlet_procedural_run.js"></script>
 
         <script type="text/javascript" src="js/json2html/json2html-0.4.1.js"></script>
         <script type="text/javascript" src="js/json2html/jquery.json2html.js"></script>
         <script type="text/javascript" src="js/jsoneditor.js"></script>
+        <!-- Bootstrap -->
+        <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" media="screen">
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
         <script>
 		$(function() {
 			nodes_editor = new JSONEditor($('#node_editor')[0], {
@@ -134,21 +141,18 @@
 			  });
 		});
         </script>
-        <!-- Bootstrap -->
-        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
-        <script src="bootstrap/js/bootstrap.min.js"></script>
     </head>
 <body>
-    <h1>Graphlet Demonstration</h1>
+    <h1>Graphlet IDE</h1>
     <div class="row">
-      <div class="span8">
+      <div class="col-md-6">
           <div id="graph_vis"></div>
           <div class="row">
-              <div class="span1" id="graph_storage"></div>
-              <div class="span2" id="graph_title">No graph loaded ;P</div>
-              <div class="span2" id="graph_view" class="btn-group ui_mode">
+              <div class="col-md-2" id="graph_storage"></div>
+              <div class="col-md-3" id="graph_title">No graph loaded ;P</div>
+              <div class="col-md-7">
 
-                <div class="input-group">
+                <div id="graph_view" class="input-group">
                   <select class="form-control"></select>
                   <span class="input-group-btn">
                     <button id="rename_view" type="button" class="btn btn-default">rename</button>
@@ -156,17 +160,20 @@
                   </span>
                 </div>
               </div>
-              <div class="span3">
+          </div>
+          <div class="row">
+              <div class="col-md-12">
                 <button id="view_all" type="button" class="btn btn-primary">View All</button>
                 <button id="view_zoom_1" type="button" class="btn btn-primary">Zoom 1.0</button>
               </div>
           </div>
       </div>
 
-      <div class="span8">
+
+      <div class="col-md-6">
         <div class="row">
-          <div class="span3" id="storage_ctl"></div>
-          <div class="span3">
+          <div class="col-md-3" id="storage_ctl"></div>
+          <div class="col-md-3">
             <div id="ui_mode_2" class="btn-group ui_mode" data-toggle="buttons-radio">
               <button id="edit" type="button" class="btn btn-primary active">Edit</button>
               <button id="run" type="button" class="btn btn-primary">Run</button>
@@ -174,11 +181,11 @@
           </div>
         </div>
         <div id="edit_mode_ui" style="display: none;">
-            <div class="row"><div class="span2"><button id="add_node" type="button" class="btn btn-primary">add node</button></div>
-                             <div class="span2"><button id="add_edge" type="button" class="btn btn-primary" data-toggle="button">add edge</button></div>
+            <div class="row"><div class="col-md-2"><button id="add_node" type="button" class="btn btn-primary">add node</button></div>
+                             <div class="col-md-2"><button id="add_edge" type="button" class="btn btn-primary" data-toggle="button">add edge</button></div>
             </div>
-            <div class="row"><div class="span2"><button id="delete_node" type="button" class="btn btn-primary">delete node</button></div>
-                             <div class="span2"><button id="delete_edge" type="button" class="btn btn-primary">delete edge</button></div>
+            <div class="row"><div class="col-md-2"><button id="delete_node" type="button" class="btn btn-primary">delete node</button></div>
+                             <div class="col-md-2"><button id="delete_edge" type="button" class="btn btn-primary">delete edge</button></div>
             </div>
             <div><h4 id="node_input_header">Node data (<span>0</span> Selected)</h4>
                 <div id="node_editor">
@@ -199,7 +206,7 @@
         </div>
 
       </div>
-      </div>
+    </div>
 
 </body>
 </html>
