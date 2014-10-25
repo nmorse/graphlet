@@ -49,7 +49,8 @@
 					  "properties": {
 						"name": {
 						  "type": "string",
-						  "default": "Start"
+						  "default": "Start",
+              "required": true
 						},
 						"node_type": {
 						  "required": true,
@@ -154,6 +155,7 @@
 
                 <div id="graph_view" class="input-group">
                   <select class="form-control"></select>
+                  <input class="form-control" style="display: none;"/>
                   <span class="input-group-btn">
                     <button id="rename_view" type="button" class="btn btn-default">rename</button>
                     <button id="new_view" type="button" class="btn btn-default">new</button>

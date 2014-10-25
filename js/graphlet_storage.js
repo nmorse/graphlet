@@ -41,6 +41,7 @@ var store_graph_template = [
 
 
 $(function() {
+  var renaming_now = false;
 	var mix_in_view = function(graph, view) {
 		var view_obj;
 		if (!view || view === 'primary') {
@@ -120,9 +121,25 @@ $(function() {
                 g_aux.name = graph_view.graph;
                 $('#graph_view>select').off();
                 $('#graph_view>select').options($.map(select_hbg.views||{"primary":1}, function(v,k) {return k;}));
-                $('#graph_view>select').on('click', function(event) {
+                $('#graph_view>select').on('change', function(event) {
                     var view_name = $('#graph_view>select option').filter(":selected").first().text();
                     $(document).trigger("set_view", [view_name]);
+                });
+                $('#rename_view').on('click', function(event) {
+                  var view_name;
+                  renaming_now = !renaming_now;
+                  if (renaming_now) {
+                    view_name = $('#graph_view>select option').filter(":selected").first().text();
+                    $('#graph_view>select').hide();
+                    $('#graph_view>input').show().focus().val(view_name);
+                  }
+                  else {
+                    view_name = $('#graph_view>input').val();
+                    $('#graph_view>select[value="'+view_name+'"]').attr('selected', true);
+                    $('#graph_view>input').hide();
+                    $('#graph_view>select').show();
+                    $(document).trigger("rename_current_view", [view_name]);
+                  }
                 });
                 return false;
             }
@@ -152,6 +169,16 @@ $(function() {
       var select_hbg = JSON.parse(json_str);
       var graph_view = {"view":view_name};
       select_hbg = mix_in_view(select_hbg, view_name);
+      load_cy_graph(load_hbg(select_hbg, graph_view));
+    });
+
+    $(document).on("rename_current_view", function (event, new_view_name) {
+      var json_str = export_graph_json(get_current_cyto_graph());
+      var select_hbg = JSON.parse(json_str);
+      var graph_view = {"view":new_view_name};
+      var current_view_name = get_current_view_name();
+      select_hbg.view[new_view_name] = select_hbg.view[current_view_name];
+      select_hbg = mix_in_view(select_hbg, new_view_name);
       load_cy_graph(load_hbg(select_hbg, graph_view));
     });
 
