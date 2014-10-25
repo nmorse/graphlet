@@ -9,14 +9,14 @@ var load_graph_template = [
         {"tag":"div", "class":"control-group", "children":[
             {"tag":"label", "class":"control-label", "for":"node_input_name_n0", "html":"Example Graphs:", "children":[
                 {"tag":"div", "class":"controls", "children":[
-                    {"tag":"select", "id":"graph_input_name_n0"} 
+                    {"tag":"select", "id":"graph_input_name_n0"}
                 ]}
             ]}
         ]},
         {"tag":"div", "class":"control-group", "children":[
             {"tag":"label", "class":"control-label", "for":"node_input_name_n1", "html":"Local Graph Source:", "children":[
                 {"tag":"div", "class":"controls", "children":[
-                    {"tag":"select", "id":"graph_input_name_n1"} 
+                    {"tag":"select", "id":"graph_input_name_n1"}
                 ]}
             ]}
         ]}
@@ -31,7 +31,7 @@ var store_graph_template = [
                 {"tag":"div", "class":"controls", "children":[
                     {"tag":"input", "id":"graph_input_name_n2", "type":"text", "data-provide":"typeahead", "data-items":16, "placeholder":"Enter a Name"},
                     {"tag":"button", "id":"save_to_storage", "type":"button", "class":"btn btn-primary", "html":"Save"},
-                    {"tag":"button", "id":"delete_from_storage", "type":"button", "class":"btn btn-primary", "html":"Delete"} 
+                    {"tag":"button", "id":"delete_from_storage", "type":"button", "class":"btn btn-primary", "html":"Delete"}
                 ]}
             ]}
         ]}
@@ -39,9 +39,22 @@ var store_graph_template = [
     {"tag":"pre"}
 ];
 
-//                    <="" ="16" data-source="[]"  />
 
 $(function() {
+  var renaming_now = false;
+	var mix_in_view = function(graph, view) {
+		var view_obj;
+		if (!view || view === 'primary') {
+			return graph;
+		}
+		view_obj = graph.views[view];
+		$.each(graph.nodes, function(i, n) {
+			var node_id = n.id;
+			n.view = view_obj.nodes[node_id];
+		});
+		//delete graph.views;
+		return graph;
+	};
     // Insert the UI
     $("#storage_ctl").json2html({}, storage_ctl_template);
     $("#graph_in").json2html({}, load_graph_template);
@@ -53,8 +66,8 @@ $(function() {
         if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
         id = $btn.attr("id");
         if (id === "load") {
-            $('#graph_input_name_n0').options(request_local_storage_names("examples"));
-            $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"));
+            $('#graph_input_name_n0').options(request_local_storage_names("examples"), "blank_first");
+            $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"), "blank_first");
             $('#graph_input_name_n1').val(g_aux.name);
             $('#edit_mode_ui').hide();
             $('#run_mode_ui').hide();
@@ -83,61 +96,109 @@ $(function() {
     });
 
     // load
-    $(document).on("load_hbg", function (event, path_name, storage_services) {
+    $(document).on("load_hbg", function (event, graph_view, storage_services) {
         var outcome = ["storage not availible", "loaded", "not found", "load operation submitted"];
-        
+
         $.each(storage_services, function (i, o) {
             var select_hbg;
             if (o === 'local') {
-                local_hbg = get_from_local_storage("hb_graphs", path_name);
+                select_hbg = get_from_local_storage("hb_graphs", graph_view.graph);
+                if (graph_view.view) {
+                  select_hbg = mix_in_view(select_hbg, graph_view.view);
+                }
             }
             if (o === 'examples') {
-                local_hbg = graph_examples[path_name];
+                select_hbg = graph_examples[graph_view.graph];
+                if (graph_view.view) {
+                  select_hbg = mix_in_view(select_hbg, graph_view.view);
+                }
             }
-            if (local_hbg) {
-                load_cy_graph(load_hbg(local_hbg));
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":path_name}]);
-                $('#graph_storage').html("local");
-                $('#graph_title').html(path_name);
-                g_aux.name = path_name;
+            if (select_hbg) {
+                load_cy_graph(load_hbg(select_hbg, graph_view));
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":graph_view.graph}]);
+                $('#graph_storage').html(o);
+                $('#graph_title').html(graph_view.graph);
+                g_aux.name = graph_view.graph;
+                $('#graph_view>select').off();
+                $('#graph_view>select').options($.map(select_hbg.views||{"primary":1}, function(v,k) {return k;}));
+                $('#graph_view>select').on('change', function(event) {
+                    var view_name = $('#graph_view>select option').filter(":selected").first().text();
+                    $(document).trigger("set_view", [view_name]);
+                });
+                $('#rename_view').on('click', function(event) {
+                  var view_name;
+                  renaming_now = !renaming_now;
+                  if (renaming_now) {
+                    view_name = $('#graph_view>select option').filter(":selected").first().text();
+                    $('#graph_view>select').hide();
+                    $('#graph_view>input').show().focus().val(view_name);
+                  }
+                  else {
+                    view_name = $('#graph_view>input').val();
+                    $('#graph_view>select[value="'+view_name+'"]').attr('selected', true);
+                    $('#graph_view>input').hide();
+                    $('#graph_view>select').show();
+                    $(document).trigger("rename_current_view", [view_name]);
+                  }
+                });
                 return false;
             }
-            else if (local_hbg === false) {
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":path_name}]);
+            else if (select_hbg === false) {
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":graph_view.graph}]);
             }
             else {
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":path_name}]);            
+                $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":graph_view.graph}]);
             }
-            
+
             if (navigator.online) {
                 if (o === "online") {
                     //get from service
-                    $(document).trigger("hbg_load_status", [{"outcome": outcome[3], "target": "online", "final":false, "path_name":path_name}]);
+                    $(document).trigger("hbg_load_status", [{"outcome": outcome[3], "target": "online", "final":false, "path_name":graph_view.graph}]);
                 }
                 else {
-                    $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":path_name}]);
+                    $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":graph_view.graph}]);
                 }
             }
 
-            
-        });        
+
+        });
     });
-    
+    // change view
+    $(document).on("set_view", function (event, view_name) {
+      var json_str = export_graph_json(get_current_cyto_graph());
+      var select_hbg = JSON.parse(json_str);
+      var graph_view = {"view":view_name};
+      select_hbg = mix_in_view(select_hbg, view_name);
+      load_cy_graph(load_hbg(select_hbg, graph_view));
+    });
+
+    $(document).on("rename_current_view", function (event, new_view_name) {
+      var json_str = export_graph_json(get_current_cyto_graph());
+      var select_hbg = JSON.parse(json_str);
+      var graph_view = {"view":new_view_name};
+      var current_view_name = get_current_view_name();
+      select_hbg.view[new_view_name] = $.extend(true, {}, select_hbg.view[current_view_name]);
+      select_hbg = mix_in_view(select_hbg, new_view_name);
+      load_cy_graph(load_hbg(select_hbg, graph_view));
+    });
+
     $(document).on("hbg_load_status", function(event, arg) {
         //alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
     });
-    
+
     $('#graph_input_name_n0').on("change", function(event) {
-        var path_name = $('#graph_input_name_n0').val();
+        var graph_input_name = $('#graph_input_name_n0').val();
+        var graph_designator = {"graph":graph_input_name, "view":"primary"};
         var storage_services = ["examples"];
-        $(document).trigger("load_hbg", [path_name, storage_services]);
+        $(document).trigger("load_hbg", [graph_designator, storage_services]);
     });
     $('#graph_input_name_n1').on("change", function(event) {
-        var path_name = $('#graph_input_name_n1').val();
+        var graph_input_name = $('#graph_input_name_n1').val();
+        var graph_designator = {"graph":graph_input_name, "view":"primary"};
         var storage_services = ["local", "online"];
-        $(document).trigger("load_hbg", [path_name, storage_services]);
+        $(document).trigger("load_hbg", [graph_designator, storage_services]);
     });
-    
+
     // save
     $(document).on("save_hbg", function (event, g, overwrite, online_service) {
         var outcome = ["storage not availible", "saved to existing", "did not overwrite existing", "created new", "storage operation submitted"];
@@ -178,7 +239,7 @@ $(function() {
         else {
             $(document).trigger("hbg_save_status", [{"outcome": outcome[0], "target": "local", "final":true}]);
         }
-        
+
         if (navigator.online) {
             if (online_service) {
                 //post to service
@@ -189,11 +250,11 @@ $(function() {
             }
         }
     });
-    
+
     $(document).on("hbg_save_status", function(event, arg) {
         //alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
     });
-    
+
     $('#save_to_storage').on("click", function(event) {
         var overwrite = true;
         var online_service = null;
@@ -202,7 +263,7 @@ $(function() {
         g.graph.name = $('#graph_input_name_n2').val();
         $(document).trigger("save_hbg", [g, overwrite, online_service]);
     });
-    
+
     $(document).on("delete_hbg", function (event, path_name, online_service) {
         var outcome = ["storage not availible", "deleted", "graph not found", "error during delete request", "delete operation submitted"];
         var local_hb_graphs;
@@ -224,7 +285,7 @@ $(function() {
         else {
             $(document).trigger("hbg_delete_status", [{"outcome": outcome[0], "target": "local", "final":true}]);
         }
-        
+
         if (navigator.online) {
             if (online_service) {
                 //post to service
@@ -235,41 +296,40 @@ $(function() {
             }
         }
     });
-    
+
     $(document).on("hbg_delete_status", function(event, arg) {
         //alert(arg.outcome+" "+arg.target+" is_final:"+arg.final);
     });
-    
+
     $('#delete_from_storage').on("click", function(event) {
         var path_name = $('#graph_input_name_n2').val();
         var online_service = null;
-        
+
         $(document).trigger("delete_hbg", [path_name, online_service]);
     });
-    
-    $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs")); 
+
+    $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
 
 });
 
 // Local Storage functions.
+// given the argument (group === 'examples') the preloaded examples are returned.
+// otherwise, group is a given name in the localstorage for this browser then any
+// local graphs will be returned.
+// returns eg. [{"first graph name": ["view 1", "view 2"]}, {"second graph name": ["view name"]}, "older graph with a single hardcoded view"]
 function request_local_storage_names(group) {
     var names = [], ls_obj, ls_str,
-    graph_plus_views = function(v, k) {
-		var return_obj = {};
-		if (v.views && $.type(v.views) === 'object') {
-			return_obj[k] = $.map(v.views, graph_plus_views);
-			return return_obj;
-		}
-		return k;
-	};
+    graph_names = function(v, k) {
+  		return k;
+  	};
     if (group === 'examples') {
-		names = $.map(graph_examples, graph_plus_views);
-	}
+  		names = $.map(graph_examples, graph_names);
+  	}
     else if (typeof Storage !== "undefined") {
         ls_str = localStorage[group];
         if (ls_str) {ls_obj = JSON.parse(ls_str);}
         if (ls_obj) {
-            names = $.map(ls_obj, graph_plus_views);
+            names = $.map(ls_obj, graph_names);
         }
     }
     return names;
