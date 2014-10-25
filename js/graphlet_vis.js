@@ -20,6 +20,13 @@
 		if (graph && graph.graph) {
 			g_aux = graph.graph;
 			g_aux.active_view = active_view_name;
+			g_aux.views = graph.views;
+			g_template = graph.graph.template;
+		}
+		if (graph && graph.graph) {
+			g_aux = graph.graph;
+			g_aux.active_view = active_view_name;
+			g_aux.views = graph.views;
 			g_template = graph.graph.template;
 		}
 		for (i = 0; i < raw_nodes.length; i++) {
@@ -42,11 +49,11 @@
 				source = "n"+raw_edges[i][0];
 				target = "n"+raw_edges[i][1];
 			}
-			
+
 			o = {"data":{"id":id, "name": name, "source": source, "target": target, "edge_type": raw_edges[i][2], "guard": raw_edges[i][4], "weight": 20}};
 			demoEdges.push(o);
 		}
-		return { 
+		return {
 		  nodes: demoNodes,
 		  edges: demoEdges
 		};
@@ -167,7 +174,7 @@
 						new_edge[0].select();
 					}, 50);
 
-					
+
 				}
 			  }
 			});
@@ -181,36 +188,17 @@
 		//var init_graph = load_hbg(graph);
 		// jQuery should add this to the API
 		// adds options to a select tag from a list.
-		$.fn.options = function(l) {
-			var html_options = '<option value=""></option>\n';
-			var make_option = function(graph, view) {
-				if (!graph) {
-					graph = view;
-					html_options += "<option value='{\"graph\":\""+graph+"\", \"view\":\"primary\"}'>" + graph + "</option>\n";
-				}
-				else {
-					html_options += "<option value='{\"graph\":\""+graph+"\", \"view\":\""+view+"\"}'>" + view + " (view)</option>\n";
-				}
-			};
-			var make_groups = function (group, l) {
-				$.each(l, function(i, o) {
-					var type_o = $.type(o);
-					var keys;
-					if (type_o === 'object') {
-						keys = $.map(o, function (v, k) { return k; });
-						html_options += '<optgroup label="'+keys[0]+'">\n';
-						make_groups(keys[0], o[keys[0]]);
-						html_options += '</optgroup>\n';
-					}
-					else {
-						make_option(group, o);
-					}
-				});
-			};
-			make_groups("", l);
+		$.fn.options = function(l, first_blank) {
+			var html_options = '';
+			if (first_blank) {
+				html_options = '<option value=""></option>\n';
+			}
+			$.each(l, function(i, o) {
+				html_options += "<option value='"+o+"'>" + o + "</option>\n";
+			});
 			$(this).html(html_options);
 		};
-		
+
 		//load_cy_graph(init_graph);
 		$('#add_node').on("click", function() {
 			//alert(g.nodes().length);
@@ -263,7 +251,7 @@
 			$('#edit_mode_ui').hide();
 			$('#graph_in').hide();
 			$('#graph_out').hide();
-			
+
 			// set the run env.
 			init_graphlet(JSON.parse(graph_json_str));
 		});
@@ -290,7 +278,7 @@
 				position: {"x":200, "y":300}
 			});
 		});
-		
+
 	});
 	// send node data to the cy graph (visualization)
 	function update_graph_nodes(nodes) {
@@ -350,7 +338,7 @@
 			nodes_selected.push(node_data);
 		});
 		$('#node_editor').trigger("update_form", [nodes_selected]);
-		
+
 		// next handle edges
 		eles = g.elements("edge:selected");
 		$.each(eles, function(i, ele){
@@ -369,7 +357,7 @@
 		var active_view_name = graph_desc.active_view || 'primary';
 		var graph_views = g_aux.views || {};
 		var o, data, pos, source, target, spacer = "";
-		
+
 		if (!graph_views[active_view_name]) {
 			graph_views[active_view_name] = {}
 		}
@@ -384,8 +372,10 @@
 			data = nodes[i].data();
 			o = data;
 			pos = nodes[i].position();
+			pos.x = Math.round(pos.x);
+			pos.y = Math.round(pos.y);
 //			if (options && options.separate) {
-				graph_views[active_view_name].nodes[data.id] = {"possition":pos};
+				graph_views[active_view_name].nodes[data.id] = {"position":pos};
 				delete o.view;
 //			}
 //			else {
@@ -421,8 +411,8 @@
 		}
 	};
 
-	// Prune to Level is a debugging aid for opjects that 
-	// are too deep or cause a circular reference error in JSON.stringify 
+	// Prune to Level is a debugging aid for opjects that
+	// are too deep or cause a circular reference error in JSON.stringify
 	function prune2level(obj, level) {
 		var top_obj = {};
 		var t;

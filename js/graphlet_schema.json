@@ -14,7 +14,8 @@
       "properties": {
         "name": {
           "type": "string",
-          "default": "Start"
+          "default": "Start",
+          "required": true
         },
         "id": {
           "type": "string",
@@ -58,7 +59,7 @@
             "type": "string"
           }
         }
-      }      
+      }
     }
   }
 }
