@@ -62,6 +62,9 @@
 	get_current_cyto_graph = function () {
 		return g;
 	};
+	get_current_view_name = function () {
+		return g_aux.active_view;
+	};
 	set_nodes_editor = function (ed) {
 		nodes_editor = ed;
 		// editor feedback to the graph

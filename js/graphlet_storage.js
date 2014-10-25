@@ -177,11 +177,7 @@ $(function() {
       var select_hbg = JSON.parse(json_str);
       var graph_view = {"view":new_view_name};
       var current_view_name = get_current_view_name();
-<<<<<<< HEAD
-      select_hbg.view[new_view_name] = $.extend(true, {}, select_hbg.view[current_view_name]);
-=======
-      select_hbg.view[new_view_name] = select_hbg.view[current_view_name];
->>>>>>> ef6d4def704ee1f5f25844a0f31a076bee39652c
+      select_hbg.views[new_view_name] = $.extend(true, {}, select_hbg.views[current_view_name]);
       select_hbg = mix_in_view(select_hbg, new_view_name);
       load_cy_graph(load_hbg(select_hbg, graph_view));
     });
