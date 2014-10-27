@@ -42,12 +42,13 @@ var store_graph_template = [
 
 $(function() {
   var renaming_now = false;
-	var mix_in_view = function(graph, view) {
+  // mix in a view into the graph (only for nodes at this time)
+	var mix_in_view = function(graph, view_index) {
 		var view_obj;
-		if (!view || view === 'primary') {
+		if (view_index < 0) {
 			return graph;
 		}
-		view_obj = graph.views[view];
+		view_obj = graph.views[view_index];
 		$.each(graph.nodes, function(i, n) {
 			var node_id = n.id;
 			n.view = view_obj.nodes[node_id];
@@ -55,120 +56,120 @@ $(function() {
 		//delete graph.views;
 		return graph;
 	};
-    // Insert the UI
-    $("#storage_ctl").json2html({}, storage_ctl_template);
-    $("#graph_in").json2html({}, load_graph_template);
-    $("#graph_out").json2html({}, store_graph_template);
-    // hook up ctl events
-    $(".ui_mode").on('click', function (e) {
-        var $btn = $(e.target);
-        var id = "", fq = "";
-        if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
-        id = $btn.attr("id");
-        if (id === "load") {
-            $('#graph_input_name_n0').options(request_local_storage_names("examples"), "blank_first");
-            $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"), "blank_first");
-            $('#graph_input_name_n1').val(g_aux.name);
-            $('#edit_mode_ui').hide();
-            $('#run_mode_ui').hide();
-            $('#graph_in').show();
-            $('#graph_out').hide();
-        }
-        if (id === "store") {
-            $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
-            $('#graph_input_name_n2').val(g_aux.name);
-            $('#edit_mode_ui').hide();
-            $('#run_mode_ui').hide();
-            $('#graph_in').hide();
-            $('#graph_out').show();
-        }
+  // Insert the UI
+  $("#storage_ctl").json2html({}, storage_ctl_template);
+  $("#graph_in").json2html({}, load_graph_template);
+  $("#graph_out").json2html({}, store_graph_template);
+  // hook up ctl events
+  $(".ui_mode").on('click', function (e) {
+      var $btn = $(e.target);
+      var id = "", fq = "";
+      if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
+      id = $btn.attr("id");
+      if (id === "load") {
+        $('#graph_input_name_n0').options(request_local_storage_names("examples"), "blank_first");
+        $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"), "blank_first");
+        $('#graph_input_name_n1').val(g_aux.name);
+        $('#edit_mode_ui').hide();
+        $('#run_mode_ui').hide();
+        $('#graph_in').show();
+        $('#graph_out').hide();
+      }
+      if (id === "store") {
+        $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
+        $('#graph_input_name_n2').val(g_aux.name);
+        $('#edit_mode_ui').hide();
+        $('#run_mode_ui').hide();
+        $('#graph_in').hide();
+        $('#graph_out').show();
+      }
     });
     $('#store').on("click", function() {
-        $('#graph_out>pre').text( export_graph_json(get_current_cyto_graph()) );
+      $('#graph_out>pre').text( export_graph_json(get_current_cyto_graph()) );
     });
     $('#load_from_text').on("click", function() {
-        var s = $('#graph_in>textarea').val();
-        var cy_g;
-        if (s !== "") {
-            cy_g = load_hbg(JSON.parse(s));
-            load_cy_graph(cy_g);
-        }
+      var s = $('#graph_in>textarea').val();
+      var cy_g;
+      if (s !== "") {
+        cy_g = load_hbg(JSON.parse(s));
+        load_cy_graph(cy_g);
+      }
     });
 
     // load
     $(document).on("load_hbg", function (event, graph_view, storage_services) {
-        var outcome = ["storage not availible", "loaded", "not found", "load operation submitted"];
+      var outcome = ["storage not availible", "loaded", "not found", "load operation submitted"];
 
-        $.each(storage_services, function (i, o) {
-            var select_hbg;
-            if (o === 'local') {
-                select_hbg = get_from_local_storage("hb_graphs", graph_view.graph);
-                if (graph_view.view) {
-                  select_hbg = mix_in_view(select_hbg, graph_view.view);
-                }
-            }
-            if (o === 'examples') {
-                select_hbg = graph_examples[graph_view.graph];
-                if (graph_view.view) {
-                  select_hbg = mix_in_view(select_hbg, graph_view.view);
-                }
-            }
-            if (select_hbg) {
-                load_cy_graph(load_hbg(select_hbg, graph_view));
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":graph_view.graph}]);
-                $('#graph_storage').html(o);
-                $('#graph_title').html(graph_view.graph);
-                g_aux.name = graph_view.graph;
-                $('#graph_view>select').off();
-                $('#graph_view>select').options($.map(select_hbg.views||{"primary":1}, function(v,k) {return k;}));
-                $('#graph_view>select').on('change', function(event) {
-                    var view_name = $('#graph_view>select option').filter(":selected").first().text();
-                    $(document).trigger("set_view", [view_name]);
-                });
-                $('#rename_view').on('click', function(event) {
-                  var view_name;
-                  renaming_now = !renaming_now;
-                  if (renaming_now) {
-                    view_name = $('#graph_view>select option').filter(":selected").first().text();
-                    $('#graph_view>select').hide();
-                    $('#graph_view>input').show().focus().val(view_name);
-                  }
-                  else {
-                    view_name = $('#graph_view>input').val();
-                    $('#graph_view>select[value="'+view_name+'"]').attr('selected', true);
-                    $('#graph_view>input').hide();
-                    $('#graph_view>select').show();
-                    $(document).trigger("rename_current_view", [view_name]);
-                  }
-                });
-                return false;
-            }
-            else if (select_hbg === false) {
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":graph_view.graph}]);
-            }
-            else {
-                $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":graph_view.graph}]);
-            }
-
-            if (navigator.online) {
-                if (o === "online") {
-                    //get from service
-                    $(document).trigger("hbg_load_status", [{"outcome": outcome[3], "target": "online", "final":false, "path_name":graph_view.graph}]);
+      $.each(storage_services, function (i, o) {
+          var select_hbg;
+          if (o === 'local') {
+              select_hbg = get_from_local_storage("hb_graphs", graph_view.graph);
+              if (graph_view.view) {
+                select_hbg = mix_in_view(select_hbg, graph_view.view_index);
+              }
+          }
+          if (o === 'examples') {
+              select_hbg = graph_examples[graph_view.graph];
+              if (graph_view.view) {
+                select_hbg = mix_in_view(select_hbg, graph_view.view_index);
+              }
+          }
+          if (select_hbg) {
+              load_cy_graph(load_hbg(select_hbg, graph_view));
+              $(document).trigger("hbg_load_status", [{"outcome": outcome[1], "target": "local", "final":true, "path_name":graph_view.graph}]);
+              $('#graph_storage').html(o);
+              $('#graph_title').html(graph_view.graph);
+              g_aux.name = graph_view.graph;
+              $('#graph_view>select').off();
+              $('#graph_view>select').options($.map(select_hbg.views||[{"name":"primary"}], function(v,k) {return v.name;}));
+              $('#graph_view>select').on('change', function(event) {
+                  var view_index = $('#graph_view>select option').filter(":selected").first().val();
+                  $(document).trigger("set_view", [view_index]);
+              });
+              $('#rename_view').on('click', function(event) {
+                var view_name;
+                renaming_now = !renaming_now;
+                if (renaming_now) {
+                  view_name = $('#graph_view>select option').filter(":selected").first().text();
+                  $('#graph_view>select').hide();
+                  $('#graph_view>input').show().focus().val(view_name);
                 }
                 else {
-                    $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":graph_view.graph}]);
+                  view_name = $('#graph_view>input').val();
+                  $('#graph_view>select[value="'+view_name+'"]').attr('selected', true);
+                  $('#graph_view>input').hide();
+                  $('#graph_view>select').show();
+                  $(document).trigger("rename_current_view", [view_name]);
                 }
-            }
+              });
+              return false;
+          }
+          else if (select_hbg === false) {
+              $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "local", "final":true, "path_name":graph_view.graph}]);
+          }
+          else {
+              $(document).trigger("hbg_load_status", [{"outcome": outcome[2], "target": "local", "final":true, "path_name":graph_view.graph}]);
+          }
+
+          if (navigator.online) {
+              if (o === "online") {
+                  //get from service
+                  $(document).trigger("hbg_load_status", [{"outcome": outcome[3], "target": "online", "final":false, "path_name":graph_view.graph}]);
+              }
+              else {
+                  $(document).trigger("hbg_load_status", [{"outcome": outcome[0], "target": "online", "final":true, "path_name":graph_view.graph}]);
+              }
+          }
 
 
-        });
+      });
     });
     // change view
-    $(document).on("set_view", function (event, view_name) {
+    $(document).on("set_view", function (event, view_index) {
       var json_str = export_graph_json(get_current_cyto_graph());
       var select_hbg = JSON.parse(json_str);
-      var graph_view = {"view":view_name};
-      select_hbg = mix_in_view(select_hbg, view_name);
+      var graph_view = {"view_index":view_index};
+      select_hbg = mix_in_view(select_hbg, view_index);
       load_cy_graph(load_hbg(select_hbg, graph_view));
     });
 
@@ -187,14 +188,14 @@ $(function() {
     });
 
     $('#graph_input_name_n0').on("change", function(event) {
-        var graph_input_name = $('#graph_input_name_n0').val();
-        var graph_designator = {"graph":graph_input_name, "view":"primary"};
+        var graph_input_name = $('#graph_input_name_n0 option').filter(':selected').first().text();
+        var graph_designator = {"graph":graph_input_name, "view_index":0};
         var storage_services = ["examples"];
         $(document).trigger("load_hbg", [graph_designator, storage_services]);
     });
     $('#graph_input_name_n1').on("change", function(event) {
-        var graph_input_name = $('#graph_input_name_n1').val();
-        var graph_designator = {"graph":graph_input_name, "view":"primary"};
+        var graph_input_name = $('#graph_input_name_n1 option').filter(':selected').first().text();
+        var graph_designator = {"graph":graph_input_name, "view_index":0};
         var storage_services = ["local", "online"];
         $(document).trigger("load_hbg", [graph_designator, storage_services]);
     });

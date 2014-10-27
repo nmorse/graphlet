@@ -15,17 +15,17 @@
 		var i, o, name, id;
 		var source, target;
 		var id_mode = "provided";
-		var active_view_name = graph_designator.view || 'primary';
-		//var active_view = graph.views[active_view_name] || {};
+		var active_view_index = graph_designator.view_index || 0;
+		//var active_view = graph.views[active_view_index] || {};
 		if (graph && graph.graph) {
 			g_aux = graph.graph;
-			g_aux.active_view = active_view_name;
+			g_aux.active_view_index = active_view_index;
 			g_aux.views = graph.views;
 			g_template = graph.graph.template;
 		}
 		if (graph && graph.graph) {
 			g_aux = graph.graph;
-			g_aux.active_view = active_view_name;
+			g_aux.active_view_index = active_view_index;
 			g_aux.views = graph.views;
 			g_template = graph.graph.template;
 		}
@@ -63,7 +63,8 @@
 		return g;
 	};
 	get_current_view_name = function () {
-		return g_aux.active_view;
+		var i = g_aux.active_view_index;
+		return g_aux.views[i].name;
 	};
 	set_nodes_editor = function (ed) {
 		nodes_editor = ed;
@@ -197,7 +198,7 @@
 				html_options = '<option value=""></option>\n';
 			}
 			$.each(l, function(i, o) {
-				html_options += "<option value='"+o+"'>" + o + "</option>\n";
+				html_options += "<option value='"+i+"'>" + o + "</option>\n";
 			});
 			$(this).html(html_options);
 		};
@@ -357,18 +358,18 @@
 		var exp_graph_json;
 		var graph_desc = g.graph || g_aux || {};
 		var graph_template = g.template || g_template;
-		var active_view_name = graph_desc.active_view || 'primary';
-		var graph_views = g_aux.views || {};
+		var active_view_index = graph_desc.active_view_index || 'primary';
+		var graph_views = g_aux.views || [];
 		var o, data, pos, source, target, spacer = "";
 
-		if (!graph_views[active_view_name]) {
-			graph_views[active_view_name] = {}
+		if (!graph_views[active_view_index]) {
+			graph_views[active_view_index] = {"name":"primary"}
 		}
 		if (!options || !options.separate) {
 			graph_desc.template = graph_template;
 		}
 		exp_graph_json = '{"graph":' + JSON.stringify(graph_desc) + ', "nodes":[';
-		graph_views[active_view_name].nodes = {};
+		graph_views[active_view_index].nodes = {};
 		for (i = nodes.length-1; i >= 0; i--) {
 			exp_graph_json += spacer + '\n';
 			spacer = ',';
@@ -378,7 +379,7 @@
 			pos.x = Math.round(pos.x);
 			pos.y = Math.round(pos.y);
 //			if (options && options.separate) {
-				graph_views[active_view_name].nodes[data.id] = {"position":pos};
+				graph_views[active_view_index].nodes[data.id] = {"position":pos};
 				delete o.view;
 //			}
 //			else {
@@ -389,7 +390,7 @@
 		}
 		spacer = "";
 		exp_graph_json += '\n ],\n "edges":[';
-		graph_views[active_view_name].edges = {};
+		graph_views[active_view_index].edges = {};
 		for (i = 0; i < edges.length; i++) {
 			exp_graph_json += spacer + '\n';
 			spacer = ',';
@@ -398,7 +399,7 @@
 			target = edges[i].target().id();
 			o = [source, target, data.edge_type, data.name, data.guard, parseInt(data.id.substr(1), 10)];
 			//if (options && options.separate) {
-			//	graph_views[active_view_name].edges[data.id] = {"width":data.width};
+			//	graph_views[active_view_index].edges[data.id] = {"width":data.width};
 			//	// delete data.width;
 			//}
 			exp_graph_json += "  " + JSON.stringify(o);
