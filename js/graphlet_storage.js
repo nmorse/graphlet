@@ -104,13 +104,13 @@ $(function() {
           var select_hbg;
           if (o === 'local') {
               select_hbg = get_from_local_storage("hb_graphs", graph_view.graph);
-              if (graph_view.view) {
+              if (graph_view.view_index >= 0) {
                 select_hbg = mix_in_view(select_hbg, graph_view.view_index);
               }
           }
           if (o === 'examples') {
               select_hbg = graph_examples[graph_view.graph];
-              if (graph_view.view) {
+              if (graph_view.view_index >= 0) {
                 select_hbg = mix_in_view(select_hbg, graph_view.view_index);
               }
           }
