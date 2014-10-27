@@ -45,6 +45,10 @@ $(function() {
   // mix in a view into the graph (only for nodes at this time)
 	var mix_in_view = function(graph, view_index) {
 		var view_obj;
+    if (!graph.views) {
+      graph.views = {"name": "primary"};
+      view_index = -1;
+    }
 		if (view_index < 0) {
 			return graph;
 		}

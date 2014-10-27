@@ -358,12 +358,16 @@
 		var exp_graph_json;
 		var graph_desc = g.graph || g_aux || {};
 		var graph_template = g.template || g_template;
-		var active_view_index = graph_desc.active_view_index || 'primary';
+		var active_view_index = graph_desc.active_view_index || 0;
 		var graph_views = g_aux.views || [];
 		var o, data, pos, source, target, spacer = "";
 
+		if (!$.isArray(graph_views)) {
+			graph_views = [];
+		}
+
 		if (!graph_views[active_view_index]) {
-			graph_views[active_view_index] = {"name":"primary"}
+			graph_views[active_view_index] = {"name":"primary"};
 		}
 		if (!options || !options.separate) {
 			graph_desc.template = graph_template;
@@ -379,8 +383,8 @@
 			pos.x = Math.round(pos.x);
 			pos.y = Math.round(pos.y);
 //			if (options && options.separate) {
-				graph_views[active_view_index].nodes[data.id] = {"position":pos};
-				delete o.view;
+			graph_views[active_view_index].nodes[data.id] = {"position":pos};
+			delete o.view;
 //			}
 //			else {
 //				o.view = {};
