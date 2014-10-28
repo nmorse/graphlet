@@ -62,8 +62,11 @@
 	get_current_cyto_graph = function () {
 		return g;
 	};
+	get_current_view_index = function () {
+		return +g_aux.active_view_index;
+	};
 	get_current_view_name = function () {
-		var i = g_aux.active_view_index;
+		var i = +g_aux.active_view_index;
 		return g_aux.views[i].name;
 	};
 	set_nodes_editor = function (ed) {

@@ -138,9 +138,9 @@ $(function() {
                   $('#graph_view>select').hide();
                   $('#graph_view>input').show().focus().val(view_name);
                 }
-                else {
+                else { // all done renaming
                   view_name = $('#graph_view>input').val();
-                  $('#graph_view>select[value="'+view_name+'"]').attr('selected', true);
+                  //$('#graph_view>select[value="'+view_name+'"]').attr('selected', true);
                   $('#graph_view>input').hide();
                   $('#graph_view>select').show();
                   $(document).trigger("rename_current_view", [view_name]);
@@ -180,10 +180,26 @@ $(function() {
     $(document).on("rename_current_view", function (event, new_view_name) {
       var json_str = export_graph_json(get_current_cyto_graph());
       var select_hbg = JSON.parse(json_str);
-      var graph_view = {"view":new_view_name};
+      var current_view_index = get_current_view_index();
+      var graph_view = {"view_name":new_view_name, "view_index":current_view_index};
       var current_view_name = get_current_view_name();
-      select_hbg.views[new_view_name] = $.extend(true, {}, select_hbg.views[current_view_name]);
-      select_hbg = mix_in_view(select_hbg, new_view_name);
+      select_hbg.views[current_view_index].name = new_view_name;
+      select_hbg = mix_in_view(select_hbg, current_view_index);
+      load_cy_graph(load_hbg(select_hbg, graph_view));
+      // update the view list
+      $('#graph_view>select').options($.map(select_hbg.views||[{"name":"primary"}], function(v,k) {return v.name;}));
+      $('#graph_view>select option').filter("[value='"+current_view_index+"']").attr('selected', true);
+
+    });
+    $(document).on("copy_current_view", function (event, new_view_name) {
+      var json_str = export_graph_json(get_current_cyto_graph());
+      var select_hbg = JSON.parse(json_str);
+      var current_view_index = get_current_view_index();
+      var graph_view = {"view_name":new_view_name, "view_index":current_view_index};
+      var current_view_name = get_current_view_name();
+      var new_view_index = select_hbg.views.length;
+      select_hbg.views.push($.extend(true, {}, select_hbg.views[current_view_index]));
+      select_hbg = mix_in_view(select_hbg, new_view_index);
       load_cy_graph(load_hbg(select_hbg, graph_view));
     });
 
