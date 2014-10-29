@@ -41,7 +41,8 @@ var store_graph_template = [
 
 
 $(function() {
-  var renaming_now = false;
+  var renaming_now = false,
+      naming_now = false;
   // mix in a view into the graph (only for nodes at this time)
 	var mix_in_view = function(graph, view_index) {
 		var view_obj;
@@ -130,6 +131,7 @@ $(function() {
                   var view_index = $('#graph_view>select option').filter(":selected").first().val();
                   $(document).trigger("set_view", [view_index]);
               });
+              $('#rename_view').off('click');
               $('#rename_view').on('click', function(event) {
                 var view_name;
                 renaming_now = !renaming_now;
@@ -145,6 +147,27 @@ $(function() {
                   $('#graph_view>select').show();
                   $(document).trigger("rename_current_view", [view_name]);
                 }
+              });
+              $('#new_view').off('click');
+              $('#new_view').on('click', function(event) {
+                var view_name;
+                naming_now = !naming_now;
+                if (naming_now) {
+                  view_name = $('#graph_view>select option').filter(":selected").first().text();
+                  $('#graph_view>select').hide();
+                  $('#graph_view>input').show().focus().val(view_name);
+                }
+                else { // all done renaming
+                  view_name = $('#graph_view>input').val();
+                  //$('#graph_view>select[value="'+view_name+'"]').attr('selected', true);
+                  $('#graph_view>input').hide();
+                  $('#graph_view>select').show();
+                  $(document).trigger("copy_current_view", [view_name]);
+                }
+              });
+              $('#delete_view').off('click');
+              $('#delete_view').on('click', function(event) {
+                $(document).trigger("delete_current_view", []);
               });
               return false;
           }
@@ -199,8 +222,24 @@ $(function() {
       var current_view_name = get_current_view_name();
       var new_view_index = select_hbg.views.length;
       select_hbg.views.push($.extend(true, {}, select_hbg.views[current_view_index]));
+      select_hbg.views[new_view_index].name = new_view_name;
       select_hbg = mix_in_view(select_hbg, new_view_index);
       load_cy_graph(load_hbg(select_hbg, graph_view));
+    });
+    $(document).on("delete_current_view", function (event) {
+      var json_str = export_graph_json(get_current_cyto_graph());
+      var select_hbg = JSON.parse(json_str);
+      var current_view_index = get_current_view_index();
+      //var current_view_name; = get_current_view_name();
+      var graph_view;
+      var new_view_index = 0;
+      if (select_hbg.views.length > 1) {
+        new_view_index = (current_view_index)? (current_view_index-1): 0;
+        delete select_hbg.views[current_view_index];
+        graph_view = {"view_index":new_view_index};
+        select_hbg = mix_in_view(select_hbg, new_view_index);
+        load_cy_graph(load_hbg(select_hbg, graph_view));
+      }
     });
 
     $(document).on("hbg_load_status", function(event, arg) {

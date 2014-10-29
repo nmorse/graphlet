@@ -18,13 +18,7 @@
 		var active_view_index = graph_designator.view_index || 0;
 		//var active_view = graph.views[active_view_index] || {};
 		if (graph && graph.graph) {
-			g_aux = graph.graph;
-			g_aux.active_view_index = active_view_index;
-			g_aux.views = graph.views;
-			g_template = graph.graph.template;
-		}
-		if (graph && graph.graph) {
-			g_aux = graph.graph;
+			g_aux.graph = graph.graph;
 			g_aux.active_view_index = active_view_index;
 			g_aux.views = graph.views;
 			g_template = graph.graph.template;
@@ -359,9 +353,9 @@
 		var nodes = g.nodes();
 		var edges = g.edges();
 		var exp_graph_json;
-		var graph_desc = g.graph || g_aux || {};
+		var graph_desc = g.graph || g_aux.graph || {};
 		var graph_template = g.template || g_template;
-		var active_view_index = graph_desc.active_view_index || 0;
+		var active_view_index = g_aux.active_view_index || 0;
 		var graph_views = g_aux.views || [];
 		var o, data, pos, source, target, spacer = "";
 
