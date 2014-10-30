@@ -218,13 +218,16 @@ $(function() {
       var json_str = export_graph_json(get_current_cyto_graph());
       var select_hbg = JSON.parse(json_str);
       var current_view_index = get_current_view_index();
-      var graph_view = {"view_name":new_view_name, "view_index":current_view_index};
       var current_view_name = get_current_view_name();
       var new_view_index = select_hbg.views.length;
+      var graph_view = {"view_name":new_view_name, "view_index":new_view_index};
       select_hbg.views.push($.extend(true, {}, select_hbg.views[current_view_index]));
       select_hbg.views[new_view_index].name = new_view_name;
       select_hbg = mix_in_view(select_hbg, new_view_index);
       load_cy_graph(load_hbg(select_hbg, graph_view));
+      // update the view list
+      $('#graph_view>select').options($.map(select_hbg.views||[{"name":"primary"}], function(v,k) {return v.name;}));
+      $('#graph_view>select option').filter("[value='"+new_view_index+"']").attr('selected', true);
     });
     $(document).on("delete_current_view", function (event) {
       var json_str = export_graph_json(get_current_cyto_graph());
@@ -235,10 +238,13 @@ $(function() {
       var new_view_index = 0;
       if (select_hbg.views.length > 1) {
         new_view_index = (current_view_index)? (current_view_index-1): 0;
-        delete select_hbg.views[current_view_index];
+        select_hbg.views.splice(current_view_index, 1);
         graph_view = {"view_index":new_view_index};
         select_hbg = mix_in_view(select_hbg, new_view_index);
         load_cy_graph(load_hbg(select_hbg, graph_view));
+        // update the view list
+        $('#graph_view>select').options($.map(select_hbg.views||[{"name":"primary"}], function(v,k) {return v.name;}));
+        $('#graph_view>select option').filter("[value='"+new_view_index+"']").attr('selected', true);
       }
     });
 
