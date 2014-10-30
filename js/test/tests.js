@@ -17,49 +17,49 @@ test( "Graphlet selector tests", function(assert) {
 	  ["n1","n5","sub","",null,4]
 	 ]
   };
-	
+
   // 1
-  assert.deepEqual( 
-	gq.using(graph).find({"element":"node", "id":"n1"}).graph(),  
+  assert.deepEqual(
+	gq.using(graph).find({"element":"node", "id":"n1"}).graph(),
 	{"nodes":[{"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"}]},
-	"selection of node n1 as a graph" 
+	"selection of node n1 as a graph"
   );
   // 2
-  assert.deepEqual( 
-	gq.using(graph).find({"element":"node", "id":"n1"}).nodes(),  
+  assert.deepEqual(
+	gq.using(graph).find({"element":"node", "id":"n1"}).nodes(),
 	[{"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"}],
-	"selection of node n1 as nodes" 
+	"selection of node n1 as nodes"
   );
   // 3
-  assert.deepEqual( 
-	gq.using(graph).find({"element":"edge", "type":"get", "from":"n1"}).edges(),  
+  assert.deepEqual(
+	gq.using(graph).find({"element":"edge", "type":"get", "from":"n1"}).edges(),
 	[["n1","n2","get","salutation",null,1],
 	 ["n1","n4","get","name",null,2]],
-	"only 'get' edges out of node n1" 
+	"only 'get' edges out of node n1"
   );
   // 4
-  assert.deepEqual( 
-	gq.using(graph).find({"element":"edge", "from":"n1"}).edges().length,  
+  assert.deepEqual(
+	gq.using(graph).find({"element":"edge", "from":"n1"}).edges().length,
 	4,
-	"count all edges out of node n1" 
+	"count all edges out of node n1"
   );
   // 5
   assert.deepEqual(
 	gq.using(graph).find({"element":"edge", "from":"n0"}).graph(),
 	{"edges":[["n0","n1","flo","",null,0]]},
-	"all edges out of node n0" 
+	"all edges out of node n0"
   );
   // 6
-  assert.deepEqual( 
-	gq.using(graph).find({"element":"edge", "from":"n1", "to":"n3"}).edges(),  
+  assert.deepEqual(
+	gq.using(graph).find({"element":"edge", "from":"n1", "to":"n3"}).edges(),
 	[["n1","n3","set","greeting",null,3]],
-	"combined selector to find only an edge that connects 2 nodes" 
+	"combined selector to find only an edge that connects 2 nodes"
   );
   // 7
-  assert.deepEqual( 
-	gq.using(graph).find({"element":"edge", "from":"n1"}).find({"element":"edge", "to":"n3"}).graph(),  
+  assert.deepEqual(
+	gq.using(graph).find({"element":"edge", "from":"n1"}).find({"element":"edge", "to":"n3"}).graph(),
 	{"edges":[["n1","n3","set","greeting",null,3]]},
-	"chain selectors to find only an edge that connects 2 nodes" 
+	"chain selectors to find only an edge that connects 2 nodes"
   );
 });
 
@@ -68,7 +68,7 @@ asyncTest( "Graphlet procedural run test on a simple Hello World graphlet", func
   expect(2);
   var $env = $('#qunit-work-area');
   var $fixture = $env.append('<div id="graphlet">loading</div>');
- 
+
   init_graphlet({"graph":{"name":"Hello World", "template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"},"nodes":[
 	  {"name":"start","id":"n0", "io":{"selector":"#start_button"},"view":{"position":{"x":124,"y":80}},"node_type":"io"},
 	  {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"},
@@ -86,7 +86,7 @@ asyncTest( "Graphlet procedural run test on a simple Hello World graphlet", func
 	  ["n5","n3","set",".css",null,5]
 	 ]
   });
- 
+
   // trigger event
   $('#start_button').trigger("click");
   setTimeout(function() {
@@ -101,24 +101,25 @@ asyncTest( "Graphlet procedural run test on the demo 'shake 2' graphlet", functi
   expect(1);
   var $env = $('#qunit-work-area');
   var $fixture = $env.append('<div id="graphlet">loading</div>');
- 
-  init_graphlet({"graph":{"name":"shake 2.5","template":"<input type='text' id='textbox' value='' placeholder='type here' />"}, "nodes":[
-  {"view":{"position":{"x":90,"y":88}},"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":2000}},
-  {"view":{"position":{"x":450,"y":251}},"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake", "distance":5}},
-  {"view":{"position":{"x":281,"y":290}},"id":"n2","name":"new text","node_type":"data","data":{"string":"new text"}},
-  {"view":{"position":{"x":322,"y":127}},"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
-  {"view":{"position":{"x":146,"y":192}},"id":"n0","name":"timer","node_type":"process","process":["this.defered_transition = true; wait(target_node_id, timeout);"]}
- ],
- "edges":[
-  ["n1","n0","sub","keyup",null,0],
-  ["n0","n2","flo","when done",null,1],
-  ["n2","n3","flo","next",null,2],
-  ["n2","n1","set","string",null,3],
-  ["n3","n1","pub","effect",null,4],
-  ["n0","n4","get","timeout",null,5]
- ]
-});
- 
+
+  init_graphlet({"graph":{"name":"shake 2.5","template":"<input type='text' id='textbox' value='' placeholder='type here' />"},
+   "nodes":[
+    {"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":2000}},
+    {"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake", "distance":5}},
+    {"id":"n2","name":"new text","node_type":"data","data":{"string":"new text"}},
+    {"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
+    {"id":"n0","name":"timer","node_type":"process","process":["this.defered_transition = true; wait(target_node_id, timeout);"]}
+   ],
+   "edges":[
+    ["n1","n0","sub","keyup",null,0],
+    ["n0","n2","flo","when done",null,1],
+    ["n2","n3","flo","next",null,2],
+    ["n2","n1","set","string",null,3],
+    ["n3","n1","pub","effect",null,4],
+    ["n0","n4","get","timeout",null,5]
+   ]
+  });
+
   // trigger event
   $('#textbox').trigger("keyup");
   setTimeout(function() {
