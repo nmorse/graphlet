@@ -138,9 +138,14 @@
 					"target-arrow-shape": "triangle"
 				})
 			.selector(":selected")
+					.css({
+						"background-color": "#FF0",
+						"line-color": "#FF0"
+					})
+			.selector(".active_run")
 				.css({
-					"background-color": "#FF0",
-					"line-color": "#FF0"
+					"background-color": "#F80",
+					"line-color": "#F80"
 				}),
 		ready: function(){
 			var nodeCount, nodes;
@@ -159,24 +164,22 @@
 			this.on('click', 'node', function(evt) {
 			  var new_edge;
 			  if (add_edge_mode) {
-				if(!add_edge_arr[0]) {
-					add_edge_arr[0] = this.data().id;
-					//alert("first node" + node.data().id);
-				}
-				else {
-					add_edge_arr[1] = this.data().id;
-					//alert("second node" + node.data().id);
-					add_edge_mode = false;
-					g.$('*').unselect();
-					new_edge = g.add({"edges":[ {"data":{"weight":20, "source":add_edge_arr[0], "target":add_edge_arr[1]}}]});
-					new_edge[0].select();
-					setTimeout(function() {
+					if(!add_edge_arr[0]) {
+						add_edge_arr[0] = this.data().id;
+						//alert("first node" + node.data().id);
+					}
+					else {
+						add_edge_arr[1] = this.data().id;
+						//alert("second node" + node.data().id);
+						add_edge_mode = false;
 						g.$('*').unselect();
+						new_edge = g.add({"edges":[ {"data":{"weight":20, "source":add_edge_arr[0], "target":add_edge_arr[1]}}]});
 						new_edge[0].select();
-					}, 50);
-
-
-				}
+						setTimeout(function() {
+							g.$('*').unselect();
+							new_edge[0].select();
+						}, 50);
+					}
 			  }
 			});
 			this.on('select', sync_selected);

@@ -1,21 +1,27 @@
 // graphlet run
-// 
+//
 
 (function($, gq) {
     var glt;
+    var debug_rate = 1;
     // get all values from get edges and return as an object
     var get_all = function(id) {
         var got_obj = {};
         var g = this.glt;
         var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
         $.each(get_edges, function(i, o) {
-			var to_node_id = o[1];
-            var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
-            var alias = o[3];
-            var name = alias || end_node.name;
-            if (end_node.data) {
-				got_obj[name] = end_node.data[name];
-			}
+			    var to_node_id = o[1];
+          var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
+          var alias = o[3];
+          var name = alias || end_node.name;
+          var this_edge;
+          if (debug_rate) {
+            this_edge = get_current_cyto_graph().$("edge[edge_type='get']");
+            this_edge.addClass("active_run");
+          }
+          if (end_node.data) {
+				    got_obj[name] = end_node.data[name];
+			    }
         });
         return got_obj;
     };
@@ -47,8 +53,8 @@
 						default:
 							alert("jQuery function " +name + " is not supported at this time.");
 					}
-					
-				}				
+
+				}
 			}
 			else {
 				if (!end_node.data) { end_node.data = {};}
@@ -66,7 +72,7 @@
 				console.log("jump"); //this.data['effect state'] = "done"
 			}}, start_node.data);
             $(end_node.io.selector).effect(effect_options);
-            
+
 		});
     };
     var transition_to = function(id, get_result) {
@@ -90,12 +96,12 @@
 	};
     var run_node = function(target_node) {
 		var get_data = get_all(target_node.id);
-		
+
 		get_data.defered_transition = false;
 		if (target_node.node_type === "process") {
 			get_data.wait = wait;
 			get_data.target_node_id = target_node.id;
-			
+
 			$.each(target_node.process, function(i, process) {
 				get_data = run_node_process(get_data, process);
 			});
@@ -110,7 +116,7 @@
 			transition_to(target_node.id, get_data);
 		}
 	};
-	
+
 	// sandbox for functional (saferEval)
 	// create our own local versions of window and document with limited functionality
 	var run_node_process = function (env, code) {
@@ -183,7 +189,7 @@
 		return result;
 	};
 
-	
+
 
     init_graphlet = function(g) {
         var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
@@ -213,9 +219,8 @@
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
 				run_node(target_node);
 			});
-			
+
 		});
     };
-        
-})($, gq);
 
+})($, gq);
