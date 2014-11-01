@@ -2,39 +2,52 @@
 //
 
 (function($, gq) {
-    var glt;
-    var debug_rate = 1;
-    // get all values from get edges and return as an object
-    var get_all = function(id) {
-        var got_obj = {};
-        var g = this.glt;
-        var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
-        $.each(get_edges, function(i, o) {
-			    var to_node_id = o[1];
-          var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
-          var alias = o[3];
-          var name = alias || end_node.name;
-          var this_edge;
+  var glt;
+  var debug_rate = 1000;
+  // get all values from get edges and return as an object
+  var get_all = function(id) {
+      var got_obj = {};
+      var g = this.glt;
+      var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
+      $.each(get_edges, function(i, o) {
+		    var to_node_id = o[1];
+        var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
+        var alias = o[3];
+        var name = alias || end_node.name;
+        var this_edge;
+        var this_node;
+        if (debug_rate) {
+          this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"']");
+          this_edge.addClass("active_run");
+          setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
+        }
+        if (end_node.data) {
+			    got_obj[name] = end_node.data[name];
           if (debug_rate) {
-            this_edge = get_current_cyto_graph().$("edge[edge_type='get']");
-            this_edge.addClass("active_run");
+            this_node = get_current_cyto_graph().$("node[id='"+end_node.id+"']");
+            this_node.addClass("active_run");
+            setTimeout(function() {this_node.removeClass("active_run");}, debug_rate);
           }
-          if (end_node.data) {
-				    got_obj[name] = end_node.data[name];
-			    }
-        });
-        return got_obj;
-    };
-    var set_all = function(id, result) {
-		var g = this.glt;
-        var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
-        var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
-        $.each(set_edges, function(i, o) {
-            var end_node = gq.using(g).find({"element":"node", "id":o[1]}).nodes()[0];
-            var start_node;
-            var alias = o[3];
-            var name = alias || end_node.name || "data";
-            if (name.charAt(0) === ".") {
+		    }
+      });
+      return got_obj;
+  };
+  var set_all = function(id, result) {
+    var g = this.glt;
+    var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
+    var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
+    $.each(set_edges, function(i, o) {
+      var end_node = gq.using(g).find({"element":"node", "id":o[1]}).nodes()[0];
+      var start_node;
+      var alias = o[3];
+      var name = alias || end_node.name || "data";
+      var this_edge;
+      if (debug_rate) {
+        this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"']");
+        this_edge.addClass("active_run");
+        setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
+      }
+      if (name.charAt(0) === ".") {
 				if (end_node.io && end_node.io.selector) {
 					start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
 					switch (name)  {
@@ -63,59 +76,66 @@
 					$(end_node.io.selector).text(end_node.data[name]);
 					$(end_node.io.selector).val(end_node.data[name]);
 				}
-			}
-        });
-        $.each(pub_edges, function(i, e) {
-            var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
-            var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
-            var effect_options = $.extend({"complete":function() {
-				console.log("jump"); //this.data['effect state'] = "done"
-			}}, start_node.data);
-            $(end_node.io.selector).effect(effect_options);
+      }
+    });
+    $.each(pub_edges, function(i, e) {
+      var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
+      var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
+      var effect_options = $.extend({"complete":function() {
+        console.log("jump"); //this.data['effect state'] = "done"
+      }}, start_node.data);
+      $(end_node.io.selector).effect(effect_options);
+    });
+  };
+  var transition_to = function(id, get_result) {
+    var g = this.glt;
+    var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
+    $.each(trans_edges, function(i, e) {
+      var guard_expression = e[4];
+      var guard = {"result":true};
+      if (guard_expression) {
+        guard = run_edge_guard(get_result, guard_expression);
+      }
+      if (guard.result) {
+        console.log("trigger transition "+e[0]+" -> "+e[1]);
+        if (debug_rate) {
+          this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"']");
+          this_edge.addClass("active_run");
+          setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
+        }
+        setTimeout(function() {$("body").trigger("edge_" + e[5]);}, debug_rate);
+      }
+    });
+  };
+  var wait = function(id, milliseconds) {
+    console.log("defer transition to "+id+" by "+milliseconds);
+    setTimeout(function() {transition_to(id, {});}, milliseconds);
+  };
+  var run_node = function(target_node) {
+    var get_data = get_all(target_node.id);
+    var this_node;
+    if (debug_rate) {
+      this_node = get_current_cyto_graph().$("node[id='"+target_node.id+"']");
+      this_node.addClass("active_run");
+      setTimeout(function() {this_node.removeClass("active_run");}, debug_rate);
+    }
+    get_data.defered_transition = false;
+    if (target_node.node_type === "process") {
+      get_data.wait = wait;
+      get_data.target_node_id = target_node.id;
+      $.each(target_node.process, function(i, process) {
+        get_data = run_node_process(get_data, process);
+      });
+    }
+    else {
+      get_data = $.extend(get_data, target_node.data);
+    }
 
-		});
-    };
-    var transition_to = function(id, get_result) {
-		var g = this.glt;
-        var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
-        $.each(trans_edges, function(i, e) {
-			var guard_expression = e[4];
-			var guard = {"result":true};
-			if (guard_expression) {
-				guard = run_edge_guard(get_result, guard_expression);
-			}
-			if (guard.result) {
-				console.log("trigger transition "+e[0]+" -> "+e[1]);
-				setTimeout(function() {$("body").trigger("edge_" + e[5]);}, 10);
-			}
-        });
-    };
-    var wait = function(id, milliseconds) {
-		console.log("defer transition to "+id+" by "+milliseconds);
-		setTimeout(function() {transition_to(id, {});}, milliseconds);
-	};
-    var run_node = function(target_node) {
-		var get_data = get_all(target_node.id);
-
-		get_data.defered_transition = false;
-		if (target_node.node_type === "process") {
-			get_data.wait = wait;
-			get_data.target_node_id = target_node.id;
-
-			$.each(target_node.process, function(i, process) {
-				get_data = run_node_process(get_data, process);
-			});
-		}
-		else {
-			get_data = $.extend(get_data, target_node.data);
-		}
-
-		set_all(target_node.id, get_data);
-
-		if (!get_data.defered_transition) {
-			transition_to(target_node.id, get_data);
-		}
-	};
+    set_all(target_node.id, get_data);
+    if (!get_data.defered_transition) {
+      transition_to(target_node.id, get_data);
+    }
+  };
 
 	// sandbox for functional (saferEval)
 	// create our own local versions of window and document with limited functionality
