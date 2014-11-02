@@ -215,6 +215,7 @@
         var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
         var subscribe_edges = gq.using(g).find({"element":"edge", "type":"sub"}).edges();
         this.glt = g;
+        debug_rate = $("#run_debug_rate").val() || 0;
         if (g.graph && g.graph.template) {
 			$(function() {
 				$("#graphlet").html(g.graph.template);
