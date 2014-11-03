@@ -3,34 +3,34 @@
 
 (function($, gq) {
   var glt;
-  var debug_rate = 1000;
+  var debug_rate = 0;
   // get all values from get edges and return as an object
   var get_all = function(id) {
-      var got_obj = {};
-      var g = this.glt;
-      var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
-      $.each(get_edges, function(i, o) {
-		    var to_node_id = o[1];
-        var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
-        var alias = o[3];
-        var name = alias || end_node.name;
-        var this_edge;
-        var this_node;
+    var got_obj = {};
+    var g = this.glt;
+    var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
+    $.each(get_edges, function(i, o) {
+	    var to_node_id = o[1];
+      var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
+      var alias = o[3];
+      var name = alias || end_node.name;
+      var this_edge;
+      var this_node;
+      if (debug_rate) {
+        this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"']");
+        this_edge.addClass("active_run");
+        setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
+      }
+      if (end_node.data) {
+		    got_obj[name] = end_node.data[name];
         if (debug_rate) {
-          this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"']");
-          this_edge.addClass("active_run");
-          setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
+          this_node = get_current_cyto_graph().$("node[id='"+end_node.id+"']");
+          this_node.addClass("active_run");
+          setTimeout(function() {this_node.removeClass("active_run");}, debug_rate);
         }
-        if (end_node.data) {
-			    got_obj[name] = end_node.data[name];
-          if (debug_rate) {
-            this_node = get_current_cyto_graph().$("node[id='"+end_node.id+"']");
-            this_node.addClass("active_run");
-            setTimeout(function() {this_node.removeClass("active_run");}, debug_rate);
-          }
-		    }
-      });
-      return got_obj;
+	    }
+    });
+    return got_obj;
   };
   var set_all = function(id, result) {
     var g = this.glt;
@@ -107,13 +107,14 @@
       }
     });
   };
-  var wait = function(id, milliseconds) {
-    console.log("defer transition to "+id+" by "+milliseconds);
-    setTimeout(function() {transition_to(id, {});}, milliseconds);
-  };
   var run_node = function(target_node) {
     var get_data = get_all(target_node.id);
     var this_node;
+    var wait = function(milliseconds) {
+      console.log("wait() defers transition at node "+target_node.id+" by "+milliseconds);
+      get_data.defered_transition = true;
+      setTimeout(function() {transition_to(target_node.id, {});}, milliseconds);
+    };
     if (debug_rate) {
       this_node = get_current_cyto_graph().$("node[id='"+target_node.id+"']");
       this_node.addClass("active_run");
@@ -167,11 +168,11 @@
 		};
 
 		// result is the 'this' object for the code
-		var result = {};
-		var sandbox = createSandbox(result, code, locals); // create a sandbox
+		//var result = {};
+		var sandbox = createSandbox(env, code, locals); // create a sandbox
 
 		sandbox(); // call the user code in the sandbox
-		return result;
+		return env;
 	};
 
 	var run_edge_guard = function (env, code) {
@@ -215,7 +216,7 @@
         var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
         var subscribe_edges = gq.using(g).find({"element":"edge", "type":"sub"}).edges();
         this.glt = g;
-        debug_rate = $("#run_debug_rate").val() || 0;
+        debug_rate = parseInt($("#run_debug_rate").val(), 10) || 0;
         if (g.graph && g.graph.template) {
 			$(function() {
 				$("#graphlet").html(g.graph.template);
