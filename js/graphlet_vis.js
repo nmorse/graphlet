@@ -149,7 +149,7 @@
 				}),
 		ready: function(){
 			var nodeCount, nodes;
-			var i, pos, data;
+			var i, pos, data, label;
 			g = $("#graph_vis").cytoscape("get");
 			nodes = g.nodes();
 			nodeCount = nodes.length;
@@ -159,6 +159,10 @@
 					pos = data.view.position;
 					//alert(pos.x + " " + pos.y);
 					nodes[i].position({x: pos.x, y: pos.y});
+					if (data.node_type === 'data') {
+						label = data.data[data.name];
+						nodes[i].css({"content": label});
+					}
 				}
 			}
 			this.on('click', 'node', function(evt) {
