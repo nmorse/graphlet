@@ -3,7 +3,7 @@ var graph_examples = {
 "graph":{"name":"Hello World version 1","active_view":"first view","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
   {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
   {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","node_type":"process"},
-  {"name":"Hello","data":{"salutation":"Hello"},"id":"n2","node_type":"data"},
+  {"name":"salutation","data":{"salutation":"Hello"},"id":"n2","node_type":"data"},
   {"name":"greeting","node_type":"io","io":{"selector":".greeting"},"id":"n3"},
   {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4"},
   {"name":"end","id":"n5","node_type":"data","data":{"color":"rgb(255, 0, 0)"}}
@@ -39,7 +39,7 @@ var graph_examples = {
 "Hello World version 2": {"graph": {"name":"Hello World version 1","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
   {"name":"start","id":"n0","io":{"selector":"#start_button"},"view":{"position":{"x":124,"y":80}},"node_type":"io"},
   {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"},
-  {"name":"Hello","data":{"salutation":"Hello"},"id":"n2","view":{"position":{"x":316,"y":105}},"node_type":"data"},
+  {"name":"salutation","data":{"salutation":"Hello"},"id":"n2","view":{"position":{"x":316,"y":105}},"node_type":"data"},
   {"name":"greeting","node_type":"io","io":{"selector":".greeting"},"id":"n3","view":{"position":{"x":446,"y":302}}},
   {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4","view":{"position":{"x":446,"y":196}}},
   {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}},"node_type":"data","data":{"color":"rgb(255, 0, 0)"}}
@@ -56,9 +56,9 @@ var graph_examples = {
 "shake 1":
 {"graph": {"name":"shake 2.5","template":"<input type='text' id='textbox' value='' placeholder='type here' />"},
 "nodes":[
- {"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":2000}},
- {"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake", "distance":5}},
- {"id":"n2","name":"new text","node_type":"data","data":{"string":"new text"}},
+ {"id":"n4","name":"timeout {{timeout}} ms","node_type":"data","data":{"timeout":2000}},
+ {"id":"n3","name":"effect","node_type":"data","data":{"effect":"shake", "distance":5}},
+ {"id":"n2","name":"string","node_type":"data","data":{"string":"new text"}},
  {"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
  {"id":"n0","name":"timer","node_type":"process","process":["wait(timeout);"]}
 ],
@@ -96,7 +96,7 @@ var graph_examples = {
   {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1","node_type":"process","view":{"position":{"x":123,"y":248}}},
   {"name":"fin","id":"n5","node_type":"data","data":{"c":0},"view":{"position":{"x":124,"y":336}}},
   {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0},"view":{"position":{"x":327,"y":253}}},
-  {"id":"n4","node_type":"data","data":{"c":0},"name":"0","view":{"position":{"x":123,"y":165}}}
+  {"id":"n4","node_type":"data","data":{"c":0},"name":"c","view":{"position":{"x":123,"y":165}}}
  ],
  "edges":[
   ["n1","n5","flo","c > 5","c > 5",0],
@@ -114,7 +114,7 @@ var graph_examples = {
   {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
   {"name":"fin","id":"n5","node_type":"data","data":{"c":0}},
   {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0}},
-  {"id":"n4","node_type":"data","data":{"c":0},"name":"0"}
+  {"id":"n4","node_type":"data","data":{"c":0},"name":"c"}
  ],
  "edges":[
   ["n1","n5","flo","c > 5","c > 5",0],
@@ -131,8 +131,8 @@ var graph_examples = {
 "counter 1":
 {"graph":{"name":"counter 1","template":"<button id='start_button'>Start</button><div class='counter'></div>"}, "nodes":[
   {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0},"view":{"position":{"x":298,"y":83}}},
-  {"name":"0","id":"n5","node_type":"data","data":{"c":0},"view":{"position":{"x":298,"y":192}}},
-  {"name":"+1","process":["this.c = c + 1;"],"id":"n1","node_type":"process","view":{"position":{"x":124,"y":196}}},
+  {"name":"c","id":"n5","node_type":"data","data":{"c":0},"view":{"position":{"x":298,"y":192}}},
+  {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1","node_type":"process","view":{"position":{"x":124,"y":196}}},
   {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io","view":{"position":{"x":124,"y":80}}}
  ],
  "edges":[

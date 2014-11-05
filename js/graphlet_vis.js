@@ -148,18 +148,28 @@
 					"line-color": "#F80"
 				}),
 		ready: function(){
-			var nodeCount, nodes;
+			var eleCount, nodes;
 			var i, pos, data, label;
 			g = $("#graph_vis").cytoscape("get");
 			nodes = g.nodes();
-			nodeCount = nodes.length;
-			for (i = 0; i < nodeCount; i++) {
+			eleCount = nodes.length;
+			for (i = 0; i < eleCount; i++) {
 				data = nodes[i].data();
 				if (data && data.view && data.view.position) {
 					pos = data.view.position;
 					//alert(pos.x + " " + pos.y);
 					nodes[i].position({x: pos.x, y: pos.y});
 					if (data.node_type === 'data') {
+						label = data.data[data.name];
+						nodes[i].css({"content": label});
+					}
+				}
+			}
+			eleCount = edges.length;
+			for (i = 0; i < eleCount; i++) {
+				data = edges[i].data();
+				if (data && data[3]) {
+					if (data[3].matches(/{{.+}}/g)) {
 						label = data.data[data.name];
 						nodes[i].css({"content": label});
 					}
