@@ -109,12 +109,12 @@ var graph_examples = {
  ]
 },
 "Loop 2": {"graph":{"name":"loop 2","template":"<button id='start_button'>Start</button><div class='counter'></div>"}, "nodes":[
-  {"id":"n4","node_type":"data","data":{"c":0},"name":"0","view":{"position":{"x":123,"y":165}}},
-  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0},"view":{"position":{"x":333,"y":94}}},
-  {"name":"fin","id":"n5","node_type":"data","data":{"c":0},"view":{"position":{"x":124,"y":336}}},
-  {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1","node_type":"process","view":{"position":{"x":123,"y":248}}},
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io","view":{"position":{"x":124,"y":80}}},
-  {"id":"n6","node_type":"process","process":["wait(750);"],"name":"pause","view":{"position":{"x":330,"y":248}}}
+  {"id":"n6","node_type":"process","process":["wait(750);"],"name":"pause"},
+  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
+  {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
+  {"name":"fin","id":"n5","node_type":"data","data":{"c":0}},
+  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0}},
+  {"id":"n4","node_type":"data","data":{"c":0},"name":"0"}
  ],
  "edges":[
   ["n1","n5","flo","c > 5","c > 5",0],
@@ -125,7 +125,8 @@ var graph_examples = {
   ["n4","n3","set","","",5],
   ["n1","n6","flo","c <= 5","c <= 5",6],
   ["n6","n1","flo","","",7]
- ]
+ ],
+ "views":[{"name":"basic","nodes":{"n6":{"position":{"x":330,"y":248}},"n0":{"position":{"x":124,"y":80}},"n1":{"position":{"x":123,"y":248}},"n5":{"position":{"x":124,"y":336}},"n3":{"position":{"x":333,"y":94}},"n4":{"position":{"x":123,"y":165}}},"edges":{}},{"name":"alternate","nodes":{"n4":{"position":{"x":303,"y":91}},"n3":{"position":{"x":303,"y":183}},"n5":{"position":{"x":127,"y":333}},"n1":{"position":{"x":126,"y":183}},"n0":{"position":{"x":124,"y":80}},"n6":{"position":{"x":262,"y":309}}},"edges":{}}]
 },
 "counter 1":
 {"graph":{"name":"counter 1","template":"<button id='start_button'>Start</button><div class='counter'></div>"}, "nodes":[
