@@ -57,10 +57,11 @@ Node types
 
 Edge types
 ----------
- * Get (*ordered)
- * Set
- * Msg (Message)
- * Transition (*ordered)
+ * Get (*ordered) retrives data from targeted nodes
+ * Set sets data on targeted nodes
+ * Pub (Message) Publish or Emit a message to the targeted nodes
+ * Sub subscribes or Listens for messages on the source node
+ * Flo a Transition (*ordered) to a targeted node
  
 Process Steps for a Node
 ------------------------
