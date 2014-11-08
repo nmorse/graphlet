@@ -148,7 +148,7 @@
 					"line-color": "#F80"
 				}),
 		ready: function(){
-			var eleCount, nodes;
+			var eleCount, nodes, edges;
 			var i, pos, data, label;
 			g = $("#graph_vis").cytoscape("get");
 			nodes = g.nodes();
@@ -165,6 +165,7 @@
 					}
 				}
 			}
+			edges = g.edges();
 			eleCount = edges.length;
 			for (i = 0; i < eleCount; i++) {
 				data = edges[i].data();
