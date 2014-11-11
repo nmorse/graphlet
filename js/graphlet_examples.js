@@ -1,40 +1,20 @@
 var graph_examples = {
-"Hello World": {
-"graph":{"name":"Hello World version 1","active_view":"first view","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
-  {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","node_type":"process"},
-  {"name":"salutation","data":{"salutation":"Hello"},"id":"n2","node_type":"data"},
-  {"name":"greeting","node_type":"io","io":{"selector":".greeting"},"id":"n3"},
+"Hello World": {"graph":{"name":"Hello World x","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
+  {"name":"end","id":"n5","node_type":"data","data":{"color":"rgb(255, 0, 0)"}},
   {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4"},
-  {"name":"end","id":"n5","node_type":"data","data":{"color":"rgb(255, 0, 0)"}}
+  {"name":"selector","node_type":"io","io":{"selector":".greeting"},"id":"n3"},
+  {"name":"","data":{"salutation":"Hello"},"id":"n2","node_type":"data"},
+  {"name":"concat","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","node_type":"process"},
+  {"name":"selector","id":"n0","io":{"selector":"#start_button"},"node_type":"io"}
  ],
  "edges":[
-  ["n0","n1","sub","click",null,0],
-  ["n1","n2","get","salutation",null,1],
-  ["n1","n4","get","name",null,2],
-  ["n1","n3","set","greeting",null,3],
-  ["n1","n5","flo","next",null,4]
+  ["n0","n1","sub","click","",0],
+  ["n1","n2","get","salutation","",1],
+  ["n1","n4","get","name","",2],
+  ["n1","n3","set","greeting","",3],
+  ["n1","n5","flo","next","",4]
  ],
- "views":[{
-	"name": "first", "nodes":{
-  "n0":{"position":{"x":124,"y":80}},
-  "n1":{"position":{"x":124,"y":196}},
-  "n2":{"position":{"x":316,"y":105}},
-  "n3":{"position":{"x":446,"y":302}},
-  "n4":{"position":{"x":446,"y":196}},
-  "n5":{"position":{"x":124,"y":302}}
- },
- "edges":{}},
- {
-   "name": "second view", "nodes":{
-  "n0":{"position":{"x":114,"y":80}},
-  "n1":{"position":{"x":134,"y":196}},
-  "n2":{"position":{"x":326,"y":105}},
-  "n3":{"position":{"x":436,"y":302}},
-  "n4":{"position":{"x":426,"y":196}},
-  "n5":{"position":{"x":144,"y":302}}
- },
- "edges":{}}]
+ "views":[{"name":"first","nodes":{"n5":{"position":{"x":124,"y":302}},"n4":{"position":{"x":446,"y":196}},"n3":{"position":{"x":446,"y":302}},"n2":{"position":{"x":316,"y":105}},"n1":{"position":{"x":124,"y":196}},"n0":{"position":{"x":124,"y":80}}},"edges":{}},{"name":"second view","nodes":{"n5":{"position":{"x":144,"y":302}},"n4":{"position":{"x":426,"y":196}},"n3":{"position":{"x":436,"y":302}},"n2":{"position":{"x":326,"y":105}},"n1":{"position":{"x":134,"y":196}},"n0":{"position":{"x":114,"y":80}}},"edges":{}},{"name":"sideways","nodes":{"n0":{"position":{"x":498,"y":130}},"n1":{"position":{"x":296,"y":254}},"n2":{"position":{"x":183,"y":94}},"n3":{"position":{"x":498,"y":185}},"n4":{"position":{"x":295,"y":126}},"n5":{"position":{"x":296,"y":329}}},"edges":{}}]
 },
 "Hello World version 2": {"graph": {"name":"Hello World version 1","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
   {"name":"start","id":"n0","io":{"selector":"#start_button"},"view":{"position":{"x":124,"y":80}},"node_type":"io"},

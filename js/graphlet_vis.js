@@ -5,6 +5,11 @@
 	var g_template = ""
 	var add_edge_mode = false;
 	var add_edge_arr = [];
+	var get_one_key = function(obj) {
+		return $.map(obj, function( value, key ) {
+			return key;
+		})[0];
+	};
 
 	// convert a stored graph into a from that is appropreate for Cytoscape.js
 	load_hbg = function (graph, graph_designator) {
@@ -149,7 +154,7 @@
 				}),
 		ready: function(){
 			var eleCount, nodes, edges;
-			var i, pos, data, label;
+			var i, pos, data, label, key;
 			g = $("#graph_vis").cytoscape("get");
 			nodes = g.nodes();
 			eleCount = nodes.length;
@@ -160,8 +165,34 @@
 					//alert(pos.x + " " + pos.y);
 					nodes[i].position({x: pos.x, y: pos.y});
 					if (data.node_type === 'data') {
-						label = data.data[data.name];
-						nodes[i].css({"content": label});
+						if (typeof data.name !== 'undefined'
+						  && typeof data.data[data.name] !== 'undefined') {
+							label = data.data[data.name];
+							nodes[i].css({"content": label});
+						}
+						else if (typeof data.name === 'undefined' || $.trim(data.name) === '') {
+							key = get_one_key(data.data);
+							label = key + ": " +data.data[key];
+							nodes[i].css({"content": label});
+						}
+					}
+					if (data.node_type === 'io') {
+						if (typeof data.name !== 'undefined'
+							&& typeof data.io[data.name] !== 'undefined') {
+							label = data.io[data.name];
+							nodes[i].css({"content": label});
+						}
+						else if (typeof data.name === 'undefined' || $.trim(data.name) === '') {
+							key = get_one_key(data.io);
+							label = key + ": " +data.io[key];
+							nodes[i].css({"content": label});
+						}
+					}
+					if (data.node_type === 'process') {
+						if (typeof data.name === 'undefined' || $.trim(data.name) === '') {
+							label = data.process[0];
+							nodes[i].css({"content": label});
+						}
 					}
 				}
 			}
