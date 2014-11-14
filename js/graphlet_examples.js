@@ -122,4 +122,31 @@ var graph_examples = {
   ["n1","n3","get","","",3],
   ["n5","n3","set","","",4]
  ]
-}};
+},
+"Double Loop":
+{"graph":{"name":"Double Loop","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span></div><div>j = <span class='var_j'></span></div>"}, "nodes":[
+  {"id":"n5","name":"fin","node_type":"process"},
+  {"id":"n4","name":"inner loop","node_type":"process","process":["this.j = j + 1; alert('j is ' + j);"]},
+  {"id":"n2","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
+  {"id":"n1","name":"outer loop","node_type":"process","data":{"j":0},"process":["this.i = i + 1; alert('i is ' + i);"]},
+  {"id":"n0","name":"i","node_type":"data","data":{"i":1},"io":{"selector":"#start_button","event":""}},
+  {"id":"n3","name":"j","node_type":"io","data":{"j":0},"io":{"selector":".var_j","event":""}},
+  {"id":"n6","name":"Start","node_type":"io","io":{"selector":"#start_button","event":""}}
+ ],
+ "edges":[
+  ["n0","n2","set","","",0],
+  ["n1","n2","get","","",1],
+  ["n1","n3","set","","",2],
+  ["n4","n3","get","","",3],
+  ["n0","n1","flo","","",4],
+  ["n4","n3","set","","",5],
+  ["n1","n4","flo","i < 3","i < 3",6],
+  ["n1","n2","set","","",7],
+  ["n1","n5","flo","","i >= 3",8],
+  ["n4","n4","flo","j < 3","j < 3",9],
+  ["n4","n1","flo","","",10],
+  ["n6","n0","sub","click","",11]
+ ],
+ "views":[{"name":"basic","nodes":{"n5":{"position":{"x":60,"y":290}},"n4":{"position":{"x":239,"y":299}},"n2":{"position":{"x":309,"y":83}},"n1":{"position":{"x":137,"y":178}},"n0":{"position":{"x":94,"y":83}},"n3":{"position":{"x":374,"y":179}},"n6":{"position":{"x":42,"y":12}}},"edges":{}}]
+}
+};

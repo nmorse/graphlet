@@ -166,6 +166,7 @@
 					nodes[i].position({x: pos.x, y: pos.y});
 					if (data.node_type === 'data') {
 						if (typeof data.name !== 'undefined'
+							&& typeof data.data !== 'undefined'
 						  && typeof data.data[data.name] !== 'undefined') {
 							label = data.data[data.name];
 							nodes[i].css({"content": label});
@@ -178,6 +179,7 @@
 					}
 					if (data.node_type === 'io') {
 						if (typeof data.name !== 'undefined'
+							&& typeof data.io !== 'undefined'
 							&& typeof data.io[data.name] !== 'undefined') {
 							label = data.io[data.name];
 							nodes[i].css({"content": label});
