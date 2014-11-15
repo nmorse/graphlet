@@ -202,10 +202,19 @@
 			eleCount = edges.length;
 			for (i = 0; i < eleCount; i++) {
 				data = edges[i].data();
-				if (data && data[3]) {
-					if (data[3].matches(/{{.+}}/g)) {
-						label = data.data[data.name];
-						nodes[i].css({"content": label});
+				if (data && data.name) {
+					//if (data.name.matches(/{{.+}}/g)) {
+					//	label = data.data[data.name];
+					//	edges[i].css({"content": label});
+					//}
+				}
+				else {
+					// when there is no name, but there is a guard...
+					if (data.guard) {
+						// set the label to the guard exp for full discosure...
+						label = data.guard;
+						//edges[i].data.name = label;
+						edges[i].css({"content": label});
 					}
 				}
 			}
