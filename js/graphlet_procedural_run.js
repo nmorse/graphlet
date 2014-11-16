@@ -210,19 +210,17 @@
 		return result;
 	};
 
-
-
-    init_graphlet = function(g) {
-        var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
-        var subscribe_edges = gq.using(g).find({"element":"edge", "type":"sub"}).edges();
-        this.glt = g;
-        debug_rate = parseInt($("#run_debug_rate").val(), 10) || 0;
-        if (g.graph && g.graph.template) {
+  init_graphlet = function(g) {
+    var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
+    var subscribe_edges = gq.using(g).find({"element":"edge", "type":"sub"}).edges();
+    this.glt = g;
+    debug_rate = parseInt($("#run_debug_rate").val(), 10) || 0;
+    if (g.graph && g.graph.template) {
 			$(function() {
 				$("#graphlet").html(g.graph.template);
 			});
 		}
-        $.each(flo_edges, function(i, o) {
+    $.each(flo_edges, function(i, o) {
 			$("body").off("edge_" + o[5]);
 			$("body").on("edge_" + o[5], function () {
 				var to_node_id = o[1];
@@ -230,7 +228,7 @@
 				run_node(target_node);
 			});
 		});
-        $.each(subscribe_edges, function(i, edge) {
+    $.each(subscribe_edges, function(i, edge) {
 			var from_node_id = edge[0];
 			var event_name = edge[3];
 			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
@@ -243,6 +241,6 @@
 			});
 
 		});
-    };
+  };
 
 })($, gq);
