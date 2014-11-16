@@ -176,5 +176,38 @@ var graph_examples = {
   ["n7","n3","set","","",12]
  ],
  "views":[{"name":"basic","nodes":{"n7":{"position":{"x":365,"y":221}},"n6":{"position":{"x":99,"y":38}},"n3":{"position":{"x":487,"y":196}},"n0":{"position":{"x":195,"y":95}},"n1":{"position":{"x":245,"y":165}},"n2":{"position":{"x":381,"y":86}},"n4":{"position":{"x":410,"y":321}},"n5":{"position":{"x":148,"y":283}}},"edges":{}}]
+},
+"Double Loop 3":
+{"graph":{"name":"Double Loop 3","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span></div><div>j = <span class='var_j'></span></div><div>grid: <div class='table'></div></div>"}, "nodes":[
+  {"id":"n7","name":"j","node_type":"data","data":{"j":0}},
+  {"id":"n6","name":"Start","node_type":"io","io":{"selector":"#start_button","event":""}},
+  {"id":"n3","name":"j","node_type":"io","io":{"selector":".var_j","event":""},"inspect":true},
+  {"id":"n0","name":"i","node_type":"data","data":{"i":0}},
+  {"id":"n1","name":"outer loop","node_type":"process","process":["this.i = i + 1;"]},
+  {"id":"n2","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
+  {"id":"n4","name":"inner loop","node_type":"process","process":["this.j = j + 1;"]},
+  {"id":"n5","name":"fin","node_type":"process"},
+  {"id":"n8","name":"(i, j)","node_type":"data","data":{"i":0,"j":"0"}},
+  {"id":"n9","name":"table","node_type":"io","process":[],"io":{"selector":".table"}}
+ ],
+ "edges":[
+  ["n0","n2","set","","",0],
+  ["n1","n2","get","","",1],
+  ["n4","n3","get","","",2],
+  ["n0","n1","flo","","",3],
+  ["n4","n3","set","","",4],
+  ["n1","n2","set","","",5],
+  ["n1","n5","flo","","i >= 3",6],
+  ["n4","n4","flo","","j < 3",7],
+  ["n4","n1","flo","","j >= 3",8],
+  ["n6","n0","sub","click","",9],
+  ["n1","n7","flo","","i < 3",10],
+  ["n7","n4","flo","","",11],
+  ["n7","n3","set","","",12],
+  ["n2","n8","sub","","",13],
+  ["n3","n8","sub","","",14],
+  ["n8","n9","sub","","",15]
+ ],
+ "views":[{"name":"basic","nodes":{"n7":{"position":{"x":365,"y":221}},"n6":{"position":{"x":72,"y":43}},"n3":{"position":{"x":487,"y":196}},"n0":{"position":{"x":195,"y":95}},"n1":{"position":{"x":245,"y":165}},"n2":{"position":{"x":381,"y":86}},"n4":{"position":{"x":342,"y":322}},"n5":{"position":{"x":148,"y":283}},"n8":{"position":{"x":503,"y":127}},"n9":{"position":{"x":532,"y":55}}},"edges":{}}]
 }
 };
