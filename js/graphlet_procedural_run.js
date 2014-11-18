@@ -32,18 +32,19 @@
     });
     return got_obj;
   };
+
   var set_all = function(id, result) {
     var g = this.glt;
     var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
     var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
-    $.each(set_edges, function(i, o) {
-      var end_node = gq.using(g).find({"element":"node", "id":o[1]}).nodes()[0];
+    $.each(set_edges, function(i, e) {
+      var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
       var start_node;
-      var alias = o[3];
+      var alias = e[3];
       var name = alias || end_node.name || "data";
       var this_edge;
       if (debug_rate) {
-        this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"']");
+        this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"']");
         this_edge.addClass("active_run");
         setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
       }
@@ -76,17 +77,23 @@
 					$(end_node.io.selector).text(end_node.data[name]);
 					$(end_node.io.selector).val(end_node.data[name]);
 				}
+				set_all(e[1], result);
       }
     });
     $.each(pub_edges, function(i, e) {
       var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
       var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
-      var effect_options = $.extend({"complete":function() {
-        console.log("jump"); //this.data['effect state'] = "done"
-      }}, start_node.data);
-      $(end_node.io.selector).effect(effect_options);
+      var effect_options;
+      if (end_node.io && end_node.io.selector) {
+        effect_options = $.extend({"complete":function() {
+          console.log("effect complete"); //this.data['effect state'] = "done"
+        }}, start_node.data);
+        $(end_node.io.selector).effect(effect_options);
+      }
+
     });
   };
+
   var transition_to = function(id, get_result) {
     var g = this.glt;
     var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
@@ -107,6 +114,7 @@
       }
     });
   };
+
   var run_node = function(target_node) {
     var get_data = get_all(target_node.id);
     var this_node;
