@@ -39,9 +39,9 @@
     var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
     $.each(set_edges, function(i, e) {
       var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
-      var start_node;
+      var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
       var alias = e[3];
-      var name = alias || end_node.name || "data";
+      var name = alias || end_node.name || start_node.name || "data";
       var this_edge;
       if (debug_rate) {
         this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"']");
@@ -50,7 +50,7 @@
       }
       if (name.charAt(0) === ".") {
 				if (end_node.io && end_node.io.selector) {
-					start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
+
 					switch (name)  {
 						case ".css":
 							$(end_node.io.selector).css(start_node.data);
@@ -129,7 +129,7 @@
       setTimeout(function() {this_node.removeClass("active_run");}, debug_rate);
     }
     get_data.defered_transition = false;
-    if (target_node.node_type === "process") {
+    if (target_node.node_type === "process" && target_node.process) {
       get_data.wait = wait;
       get_data.target_node_id = target_node.id;
       $.each(target_node.process, function(i, process) {

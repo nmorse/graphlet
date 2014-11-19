@@ -187,7 +187,7 @@ var graph_examples = {
   {"id":"n2","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
   {"id":"n4","name":"inner loop","node_type":"process","process":["this.j = j + 1;"]},
   {"id":"n5","name":"fin","node_type":"process"},
-  {"id":"n8","name":"(i, j)","node_type":"data","data":{"i":0,"j":"0"}},
+  {"id":"n8","name":"","node_type":"data","data":{"i":0,"j":"0"}},
   {"id":"n9","name":"table","node_type":"io","process":[],"io":{"selector":".table"}}
  ],
  "edges":[
