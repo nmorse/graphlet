@@ -110,18 +110,19 @@ var graph_examples = {
 },
 "counter 1":
 {"graph":{"name":"counter 1","template":"<button id='start_button'>Start</button><div class='counter'></div>"}, "nodes":[
-  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0},"view":{"position":{"x":298,"y":83}}},
-  {"name":"c","id":"n5","node_type":"data","data":{"c":0},"view":{"position":{"x":298,"y":192}}},
-  {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1","node_type":"process","view":{"position":{"x":124,"y":196}}},
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io","view":{"position":{"x":124,"y":80}}}
+  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
+  {"name":"+1","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
+  {"name":"","id":"n5","node_type":"data","data":{"c":0}},
+  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0}}
  ],
  "edges":[
   ["n0","n1","sub","click","",0],
   ["n1","n5","flo","c > 5","c > 5",1],
-  ["n1","n3","set","","",2],
+  ["n1","n3","set","","c <= 5",2],
   ["n1","n3","get","","",3],
   ["n5","n3","set","","",4]
- ]
+ ],
+ "views":[{"name":"primary","nodes":{"n0":{"position":{"x":120,"y":80}},"n1":{"position":{"x":120,"y":196}},"n5":{"position":{"x":298,"y":192}},"n3":{"position":{"x":298,"y":83}}},"edges":{}}]
 },
 "Double Loop":
 {"graph":{"name":"Double Loop","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span></div><div>j = <span class='var_j'></span></div>"}, "nodes":[

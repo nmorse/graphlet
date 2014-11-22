@@ -42,42 +42,52 @@
       var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
       var alias = e[3];
       var name = alias || end_node.name || start_node.name || "data";
+      var guard = e[4];
       var this_edge;
-      if (debug_rate) {
+      var guard_expression = e[4];
+      var guard = {"result":true};
+
+      if (guard_expression) {
+        guard = run_edge_guard(result, guard_expression);
+      }
+
+      if (debug_rate && guard.result) {
         this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"']");
         this_edge.addClass("active_run");
         setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
       }
-      if (name.charAt(0) === ".") {
-				if (end_node.io && end_node.io.selector) {
+      if (guard.result) {
+        if (name.charAt(0) === ".") {
+  				if (end_node.io && end_node.io.selector) {
 
-					switch (name)  {
-						case ".css":
-							$(end_node.io.selector).css(start_node.data);
-							break;
-						case ".attr":
-							$(end_node.io.selector).attr(start_node.data);
-							break;
-						case ".hide":
-							$(end_node.io.selector).hide(start_node.data.speed);
-							break;
-						case ".show":
-							$(end_node.io.selector).show(start_node.data.speed);
-							break;
-						default:
-							alert("jQuery function " +name + " is not supported at this time.");
-					}
+  					switch (name)  {
+  						case ".css":
+  							$(end_node.io.selector).css(start_node.data);
+  							break;
+  						case ".attr":
+  							$(end_node.io.selector).attr(start_node.data);
+  							break;
+  						case ".hide":
+  							$(end_node.io.selector).hide(start_node.data.speed);
+  							break;
+  						case ".show":
+  							$(end_node.io.selector).show(start_node.data.speed);
+  							break;
+  						default:
+  							alert("jQuery function " +name + " is not supported at this time.");
+  					}
 
-				}
-			}
-			else {
-				if (!end_node.data) { end_node.data = {};}
-				end_node.data[name] = result[name];
-				if (end_node.io && end_node.io.selector) {
-					$(end_node.io.selector).text(end_node.data[name]);
-					$(end_node.io.selector).val(end_node.data[name]);
-				}
-				set_all(e[1], result);
+  				}
+  			}
+  			else {
+  				if (!end_node.data) { end_node.data = {};}
+  				end_node.data[name] = result[name];
+  				if (end_node.io && end_node.io.selector) {
+  					$(end_node.io.selector).text(end_node.data[name]);
+  					$(end_node.io.selector).val(end_node.data[name]);
+  				}
+  				set_all(e[1], result);
+        }
       }
     });
     $.each(pub_edges, function(i, e) {
