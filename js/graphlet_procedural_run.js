@@ -17,7 +17,7 @@
       var this_edge;
       var this_node;
       if (debug_rate) {
-        this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"']");
+        this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"'][edge_type='get']");
         this_edge.addClass("active_run");
         setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
       }
@@ -52,7 +52,7 @@
       }
 
       if (debug_rate && guard.result) {
-        this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"']");
+        this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='set']");
         this_edge.addClass("active_run");
         setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
       }
@@ -116,7 +116,7 @@
       if (guard.result) {
         console.log("trigger transition "+e[0]+" -> "+e[1]);
         if (debug_rate) {
-          this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"']");
+          this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='flo']");
           this_edge.addClass("active_run");
           setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
         }

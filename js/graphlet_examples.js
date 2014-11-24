@@ -122,7 +122,25 @@ var graph_examples = {
   ["n1","n3","get","","",3],
   ["n5","n3","set","","",4]
  ],
- "views":[{"name":"primary","nodes":{"n0":{"position":{"x":120,"y":80}},"n1":{"position":{"x":120,"y":196}},"n5":{"position":{"x":298,"y":192}},"n3":{"position":{"x":298,"y":83}}},"edges":{}}]
+ "views":[{"name":"primary","nodes":{"n3":{"position":{"x":380,"y":140}},"n5":{"position":{"x":380,"y":250}},"n1":{"position":{"x":200,"y":250}},"n0":{"position":{"x":200,"y":140}}},"edges":{}},{"name":"my view","nodes":{"n0":{"position":{"x":447,"y":97}},"n1":{"position":{"x":235,"y":153}},"n5":{"position":{"x":145,"y":267}},"n3":{"position":{"x":326,"y":269}}},"edges":{}}]
+},
+"counter 2":
+{"graph":{"name":"counter 2","template":"<button id='start_button'>Start</button><div class='counter'></div><div><input id='limit_input' /></div>"}, "nodes":[
+  {"id":"n2","name":"limit","node_type":"io","data":{"limit":3},"io":{"selector":"#limit_input"}},
+  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0}},
+  {"name":"c","id":"n5","node_type":"data","data":{"c":0}},
+  {"name":"","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
+  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"}
+ ],
+ "edges":[
+  ["n0","n1","sub","click","",0],
+  ["n1","n5","flo","","c > limit",1],
+  ["n1","n3","set","","c <= limit",2],
+  ["n1","n3","get","","",3],
+  ["n5","n3","set","","",4],
+  ["n1","n2","get","","",5]
+ ],
+ "views":[{"name":"primary","nodes":{"n0":{"position":{"x":200,"y":140}},"n1":{"position":{"x":200,"y":250}},"n5":{"position":{"x":380,"y":250}},"n3":{"position":{"x":380,"y":140}},"n2":{"position":{"x":103,"y":190}}},"edges":{}},{"name":"my view","nodes":{"n2":{"position":{"x":445,"y":154}},"n3":{"position":{"x":326,"y":269}},"n5":{"position":{"x":145,"y":267}},"n1":{"position":{"x":235,"y":153}},"n0":{"position":{"x":447,"y":97}}},"edges":{}}]
 },
 "Double Loop":
 {"graph":{"name":"Double Loop","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span></div><div>j = <span class='var_j'></span></div>"}, "nodes":[
