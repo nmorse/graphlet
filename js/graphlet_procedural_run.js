@@ -94,11 +94,15 @@
       var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
       var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
       var effect_options;
-      if (end_node.io && end_node.io.selector) {
+      if (start_node.data && start_node.data.effect && end_node.io && end_node.io.selector) {
         effect_options = $.extend({"complete":function() {
           console.log("effect complete"); //this.data['effect state'] = "done"
         }}, start_node.data);
         $(end_node.io.selector).effect(effect_options);
+      }
+      else {
+        console.log("trigger of " + e[2]);
+        $('body').trigger(e[2]);
       }
 
     });

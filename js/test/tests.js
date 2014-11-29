@@ -128,3 +128,36 @@ asyncTest( "Graphlet procedural run test on the demo 'shake 2' graphlet", functi
     $('#qunit-work-area').empty();
   }, 3000);
 });
+
+asyncTest( "Graphlet procedural run test on the demo 'loop 2' graphlet", function(assert) {
+  expect(1);
+  var $env = $('#qunit-work-area');
+  var $fixture = $env.append('<div id="graphlet">loading</div>');
+
+  init_graphlet(graph_examples['Loop 2']);
+
+  // trigger event
+  $('#start_button').trigger("click");
+  setTimeout(function() {
+	  assert.equal( $('.counter').text(), "6", "the graphlet ran and set the counter to '6'" );
+    QUnit.start();
+    $('#qunit-work-area').empty();
+  }, 5000);
+});
+
+asyncTest( "Graphlet procedural run test on the demo 'Double Loop 1' graphlet", function(assert) {
+  expect(2);
+  var $env = $('#qunit-work-area');
+  var $fixture = $env.append('<div id="graphlet">loading</div>');
+
+  init_graphlet(graph_examples['Double Loop 1']);
+
+  // trigger event
+  $('#start_button').trigger("click");
+  setTimeout(function() {
+	  assert.equal( $('.var_i').text(), "3", "the graphlet ran and set the i to '3'" );
+	  assert.equal( $('.var_i').text(), "3", "the graphlet ran and set the j to '3'" );
+    QUnit.start();
+    $('#qunit-work-area').empty();
+  }, 1000);
+});
