@@ -12,17 +12,23 @@
     $.each(get_edges, function(i, o) {
 	    var to_node_id = o[1];
       var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
-      var alias = o[3];
-      var name = alias || end_node.name;
+      var name = o[3] || end_node.name;
+      var alias = o[4] || name;
       var this_edge;
       var this_node;
+      var selector;
       if (debug_rate) {
         this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"'][edge_type='get']");
         this_edge.addClass("active_run");
         setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
       }
+      if (end_node.node_type === 'io' && end_node.io && end_node.io.selector && end_node.io.valve >= 2) {
+        selector = end_node.io.selector;
+        if (!end_node.data) {end_node.data = {};}
+        end_node.data[name] = $(selector).val() || $(selector).text();
+      }
       if (end_node.data) {
-		    got_obj[name] = end_node.data[name];
+		    got_obj[alias] = end_node.data[name];
         if (debug_rate) {
           this_node = get_current_cyto_graph().$("node[id='"+end_node.id+"']");
           this_node.addClass("active_run");
@@ -247,20 +253,12 @@
 		  var selector;
 		  if (node.io && node.io.selector) {
 		    selector = node.io.selector;
-		    // sync the nodes data with the IO point
+		    // initial sync the nodes data with the IO point
 		    if (node.data && node.name) {
 		      $(selector).val(node.data[node.name]);
 		      $(selector).text(node.data[node.name]);
 		    }
 		  }
-		  // watch for changes to the IO point and update this nodes data.
-			$(selector).off("keyup");
-			$(selector).on("keyup", function () {
-			  if (node.data) {
-			    node.data[node.name] = $(selector).val();
-				  //run_node(node);
-			  }
-			});
 		});
     $.each(flo_edges, function(i, o) {
 			$("body").off("edge_" + o[5]);
