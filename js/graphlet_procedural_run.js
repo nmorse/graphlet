@@ -233,6 +233,7 @@
 	};
 
   init_graphlet = function(g) {
+    var io_nodes = gq.using(g).find({"element":"node", "type":"io"}).nodes();
     var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
     var subscribe_edges = gq.using(g).find({"element":"edge", "type":"sub"}).edges();
     this.glt = g;
@@ -242,6 +243,25 @@
 				$("#graphlet").html(g.graph.template);
 			});
 		}
+		$.each(io_nodes, function(i, node) {
+		  var selector;
+		  if (node.io && node.io.selector) {
+		    selector = node.io.selector;
+		    // sync the nodes data with the IO point
+		    if (node.data && node.name) {
+		      $(selector).val(node.data[node.name]);
+		      $(selector).text(node.data[node.name]);
+		    }
+		  }
+		  // watch for changes to the IO point and update this nodes data.
+			$(selector).off("keyup");
+			$(selector).on("keyup", function () {
+			  if (node.data) {
+			    node.data[node.name] = $(selector).val();
+				  //run_node(node);
+			  }
+			});
+		});
     $.each(flo_edges, function(i, o) {
 			$("body").off("edge_" + o[5]);
 			$("body").on("edge_" + o[5], function () {
@@ -261,8 +281,8 @@
 				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
 				run_node(target_node);
 			});
-
 		});
+
   };
 
 })($, gq);

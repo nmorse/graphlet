@@ -104,7 +104,7 @@ asyncTest( "Graphlet procedural run test on the demo 'shake 2' graphlet", functi
 
   init_graphlet({"graph":{"name":"shake 2.5","template":"<input type='text' id='textbox' value='' placeholder='type here' />"},
    "nodes":[
-    {"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":2000}},
+    {"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":1000}},
     {"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake", "distance":5}},
     {"id":"n2","name":"new text","node_type":"data","data":{"string":"new text"}},
     {"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
