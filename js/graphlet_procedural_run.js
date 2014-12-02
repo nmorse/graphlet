@@ -19,8 +19,8 @@
       var selector;
       if (debug_rate) {
         this_edge = get_current_cyto_graph().$("edge[source='"+o[0]+"'][target='"+o[1]+"'][edge_type='get']");
-        this_edge.addClass("active_run");
-        setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
+        this_edge.addClass("active_run_get");
+        setTimeout(function() {this_edge.removeClass("active_run_get");}, debug_rate/2);
       }
       if (end_node.node_type === 'io' && end_node.io && end_node.io.selector && end_node.io.valve >= 2) {
         selector = end_node.io.selector;
@@ -31,8 +31,8 @@
 		    got_obj[alias] = end_node.data[name];
         if (debug_rate) {
           this_node = get_current_cyto_graph().$("node[id='"+end_node.id+"']");
-          this_node.addClass("active_run");
-          setTimeout(function() {this_node.removeClass("active_run");}, debug_rate);
+          this_node.addClass("active_run_get");
+          setTimeout(function() {this_node.removeClass("active_run_get");}, debug_rate/2);
         }
 	    }
     });
@@ -60,8 +60,8 @@
 
       if (debug_rate && guard.result) {
         this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='set']");
-        this_edge.addClass("active_run");
-        setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
+        this_edge.addClass("active_run_set");
+        setTimeout(function() {this_edge.removeClass("active_run_set");}, debug_rate/2);
       }
       if (guard.result) {
         if (name.charAt(0) === ".") {
@@ -96,8 +96,8 @@
   				set_all(e[1], result);
   				if (debug_rate) {
             cy_target_node = get_current_cyto_graph().$("node[id='"+end_node.id+"']");
-            cy_target_node.addClass("active_run");
-            setTimeout(function() {cy_target_node.removeClass("active_run");}, debug_rate);
+            cy_target_node.addClass("active_run_set");
+            setTimeout(function() {cy_target_node.removeClass("active_run_set");}, debug_rate/2);
           }
         }
       }
@@ -133,8 +133,8 @@
         console.log("trigger transition "+e[0]+" -> "+e[1]);
         if (debug_rate) {
           this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='flo']");
-          this_edge.addClass("active_run");
-          setTimeout(function() {this_edge.removeClass("active_run");}, debug_rate);
+          this_edge.addClass("active_run_flo");
+          setTimeout(function() {this_edge.removeClass("active_run_flo");}, debug_rate);
         }
         setTimeout(function() {$("body").trigger("edge_" + e[5]);}, debug_rate);
       }
@@ -151,8 +151,8 @@
     };
     if (debug_rate) {
       this_node = get_current_cyto_graph().$("node[id='"+target_node.id+"']");
-      this_node.addClass("active_run");
-      setTimeout(function() {this_node.removeClass("active_run");}, debug_rate);
+      this_node.addClass("active_run_node");
+      setTimeout(function() {this_node.removeClass("active_run_node");}, debug_rate);
     }
     get_data.defered_transition = false;
     if (target_node.node_type === "process" && target_node.process) {
@@ -166,10 +166,12 @@
       get_data = $.extend(get_data, target_node.data);
     }
 
-    set_all(target_node.id, get_data);
-    if (!get_data.defered_transition) {
-      transition_to(target_node.id, get_data);
-    }
+    setTimeout(function() {
+      set_all(target_node.id, get_data);
+      if (!get_data.defered_transition) {
+        transition_to(target_node.id, get_data);
+      }
+    }, debug_rate/2);
   };
 
 	// sandbox for functional (saferEval)

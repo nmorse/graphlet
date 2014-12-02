@@ -136,9 +136,9 @@
 				})
 			.selector("edge[edge_type='flo'], edge[edge_type='sub'], edge[edge_type='pub']")
 				.css({
-					"line-color": "#22C",
-					"source-arrow-color": "#22C",
-					"target-arrow-color": "#22C",
+					"line-color": "#12C",
+					"source-arrow-color": "#12C",
+					"target-arrow-color": "#12C",
 					"source-arrow-shape": "tee",
 					"target-arrow-shape": "triangle"
 				})
@@ -147,10 +147,26 @@
 						"background-color": "#FF0",
 						"line-color": "#FF0"
 					})
-			.selector(".active_run")
+			.selector(".active_run_node")
 				.css({
 					"background-color": "#F80",
 					"line-color": "#F80"
+				})
+			.selector(".active_run_get")
+				.css({
+					"background-color": "#2F2",
+					"line-color": "#2F2"
+				})
+			.selector(".active_run_set")
+				.css({
+					"background-color": "#F12",
+					"line-color": "#F12"
+				})
+			.selector(".active_run_flo")
+				.css({
+					"source-arrow-color": "#0AF",
+					"target-arrow-color": "#0AF",
+					"line-color": "#0AF"
 				}),
 		ready: function(){
 			var eleCount, nodes, edges;
