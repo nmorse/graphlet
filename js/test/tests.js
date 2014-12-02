@@ -148,6 +148,7 @@ asyncTest( "Graphlet procedural run test on the demo 'loop 2' graphlet", functio
 asyncTest( "Graphlet procedural run test on the demo 'Double Loop 1' graphlet", function(assert) {
   expect(2);
   var $env = $('#qunit-work-area');
+  $('#qunit-work-area').empty();
   var $fixture = $env.append('<div id="graphlet">loading</div>');
 
   init_graphlet(graph_examples['Double Loop 1']);
@@ -161,3 +162,36 @@ asyncTest( "Graphlet procedural run test on the demo 'Double Loop 1' graphlet", 
     $('#qunit-work-area').empty();
   }, 1000);
 });
+
+asyncTest( "Graphlet procedural run test on the demo 'counter 3' graphlet", function(assert) {
+  expect(4);
+  var $env = $('#qunit-work-area');
+  var $fixture = $env.append('<div id="graphlet">loading</div>');
+
+  init_graphlet(graph_examples['counter 3']);
+  setTimeout(function() {
+    // trigger event
+    $('#start_button').trigger("click");
+    setTimeout(function() {
+  	  assert.equal( $('.counter').text(), "1", "the counter graphlet ran and set the counter to '1'" );
+
+      $('#start_button').trigger("click");
+      setTimeout(function() {
+    	  assert.equal( $('.counter').text(), "2", "the counter graphlet ran and set the counter to '2'" );
+
+        $('#start_button').trigger("click");
+        setTimeout(function() {
+      	  assert.equal( $('.counter').text(), "3", "the counter graphlet ran and set the counter to '3'" );
+
+          $('#start_button').trigger("click");
+            setTimeout(function() {
+          	  assert.equal( $('.counter').text(), "1", "the counter graphlet ran once more and set the counter back to '1'" );
+              QUnit.start();
+              $('#qunit-work-area').empty();
+            }, 500);
+        }, 500);
+      }, 500);
+    }, 500);
+  }, 1000);
+});
+

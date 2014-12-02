@@ -142,6 +142,29 @@ var graph_examples = {
  ],
  "views":[{"name":"primary","nodes":{"n0":{"position":{"x":200,"y":140}},"n1":{"position":{"x":200,"y":250}},"n5":{"position":{"x":380,"y":250}},"n3":{"position":{"x":380,"y":140}},"n2":{"position":{"x":103,"y":190}}},"edges":{}},{"name":"my view","nodes":{"n2":{"position":{"x":445,"y":154}},"n3":{"position":{"x":326,"y":269}},"n5":{"position":{"x":145,"y":267}},"n1":{"position":{"x":235,"y":153}},"n0":{"position":{"x":447,"y":97}}},"edges":{}}]
 },
+"counter 3":
+{"graph":{"name":"counter 3","template":"<button id='start_button'>Start</button><div class='counter'></div><div><input id='limit_input' /></div>"}, "nodes":[
+  {"id":"n4","name":"init","node_type":"process"},
+  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
+  {"name":"","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
+  {"name":"c","id":"n5","node_type":"data","data":{"c":1}},
+  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":1}},
+  {"id":"n2","name":"limit","node_type":"io","data":{"limit":3},"io":{"selector":"#limit_input","valve":3}},
+  {"id":"n6","name":"Graph","node_type":"io"}
+ ],
+ "edges":[
+  ["n1","n5","flo","","c > limit",0],
+  ["n1","n3","set","","c <= limit",1],
+  ["n1","n3","get","","",2],
+  ["n5","n3","set","","",3],
+  ["n1","n2","get","","",4],
+  ["n4","n2","get","limit","c",5],
+  ["n4","n3","set","","",6],
+  ["n0","n1","sub","click","",7],
+  ["n6","n4","sub","graph_init","",8]
+ ],
+ "views":[{"name":"primary","nodes":{"n6":{"position":{"x":105,"y":59}},"n2":{"position":{"x":103,"y":190}},"n3":{"position":{"x":365,"y":150}},"n5":{"position":{"x":380,"y":250}},"n1":{"position":{"x":200,"y":250}},"n0":{"position":{"x":463,"y":300}},"n4":{"position":{"x":202,"y":122}}},"edges":{}},{"name":"my view","nodes":{"n4":{"position":{"x":374,"y":299}},"n0":{"position":{"x":495,"y":63}},"n1":{"position":{"x":235,"y":153}},"n5":{"position":{"x":164,"y":58}},"n3":{"position":{"x":89,"y":155}},"n2":{"position":{"x":495,"y":145}},"n6":{"position":{"x":96,"y":299}}},"edges":{}}]
+},
 "Double Loop 1":
 {"graph":{"name":"Double Loop 1","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span></div><div>j = <span class='var_j'></span></div>"}, "nodes":[
   {"id":"n7","name":"j","node_type":"data","data":{"j":0}},
