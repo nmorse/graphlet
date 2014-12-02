@@ -50,6 +50,7 @@
       var name = alias || end_node.name || start_node.name || "data";
       var guard = e[4];
       var this_edge;
+      var cy_target_node;
       var guard_expression = e[4];
       var guard = {"result":true};
 
@@ -93,6 +94,11 @@
   					$(end_node.io.selector).val(end_node.data[name]);
   				}
   				set_all(e[1], result);
+  				if (debug_rate) {
+            cy_target_node = get_current_cyto_graph().$("node[id='"+end_node.id+"']");
+            cy_target_node.addClass("active_run");
+            setTimeout(function() {cy_target_node.removeClass("active_run");}, debug_rate);
+          }
         }
       }
     });
@@ -273,6 +279,8 @@
 			var event_name = edge[3];
 			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
 			var io = source_node.io;
+			if (!io) {io = {};}
+			if (!io.selector) {io.selector = 'body';}
 			$(io.selector).off(event_name);
 			$(io.selector).on(event_name, function() {
 				var to_node_id = edge[1];
@@ -280,7 +288,8 @@
 				run_node(target_node);
 			});
 		});
-
+    console.log("trigger of graph_init event");
+    $('body').trigger('graph_init');
   };
 
 })($, gq);
