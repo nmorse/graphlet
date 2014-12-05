@@ -276,6 +276,16 @@
 				run_node(target_node);
 			});
 		});
+    // first time to turn off all listeners
+    $.each(subscribe_edges, function(i, edge) {
+			var from_node_id = edge[0];
+			var event_name = edge[3];
+			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
+			if (!io) {io = {};}
+			if (!io.selector) {io.selector = 'body';}
+			$(io.selector).off(event_name);
+		});
+		// secontime through this set of edges to turn on listneing (subscribe) to events.
     $.each(subscribe_edges, function(i, edge) {
 			var from_node_id = edge[0];
 			var event_name = edge[3];
