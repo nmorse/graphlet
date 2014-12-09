@@ -3,9 +3,9 @@ var graph_examples = {
   {"name":"end","id":"n5","node_type":"data","data":{"color":"rgb(255, 0, 0)"}},
   {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4"},
   {"name":"selector","node_type":"io","io":{"selector":".greeting"},"id":"n3"},
-  {"name":"","data":{"salutation":"Hello"},"id":"n2","node_type":"data"},
+  {"name":"","data":{"salutation":"Hello"},"id":"n2","node_type":"data", "width":140},
   {"name":"concat","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","node_type":"process"},
-  {"name":"selector","id":"n0","io":{"selector":"#start_button"},"node_type":"io"}
+  {"name":"selector","id":"n0","io":{"selector":"#start_button"},"node_type":"io", "width":110}
  ],
  "edges":[
   ["n0","n1","sub","click","",0],

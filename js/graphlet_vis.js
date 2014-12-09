@@ -102,6 +102,10 @@
 					"shape": "roundrectangle",
 					"width": 80
 				})
+			.selector("node[width]")
+				.css({
+					"width": "data(width)"
+				})
 			.selector("edge")
 				.css({
 					"content": "data(name)",
