@@ -56,7 +56,9 @@ $(function() {
 		view_obj = graph.views[view_index];
 		$.each(graph.nodes, function(i, n) {
 			var node_id = n.id;
-			n.view = view_obj.nodes[node_id];
+			n.view = {};
+			n.view.position = view_obj.nodes[node_id].position;
+			n.width = view_obj.nodes[node_id].width;
 		});
 		//delete graph.views;
 		return graph;

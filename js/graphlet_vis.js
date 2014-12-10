@@ -92,15 +92,13 @@
 					"border-width": 3,
 					"background-color": "#E9E2D4",
 					"border-color": "#B29E7C",
-					"text-valign":"center",
-					"width": 60
+					"text-valign":"center"
 				})
 			.selector("node[node_type='io']")
 				.css({
 					"background-color": "#DDE2FF",
 					"border-color": "#8890BB",
-					"shape": "roundrectangle",
-					"width": 80
+					"shape": "roundrectangle"
 				})
 			.selector("node[width]")
 				.css({
@@ -459,14 +457,13 @@
 			pos = nodes[i].position();
 			pos.x = Math.round(pos.x);
 			pos.y = Math.round(pos.y);
-//			if (options && options.separate) {
 			graph_views[active_view_index].nodes[data.id] = {"position":pos};
 			delete o.view;
-//			}
-//			else {
-//				o.view = {};
-//				o.view.position = {'x':Math.round(pos.x), 'y':Math.round(pos.y)};
-//			}
+      if (o.width) {
+        graph_views[active_view_index].nodes[data.id].width = o.width;
+			  delete o.width;
+      }
+
 			exp_graph_json += "  " + JSON.stringify(o);
 		}
 		spacer = "";
