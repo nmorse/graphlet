@@ -453,7 +453,7 @@
 			exp_graph_json += spacer + '\n';
 			spacer = ',';
 			data = nodes[i].data();
-			o = data;
+			o = $.extend({}, data);
 			pos = nodes[i].position();
 			pos.x = Math.round(pos.x);
 			pos.y = Math.round(pos.y);
