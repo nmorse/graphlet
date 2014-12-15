@@ -309,4 +309,81 @@ var graph_examples = {
   ["n9","n13","get","","",24]
  ],
  "views":[{"name":"different","nodes":{"n5":{"position":{"x":538,"y":33},"width":70},"n4":{"position":{"x":259,"y":332},"width":70},"n2":{"position":{"x":410,"y":95},"width":70},"n1":{"position":{"x":419,"y":170},"width":70},"n0":{"position":{"x":225,"y":95},"width":70},"n3":{"position":{"x":245,"y":255},"width":70},"n6":{"position":{"x":71,"y":33},"width":70},"n7":{"position":{"x":60,"y":255},"width":70},"n8":{"position":{"x":225,"y":170},"width":70},"n9":{"position":{"x":60,"y":330},"width":70},"n10":{"position":{"x":303,"y":33},"width":70},"n11":{"position":{"x":78,"y":129},"width":70},"n12":{"position":{"x":457,"y":250},"width":70},"n13":{"position":{"x":280,"y":391},"width":70}},"edges":{}}]
-}};
+},
+"Double Loop 4":
+{"graph":{"name":"Double Loop 4","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span> | max_i:<input id='max_i' type='integer'/></div><div>j = <span class='var_j'></span> | max_j:<input id='max_j' type='integer'/></div>"}, "nodes":[
+  {"id":"n5","name":"fin","node_type":"process","data":{}},
+  {"id":"n14","name":"outer","node_type":"process"},
+  {"id":"n15","name":"inner","node_type":"process"},
+  {"id":"n4","parent":"n15","name":"","node_type":"process","process":["this.j++;"]},
+  {"id":"n2","parent":"n14","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
+  {"id":"n1","parent":"n14","name":"","node_type":"process","process":["this.i++;"],"data":{"j":1}},
+  {"id":"n0","parent":"n14","name":"i","node_type":"data","data":{"i":1}},
+  {"id":"n3","parent":"n15","name":"j","node_type":"io","io":{"selector":".var_j","event":""}},
+  {"id":"n6","name":"Start","node_type":"io","io":{"selector":"#start_button","event":""}},
+  {"id":"n7","parent":"n15","name":"j","node_type":"data","data":{"j":1}},
+  {"id":"n8","parent":"n14","name":"outer work","node_type":"process"},
+  {"id":"n9","parent":"n15","name":"inner work","node_type":"process"},
+  {"id":"n10","name":"enable","node_type":"process","data":{"disabled":false}},
+  {"id":"n11","name":"disable","node_type":"process","data":{"disabled":true}},
+  {"id":"n12","name":"max_i","node_type":"io","io":{"selector":"#max_i","event":"","valve":2},"data":{"max_i":4}},
+  {"id":"n13","name":"max_j","node_type":"io","io":{"selector":"#max_j","event":"","valve":2},"data":{"max_j":4}}
+ ],
+ "edges":[
+  ["n0","n2","set","","",0],
+  ["n1","n2","get","","",1],
+  ["n4","n3","get","","",2],
+  ["n4","n3","set","","j <= max_j",3],
+  ["n1","n2","set","","i <= max_i",4],
+  ["n1","n5","flo","","i > max_i",5],
+  ["n6","n0","sub","click","",6],
+  ["n7","n3","set","","",7],
+  ["n0","n8","flo","","",8],
+  ["n4","n9","flo","","j <= max_j",9],
+  ["n7","n9","flo","","",10],
+  ["n9","n4","flo","","j <= max_j",11],
+  ["n8","n7","flo","","i <= max_i",12],
+  ["n1","n8","flo","","i <= max_i",13],
+  ["n8","n2","get","","",14],
+  ["n9","n3","get","","",15],
+  ["n4","n1","flo","","j > max_j",16],
+  ["n6","n11","sub","click","",17],
+  ["n11","n6","set",".attr","",18],
+  ["n5","n10","flo","","",19],
+  ["n10","n6","set",".attr","",20],
+  ["n1","n12","get","","",21],
+  ["n8","n12","get","","",22],
+  ["n4","n13","get","","",23],
+  ["n9","n13","get","","",24]
+ ],
+ "views":[{"name":"different","nodes":{"n5":{"position":{"x":538,"y":33},"width":70},"n14":{"position":{"x":322,"y":135}},"n15":{"position":{"x":160,"y":293}},"n4":{"position":{"x":259,"y":332},"width":70},"n2":{"position":{"x":410,"y":97},"width":70},"n1":{"position":{"x":419,"y":172},"width":70},"n0":{"position":{"x":225,"y":97},"width":70},"n3":{"position":{"x":246,"y":253},"width":70},"n6":{"position":{"x":71,"y":33},"width":70},"n7":{"position":{"x":60,"y":255},"width":70},"n8":{"position":{"x":225,"y":172},"width":70},"n9":{"position":{"x":60,"y":330},"width":70},"n10":{"position":{"x":303,"y":33},"width":70},"n11":{"position":{"x":78,"y":129},"width":70},"n12":{"position":{"x":501,"y":255},"width":70},"n13":{"position":{"x":365,"y":389},"width":70}},"edges":{}}]
+},
+"Guessing Game 2":
+{"graph":{"name":"Guessing Game 2","template":
+"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"},
+"nodes":[
+  {"id":"n9","name":"got it","node_type":"data","data":{"prompt":"Wow you guessed it!"}},
+  {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess"}},
+  {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
+  {"id":"n6","name":"secret","node_type":"process"},
+  {"name":"prompt","id":"n5","node_type":"data","data":{"prompt":"Guess a number (1 - 100)"}},
+  {"name":"prompt","node_type":"io","io":{"selector":".prompt"},"id":"n3"},
+  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100);"],"id":"n1","node_type":"process"},
+  {"name":"enter","id":"n0","io":{"selector":"#enter_button"},"node_type":"io"},
+  {"id":"n10","name":"graph","node_type":"io"}
+ ],
+ "edges":[
+  ["n1","n5","flo","next","greeting === 'Hello World'",0],
+  ["n1","n6","set","","",1],
+  ["n5","n3","set","","",2],
+  ["n0","n7","sub","click","",3],
+  ["n7","n8","get","","",4],
+  ["n7","n6","get","","",5],
+  ["n7","n9","flo","","diff === 0",6],
+  ["n9","n3","set","","",7],
+  ["n7","n5","flo","","diff > 0",8],
+  ["n10","n1","sub","graph_init","",9]
+ ],
+ "views":[{"name":"primary","nodes":{"n9":{"position":{"x":296,"y":203}},"n8":{"position":{"x":436,"y":243},"width":60},"n7":{"position":{"x":173,"y":281},"width":80},"n6":{"position":{"x":70,"y":204},"width":60},"n5":{"position":{"x":358,"y":58},"width":60},"n3":{"position":{"x":437,"y":203},"width":60},"n1":{"position":{"x":179,"y":107},"width":60},"n0":{"position":{"x":436,"y":285},"width":60},"n10":{"position":{"x":53,"y":31},"width":60}},"edges":{}}]
+}
+};
