@@ -63,7 +63,6 @@ test( "Graphlet selector tests", function(assert) {
   );
 });
 
-
 asyncTest( "Graphlet procedural run test on a simple Hello World graphlet", function(assert) {
   expect(2);
   var $env = $('#qunit-work-area');

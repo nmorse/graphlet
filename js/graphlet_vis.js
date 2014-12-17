@@ -5,10 +5,14 @@
 	var g_template = ""
 	var add_edge_mode = false;
 	var add_edge_arr = [];
+
 	var get_one_key = function(obj) {
-		return $.map(obj, function( value, key ) {
-			return key;
-		})[0];
+	  if (obj) {
+		  return $.map(obj, function( value, key ) {
+			  return key;
+		  })[0];
+	  }
+	  return "";
 	};
 
 	// convert a stored graph into a from that is appropreate for Cytoscape.js
@@ -191,8 +195,10 @@
 						}
 						else if (typeof data.name === 'undefined' || $.trim(data.name) === '') {
 							key = get_one_key(data.data);
-							label = key + ": " +data.data[key];
-							nodes[i].css({"content": label});
+							if (key) {
+							  label = key + ": " +data.data[key];
+							  nodes[i].css({"content": label});
+							}
 						}
 					}
 					if (data.node_type === 'io') {
@@ -204,8 +210,10 @@
 						}
 						else if (typeof data.name === 'undefined' || $.trim(data.name) === '') {
 							key = get_one_key(data.io);
-							label = key + ": " +data.io[key];
-							nodes[i].css({"content": label});
+							if (key) {
+							  label = key + ": " +data.io[key];
+							  nodes[i].css({"content": label});
+							}
 						}
 					}
 					if (data.node_type === 'process') {
