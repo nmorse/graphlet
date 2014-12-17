@@ -15,6 +15,21 @@
 	  return "";
 	};
 
+  var stringify_node = function(nodes, i, graph_views, active_view_index) {
+		var data = nodes[i].data();
+		var o = $.extend({}, data);
+		var pos = nodes[i].position();
+		pos.x = Math.round(pos.x);
+		pos.y = Math.round(pos.y);
+		graph_views[active_view_index].nodes[data.id] = {"position":pos};
+		delete o.view;
+    if (o.width) {
+      graph_views[active_view_index].nodes[data.id].width = o.width;
+		  delete o.width;
+    }
+		return JSON.stringify(o);
+  };
+
 	// convert a stored graph into a from that is appropreate for Cytoscape.js
 	load_hbg = function (graph, graph_designator) {
 		var raw_nodes = graph.nodes;
@@ -435,6 +450,7 @@
 		$("#edge_editor").trigger("update_form", [edges_selected]);
 	}
 
+
 	export_graph_json = function (g, options) {
 		var nodes = g.nodes();
 		var edges = g.edges();
@@ -457,22 +473,21 @@
 		}
 		exp_graph_json = '{"graph":' + JSON.stringify(graph_desc) + ', "nodes":[';
 		graph_views[active_view_index].nodes = {};
+    // first record all the nodes that do not have a parent.
 		for (i = nodes.length-1; i >= 0; i--) {
-			exp_graph_json += spacer + '\n';
-			spacer = ',';
-			data = nodes[i].data();
-			o = $.extend({}, data);
-			pos = nodes[i].position();
-			pos.x = Math.round(pos.x);
-			pos.y = Math.round(pos.y);
-			graph_views[active_view_index].nodes[data.id] = {"position":pos};
-			delete o.view;
-      if (o.width) {
-        graph_views[active_view_index].nodes[data.id].width = o.width;
-			  delete o.width;
-      }
-
-			exp_graph_json += "  " + JSON.stringify(o);
+		  if (!nodes[i].data().parent) {
+  			exp_graph_json += spacer + '\n';
+  			spacer = ',';
+        exp_graph_json += "  " + stringify_node(nodes, i, graph_views, active_view_index);
+		  }
+		}
+		// second record all nodes that have a parent
+		for (i = nodes.length-1; i >= 0; i--) {
+		  if (nodes[i].data().parent) {
+  			exp_graph_json += spacer + '\n';
+  			spacer = ',';
+        exp_graph_json += "  " + stringify_node(nodes, i, graph_views, active_view_index);
+		  }
 		}
 		spacer = "";
 		exp_graph_json += '\n ],\n "edges":[';
