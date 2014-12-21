@@ -488,9 +488,25 @@
 	function update_graph_nodes(nodes) {
 		$.each(nodes, function (i, node) {
 			var node_id = node["id"];
-			var ele = g.elements("node" + "[id='" + node_id + "']")[0];
+			var eles = g.elements("node" + "[id='" + node_id + "']");
+			var ele = eles[0];
+			var new_parent_ele, old_parent_id = null, new_parent_id = node.parent;
 			if (ele) {
 				ele.data(node);
+				if (ele.parent() && ele.parent().data() && ele.parent().data().id) {
+				  old_parent_id = ele.parent().data().id;
+				}
+				if (new_parent_id !== old_parent_id) {
+				  if (!new_parent_id) {
+				    console.log('get rid of parent');
+				    eles.move({"parent":null});
+				  }
+				  else {
+				    console.log('set of parent to '+new_parent_id);
+				    //parent = g.elements("node" + "[id='" + new_parent_id + "']")[0];
+				    eles.move({"parent":new_parent_id});
+				  }
+				}
 				ele.position({x: node.view.position.x, y: node.view.position.y});
 			}
 			else {
