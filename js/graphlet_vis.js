@@ -19,6 +19,7 @@
 		var data = nodes[i].data();
 		var o = $.extend({}, data);
 		var pos = nodes[i].position();
+		var parent;
 		pos.x = Math.round(pos.x);
 		pos.y = Math.round(pos.y);
 		graph_views[active_view_index].nodes[data.id] = {"position":pos};
@@ -27,8 +28,95 @@
       graph_views[active_view_index].nodes[data.id].width = o.width;
 		  delete o.width;
     }
+    if (nodes[i].data().parent) {
+      parent = nodes[i].data().parent
+      o['parent'] = parent;
+    }
 		return JSON.stringify(o);
   };
+
+  // convert a cytoscape_js graph to a graphlet (JSON string) format
+	export_graph_json = function (g, options) {
+		var nodes = g.nodes();
+		var edges = g.edges();
+		var exp_graph_json;
+		var graph_desc = g.graph || g_aux.graph || {};
+		var graph_template = g.template || g_template;
+		var active_view_index = g_aux.active_view_index || 0;
+		var graph_views = g_aux.views || [];
+		var o, data, pos, source, target, spacer = "";
+
+		if (!$.isArray(graph_views)) {
+			graph_views = [];
+		}
+
+		if (!graph_views[active_view_index]) {
+			graph_views[active_view_index] = {"name":"primary"};
+		}
+		if (!options || !options.separate) {
+			graph_desc.template = graph_template;
+		}
+		exp_graph_json = '{"graph":' + JSON.stringify(graph_desc) + ', "nodes":[';
+		graph_views[active_view_index].nodes = {};
+    // first record all the nodes that do not have a parent.
+		for (i = nodes.length-1; i >= 0; i--) {
+		  if (!nodes[i].data().parent) {
+  			exp_graph_json += spacer + '\n';
+  			spacer = ',';
+        exp_graph_json += "  " + stringify_node(nodes, i, graph_views, active_view_index);
+		  }
+		}
+		// second record all nodes that have a parent
+		for (i = nodes.length-1; i >= 0; i--) {
+		  if (nodes[i].data().parent) {
+  			exp_graph_json += spacer + '\n';
+  			spacer = ',';
+        exp_graph_json += "  " + stringify_node(nodes, i, graph_views, active_view_index);
+		  }
+		}
+		spacer = "";
+		exp_graph_json += '\n ],\n "edges":[';
+		graph_views[active_view_index].edges = {};
+		for (i = 0; i < edges.length; i++) {
+			exp_graph_json += spacer + '\n';
+			spacer = ',';
+			data = edges[i].data();
+			source = edges[i].source().id();
+			target = edges[i].target().id();
+			o = [source, target, data.edge_type, data.name, data.guard, parseInt(data.id.substr(1), 10)];
+			//if (options && options.separate) {
+			//	graph_views[active_view_index].edges[data.id] = {"width":data.width};
+			//	// delete data.width;
+			//}
+			exp_graph_json += "  " + JSON.stringify(o);
+		}
+		exp_graph_json += '\n ],\n "views":' + JSON.stringify(graph_views)
+		exp_graph_json += '\n}';
+		if (options && options.separate) {
+			source = JSON.stringify(graph_views);
+			return {"graph_json":exp_graph_json, "graph_view":source, "graph_template":graph_template};
+		}
+		else {
+			return exp_graph_json;
+		}
+	};
+
+	// Prune to Level is a debugging aid for opjects that
+	// are too deep or cause a circular reference error in JSON.stringify
+	function prune2level(obj, level) {
+		var top_obj = {};
+		var t;
+		for (key in obj) {
+			t = typeof obj[key];
+			if (t !== "undefined" && t !== "object" && t !== "function") {
+				top_obj[key] = obj[key];
+			}
+			if (level > 1 && t === "object" && obj[key] !== null) {
+				top_obj[key] = prune2level(obj[key], level -1);
+			}
+		}
+		return top_obj;
+	}
 
 	// convert a stored graph into a from that is appropreate for Cytoscape.js
 	load_hbg = function (graph, graph_designator) {
@@ -259,6 +347,7 @@
 					}
 				}
 			}
+			this.off('click');
 			this.on('click', 'node', function(evt) {
 			  var new_edge;
 			  if (add_edge_mode) {
@@ -280,6 +369,7 @@
 					}
 			  }
 			});
+			this.off('select');
 			this.on('select', sync_selected);
 			//this.on("mouseup", sync_selected);
 		  }
@@ -302,6 +392,7 @@
 		};
 
 		//load_cy_graph(init_graph);
+		$('#add_node').off("click");
 		$('#add_node').on("click", function() {
 			//alert(g.nodes().length);
 			var ns = g.add({"nodes":[ {"data":{"view":{"position":{"x":80,"y":60}}}} ]});
@@ -313,6 +404,7 @@
 				ns[0].select();
 			}, 50);
 		});
+		$('#add_edge').off("click");
 		$('#add_edge').on("click", function() {
 			// toggle edge mode
 			add_edge_mode = !add_edge_mode;
@@ -321,14 +413,17 @@
 				add_edge_arr[1] = null;
 			}
 		});
+		$('#delete_node').off("click");
 		$('#delete_node').on("click", function() {
 			var eles = g.elements("node:selected");
 			g.remove(eles);
 		});
+		$('#delete_edge').off("click");
 		$('#delete_edge').on("click", function() {
 			var eles = g.elements("edge:selected");
 			g.remove(eles);
 		});
+		$(".ui_mode").off('click');
 		$(".ui_mode").on('click', function (e) {
 			var $btn = $(e.target);
 			var id = "", fq = "";
@@ -341,12 +436,14 @@
 				$(document).trigger("run_mode");
 			}
 		});
+		$(document).off("edit_mode");
 		$(document).on("edit_mode", function (e) {
 			$('#edit_mode_ui').show();
 			$('#run_mode_ui').hide();
 			$('#graph_in').hide();
 			$('#graph_out').hide();
 		});
+		$(document).off("run_mode");
 		$(document).on("run_mode", function (e) {
 			var graph_json_str = export_graph_json(g, {"separate":true}).graph_json;
 			$('#run_mode_ui').show();
@@ -357,30 +454,35 @@
 			// set the run env.
 			init_graphlet(JSON.parse(graph_json_str));
 		});
+		$('#node_editor').off("update_form");
 		$('#node_editor').on("update_form", function(event, nodes_selected) {
 			$("#node_input_header>span").text(""+nodes_selected.length);
 			nodes_editor.setValue(nodes_selected);
+			nodes_editor.off('change');
 			nodes_editor.on('change',function() {
 				update_graph_nodes(nodes_editor.root.value);
 			});
 		});
+		$("#edge_editor").off("update_form");
 		$("#edge_editor").on("update_form", function(event, edges_selected) {
 			$("#edge_input_header>span").text(""+edges_selected.length);
 			edges_editor.setValue(edges_selected);
+			edges_editor.off('change');
 			edges_editor.on('change',function() {
 				update_graph_edges(edges_editor.root.value);
 			});
 		});
+		$("#view_all").off("click");
 		$("#view_all").on("click", function() {
 			g.fit();
 		});
+		$("#view_zoom_1").off("click");
 		$("#view_zoom_1").on("click", function() {
 			g.zoom({
 				level: 1.0,
 				position: {"x":200, "y":300}
 			});
 		});
-
 	});
 	// send node data to the cy graph (visualization)
 	function update_graph_nodes(nodes) {
@@ -448,89 +550,6 @@
 			edges_selected.push(edge_data);
 		});
 		$("#edge_editor").trigger("update_form", [edges_selected]);
-	}
-
-
-	export_graph_json = function (g, options) {
-		var nodes = g.nodes();
-		var edges = g.edges();
-		var exp_graph_json;
-		var graph_desc = g.graph || g_aux.graph || {};
-		var graph_template = g.template || g_template;
-		var active_view_index = g_aux.active_view_index || 0;
-		var graph_views = g_aux.views || [];
-		var o, data, pos, source, target, spacer = "";
-
-		if (!$.isArray(graph_views)) {
-			graph_views = [];
-		}
-
-		if (!graph_views[active_view_index]) {
-			graph_views[active_view_index] = {"name":"primary"};
-		}
-		if (!options || !options.separate) {
-			graph_desc.template = graph_template;
-		}
-		exp_graph_json = '{"graph":' + JSON.stringify(graph_desc) + ', "nodes":[';
-		graph_views[active_view_index].nodes = {};
-    // first record all the nodes that do not have a parent.
-		for (i = nodes.length-1; i >= 0; i--) {
-		  if (!nodes[i].data().parent) {
-  			exp_graph_json += spacer + '\n';
-  			spacer = ',';
-        exp_graph_json += "  " + stringify_node(nodes, i, graph_views, active_view_index);
-		  }
-		}
-		// second record all nodes that have a parent
-		for (i = nodes.length-1; i >= 0; i--) {
-		  if (nodes[i].data().parent) {
-  			exp_graph_json += spacer + '\n';
-  			spacer = ',';
-        exp_graph_json += "  " + stringify_node(nodes, i, graph_views, active_view_index);
-		  }
-		}
-		spacer = "";
-		exp_graph_json += '\n ],\n "edges":[';
-		graph_views[active_view_index].edges = {};
-		for (i = 0; i < edges.length; i++) {
-			exp_graph_json += spacer + '\n';
-			spacer = ',';
-			data = edges[i].data();
-			source = edges[i].source().id();
-			target = edges[i].target().id();
-			o = [source, target, data.edge_type, data.name, data.guard, parseInt(data.id.substr(1), 10)];
-			//if (options && options.separate) {
-			//	graph_views[active_view_index].edges[data.id] = {"width":data.width};
-			//	// delete data.width;
-			//}
-			exp_graph_json += "  " + JSON.stringify(o);
-		}
-		exp_graph_json += '\n ],\n "views":' + JSON.stringify(graph_views)
-		exp_graph_json += '\n}';
-		if (options && options.separate) {
-			source = JSON.stringify(graph_views);
-			return {"graph_json":exp_graph_json, "graph_view":source, "graph_template":graph_template};
-		}
-		else {
-			return exp_graph_json;
-		}
-	};
-
-	// Prune to Level is a debugging aid for opjects that
-	// are too deep or cause a circular reference error in JSON.stringify
-	function prune2level(obj, level) {
-		var top_obj = {};
-		var t;
-		for (key in obj) {
-			t = typeof obj[key];
-			if (t !== "undefined" && t !== "object" && t !== "function") {
-				top_obj[key] = obj[key];
-			}
-			if (level > 1 && t === "object" && obj[key] !== null) {
-				top_obj[key] = prune2level(obj[key], level -1);
-			}
-		}
-		return top_obj;
 	}
 
 })();
