@@ -436,14 +436,14 @@
 				$(document).trigger("run_mode");
 			}
 		});
-		$(document).off("edit_mode");
+		//$(document).off("edit_mode");
 		$(document).on("edit_mode", function (e) {
 			$('#edit_mode_ui').show();
 			$('#run_mode_ui').hide();
 			$('#graph_in').hide();
 			$('#graph_out').hide();
 		});
-		$(document).off("run_mode");
+		//$(document).off("run_mode");
 		$(document).on("run_mode", function (e) {
 			var graph_json_str = export_graph_json(g, {"separate":true}).graph_json;
 			$('#run_mode_ui').show();
@@ -490,11 +490,11 @@
 			var node_id = node["id"];
 			var eles = g.elements("node" + "[id='" + node_id + "']");
 			var ele = eles[0];
-			var new_parent_ele, old_parent_id = null, new_parent_id = node.parent;
+			var new_parent_ele, old_parent_id, new_parent_id = node.parent;
 			if (ele) {
 				ele.data(node);
 				if (ele.parent() && ele.parent().data() && ele.parent().data().id) {
-				  old_parent_id = ele.parent().data().id;
+				  old_parent_id = ele.parent().data().id || undefined;
 				}
 				if (new_parent_id !== old_parent_id) {
 				  if (!new_parent_id) {
@@ -502,9 +502,10 @@
 				    eles.move({"parent":null});
 				  }
 				  else {
-				    console.log('set of parent to '+new_parent_id);
-				    //parent = g.elements("node" + "[id='" + new_parent_id + "']")[0];
-				    eles.move({"parent":new_parent_id});
+				    if (new_parent_id !== '') {
+				      console.log('set of parent to '+new_parent_id);
+				      eles.move({"parent":new_parent_id});
+				    }
 				  }
 				}
 				ele.position({x: node.view.position.x, y: node.view.position.y});

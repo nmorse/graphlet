@@ -1,8 +1,8 @@
 {
   "name": "cytoscape",
-  "version": "2.3.3",
+  "version": "2.3.7",
   "license": "LGPL-3.0+",
-  "description": "An open-source JavaScript graph theory (a.k.a. network) library for analysis and visualisation",
+  "description": "Graph theory (a.k.a. network) library for analysis and visualisation",
   "homepage": "http://js.cytoscape.org",
   "repository": {
     "type": "git",
@@ -66,14 +66,13 @@
     "package.json",
     "README.md"
   ],
-  "_release": "2.3.3",
+  "_release": "2.3.7",
   "_resolution": {
     "type": "version",
-    "tag": "v2.3.3",
-    "commit": "2b9248eb2a2fc55e0e372b47ce7a6db31ba19140"
+    "tag": "v2.3.7",
+    "commit": "091969888139008ad6a0d4c051a6979102a37b85"
   },
   "_source": "git://github.com/cytoscape/cytoscape.js.git",
-  "_target": "~2.3.3",
-  "_originalSource": "git://github.com/cytoscape/cytoscape.js.git",
-  "_direct": true
+  "_target": "~2.3.7",
+  "_originalSource": "git://github.com/cytoscape/cytoscape.js.git"
 }

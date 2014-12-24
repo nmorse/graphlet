@@ -28,7 +28,7 @@
     "tests"
   ],
   "dependencies": {
-    "cytoscape": "git://github.com/cytoscape/cytoscape.js.git#~2.3.3",
+    "cytoscape": "git://github.com/cytoscape/cytoscape.js.git#~2.3.7",
     "qunit": "~1.15.0",
     "jquery": "#2.1.1",
     "bootstrap": "~3.2.0"

@@ -72,7 +72,7 @@ $(function() {
   $("#graph_in").json2html({}, load_graph_template);
   $("#graph_out").json2html({}, store_graph_template);
   // hook up ctl events
-  $(".ui_mode").off('click');
+  //$(".ui_mode").off('click');
   $(".ui_mode").on('click', function (e) {
       var $btn = $(e.target);
       var id = "", fq = "";
@@ -96,11 +96,11 @@ $(function() {
         $('#graph_out').show();
       }
     });
-    $('#store').off("click");
+    //$('#store').off("click");
     $('#store').on("click", function() {
       $('#graph_out>pre').text( export_graph_json(get_current_cyto_graph()) );
     });
-    $('#load_from_text').off("click");
+    //$('#load_from_text').off("click");
     $('#load_from_text').on("click", function() {
       var s = $('#graph_in>textarea').val();
       var cy_g;
