@@ -121,22 +121,42 @@
   };
 
   var transition_to = function(id, get_result) {
+    var gone = false;
     var g = this.glt;
     var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
+    // first go through only the restrictive guarded flo edges.
+    $.each(trans_edges, function(i, e) {
+      var guard_expression = e[4];
+      var guard = {"result":false};
+      if (guard_expression && !gone) {
+        guard = run_edge_guard(get_result, guard_expression);
+
+        if (guard.result) {
+          console.log("trigger transition "+e[0]+" -> "+e[1]);
+          if (debug_rate) {
+            this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='flo']");
+            this_edge.addClass("active_run_flo");
+            setTimeout(function() {this_edge.removeClass("active_run_flo");}, debug_rate);
+          }
+          setTimeout(function() {$("body").trigger("edge_" + e[5]);}, debug_rate);
+          gone = true;
+        }
+      }
+    });
+    // secondly go to any non-restrictive flo edges (with no guard)
     $.each(trans_edges, function(i, e) {
       var guard_expression = e[4];
       var guard = {"result":true};
-      if (guard_expression) {
-        guard = run_edge_guard(get_result, guard_expression);
-      }
-      if (guard.result) {
-        console.log("trigger transition "+e[0]+" -> "+e[1]);
-        if (debug_rate) {
-          this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='flo']");
-          this_edge.addClass("active_run_flo");
-          setTimeout(function() {this_edge.removeClass("active_run_flo");}, debug_rate);
+      if (!guard_expression & !gone) {
+        if (guard.result) {
+          console.log("trigger transition "+e[0]+" -> "+e[1]);
+          if (debug_rate) {
+            this_edge = get_current_cyto_graph().$("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='flo']");
+            this_edge.addClass("active_run_flo");
+            setTimeout(function() {this_edge.removeClass("active_run_flo");}, debug_rate);
+          }
+          setTimeout(function() {$("body").trigger("edge_" + e[5]);}, debug_rate);
         }
-        setTimeout(function() {$("body").trigger("edge_" + e[5]);}, debug_rate);
       }
     });
   };
