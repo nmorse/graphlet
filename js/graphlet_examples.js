@@ -358,31 +358,30 @@ var graph_examples = {
  "views":[{"name":"different","nodes":{"n5":{"position":{"x":538,"y":33},"width":70},"n14":{"position":{"x":322,"y":135}},"n15":{"position":{"x":160,"y":293}},"n6":{"position":{"x":71,"y":33},"width":70},"n10":{"position":{"x":303,"y":33},"width":70},"n11":{"position":{"x":78,"y":129},"width":70},"n12":{"position":{"x":501,"y":255},"width":70},"n13":{"position":{"x":365,"y":389},"width":70},"n4":{"position":{"x":259,"y":332},"width":70},"n2":{"position":{"x":410,"y":97},"width":70},"n1":{"position":{"x":419,"y":172},"width":70},"n0":{"position":{"x":225,"y":97},"width":70},"n3":{"position":{"x":246,"y":253},"width":70},"n7":{"position":{"x":60,"y":255},"width":70},"n8":{"position":{"x":225,"y":172},"width":70},"n9":{"position":{"x":60,"y":330},"width":70}},"edges":{}}]
 },
 "Guessing Game 2":
-{"graph":{"name":"Guessing Game 2","template":
-"<div id='prompt'>Guess</div><input id='guess'/><button id='enter_button'>Enter</button>"},
-"nodes":[
-  {"id":"n9","name":"got it","node_type":"data","data":{"prompt":"Wow you guessed it!"}},
-  {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess"}},
-  {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
-  {"id":"n6","name":"secret","node_type":"process"},
-  {"name":"prompt","id":"n5","node_type":"data","data":{"prompt":"Guess a number (1 - 100)"}},
-  {"name":"prompt","node_type":"io","io":{"selector":"#prompt"},"id":"n3"},
-  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100);"],"id":"n1","node_type":"process"},
+{"graph":{"name":"Guessing Game 2","template":"<div id='prompt'>Guess</div><input id='guess'/><button id='enter_button'>Enter</button>"}, "nodes":[
+  {"id":"n10","name":"graph","node_type":"io"},
   {"name":"enter","id":"n0","io":{"selector":"#enter_button"},"node_type":"io"},
-  {"id":"n10","name":"graph","node_type":"io"}
+  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100);"],"id":"n1","node_type":"process"},
+  {"name":"prompt","node_type":"io","io":{"selector":"#prompt"},"id":"n3"},
+  {"name":"prompt","id":"n5","node_type":"data","data":{"prompt":"Guess a number (1 - 100)"}},
+  {"id":"n6","name":"secret","node_type":"process"},
+  {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
+  {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess","valve":3}},
+  {"id":"n9","name":"got it","node_type":"data","data":{"prompt":"Wow you guessed it!"}}
  ],
  "edges":[
-  ["n1","n5","flo","next","greeting === 'Hello World'",0],
+  ["n1","n5","flo","next","",0],
   ["n1","n6","set","","",1],
-  ["n5","n3","set","","",2],
+  ["n5","n3","set","prompt","",2],
   ["n0","n7","sub","click","",3],
   ["n7","n8","get","","",4],
   ["n7","n6","get","","",5],
   ["n7","n9","flo","","diff === 0",6],
   ["n9","n3","set","","",7],
   ["n7","n5","flo","","diff > 0",8],
-  ["n10","n1","sub","graph_init","",9]
+  ["n10","n1","sub","graph_init","",9],
+  ["n6","n8","set","secret","",10]
  ],
- "views":[{"name":"primary","nodes":{"n9":{"position":{"x":296,"y":203}},"n8":{"position":{"x":436,"y":243},"width":60},"n7":{"position":{"x":173,"y":281},"width":80},"n6":{"position":{"x":70,"y":204},"width":60},"n5":{"position":{"x":358,"y":58},"width":60},"n3":{"position":{"x":437,"y":203},"width":60},"n1":{"position":{"x":179,"y":107},"width":60},"n0":{"position":{"x":436,"y":285},"width":60},"n10":{"position":{"x":53,"y":31},"width":60}},"edges":{}}]
+ "views":[{"name":"primary","nodes":{"n10":{"position":{"x":53,"y":31},"width":60},"n0":{"position":{"x":461,"y":367},"width":60},"n1":{"position":{"x":179,"y":107},"width":60},"n3":{"position":{"x":462,"y":285},"width":60},"n5":{"position":{"x":358,"y":58},"width":60},"n6":{"position":{"x":95,"y":286},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n8":{"position":{"x":461,"y":325},"width":60},"n9":{"position":{"x":343,"y":284}}},"edges":{}}]
 }
 };
