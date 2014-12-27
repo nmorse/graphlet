@@ -22,10 +22,15 @@
         this_edge.addClass("active_run_get");
         setTimeout(function() {this_edge.removeClass("active_run_get");}, debug_rate/2);
       }
-      if (end_node.node_type === 'io' && end_node.io && end_node.io.selector && end_node.io.valve >= 2) {
-        selector = end_node.io.selector;
-        if (!end_node.data) {end_node.data = {};}
-        end_node.data[name] = $(selector).val() || $(selector).text();
+      if (end_node.node_type === 'io') {
+        if (end_node.io && end_node.io.selector && end_node.io.valve >= 2) {
+          selector = end_node.io.selector;
+          if (!end_node.data) {end_node.data = {};}
+          end_node.data[name] = $(selector).val() || $(selector).text();
+        }
+        else {
+          console.log("Warning: io node was not able to provide data to get edge. ", JSON.stringify(end_node.io));
+        }
       }
       if (end_node.data) {
 		    got_obj[alias] = end_node.data[name];
