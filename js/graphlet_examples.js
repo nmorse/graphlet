@@ -396,14 +396,14 @@ var graph_examples = {
   {"id":"n6","name":"secret","node_type":"process"},
   {"name":"prompt","id":"n5","node_type":"data","data":{"prompt":"Guess a number (1 - 100)"}},
   {"name":"prompt","node_type":"io","io":{"selector":"#prompt"},"id":"n3"},
-  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100);"],"id":"n1","node_type":"process"},
+  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100) + 1;"],"id":"n1","node_type":"process"},
   {"name":"enter","id":"n0","io":{"selector":"#enter_button"},"node_type":"io"},
   {"id":"n10","name":"env","node_type":"io"},
   {"id":"n2","name":"prompt","node_type":"data","data":{"prompt":"Too Low, guess again"}},
   {"id":"n4","name":"prompt","node_type":"data","data":{"prompt":"Too High, guess again"}},
   {"id":"n11","name":"","node_type":"process","process":["this.count = +count + 1;"]},
   {"id":"n12","name":"count","node_type":"io","io":{"selector":"#count","valve":3},"data":{"count":0}},
-  {"id":"n13","name":"prompt","node_type":"data","data":{"prompt":"Sorry, all guesses are used up."}}
+  {"id":"n13","name":"prompt","node_type":"data","data":{"prompt":"Sorry, all guesses are used up, the number was "},"process":["this.prompt = prompt + secret"]}
  ],
  "edges":[
   ["n1","n5","flo","next","",0],
@@ -411,7 +411,7 @@ var graph_examples = {
   ["n5","n3","set","","",2],
   ["n7","n8","get","","",3],
   ["n7","n6","get","","",4],
-  ["n7","n9","flo","","diff === 0",5],
+  ["n7","n9","flo","","",5],
   ["n9","n3","set","","",6],
   ["n10","n1","sub","graph_init","",7],
   ["n2","n3","set","","",8],
@@ -423,7 +423,8 @@ var graph_examples = {
   ["n11","n12","set","","",14],
   ["n11","n7","flo","","count < 7",15],
   ["n11","n13","flo","","",16],
-  ["n13","n3","set","","",17]
+  ["n13","n3","set","","",17],
+  ["n13","n6","get","","",18]
  ],
  "views":[{"name":"primary","nodes":{"n9":{"position":{"x":312,"y":225},"width":180},"n8":{"position":{"x":526,"y":323},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n6":{"position":{"x":69,"y":286},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n3":{"position":{"x":539,"y":208},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n0":{"position":{"x":532,"y":386},"width":60},"n10":{"position":{"x":5,"y":19},"width":60},"n2":{"position":{"x":249,"y":184},"width":180},"n4":{"position":{"x":189,"y":138},"width":180},"n11":{"position":{"x":343,"y":431},"width":60},"n12":{"position":{"x":528,"y":428},"width":60},"n13":{"position":{"x":362,"y":303},"width":60}},"edges":{}}]
 }

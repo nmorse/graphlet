@@ -180,15 +180,15 @@
       setTimeout(function() {this_node.removeClass("active_run_node");}, debug_rate);
     }
     get_data.defered_transition = false;
-    if (target_node.node_type === "process" && target_node.process) {
+    if (target_node.data) {
+      get_data = $.extend(get_data, target_node.data);
+    }
+    if (target_node.process) {
       get_data.wait = wait;
       get_data.target_node_id = target_node.id;
       $.each(target_node.process, function(i, process) {
         get_data = run_node_process(get_data, process);
       });
-    }
-    else {
-      get_data = $.extend(get_data, target_node.data);
     }
 
     setTimeout(function() {
