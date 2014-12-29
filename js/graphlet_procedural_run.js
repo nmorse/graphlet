@@ -293,12 +293,11 @@
 		    sel_dom = $(selector)[0];
 		    if (!sel_dom) {
 		      if (selector[0] === '#') {
-		        selector_str = ' id="'+selector_str.substr(1)+'"';
+		        selector_str = ' id="'+selector.substr(1)+'"';
 		      }
 		      if (selector[0] === '.') {
-		        selector_str = ' class="'+selector_str.substr(1)+'"';
+		        selector_str = ' class="'+selector.substr(1)+'"';
 		      }
-		      selector_str
 		      $("#graphlet").append('<div ' + selector_str + '>'+selector_str+'</div>');
 		    }
 		    if (node.data && node.name) {

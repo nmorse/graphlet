@@ -389,9 +389,7 @@ var graph_examples = {
  "views":[{"name":"primary","nodes":{"n4":{"position":{"x":247,"y":164},"width":180},"n2":{"position":{"x":287,"y":227},"width":180},"n10":{"position":{"x":5,"y":19},"width":60},"n0":{"position":{"x":526,"y":365},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n3":{"position":{"x":526,"y":281},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n6":{"position":{"x":69,"y":286},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n8":{"position":{"x":526,"y":323},"width":60},"n9":{"position":{"x":351,"y":279},"width":180}},"edges":{}}]
 },
 "Guessing Game 2":
-{"graph":{"name":"Guessing Game 2","template":
-"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"
-}, "nodes":[
+{"graph":{"name":"Guessing Game 2","template":"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"}, "nodes":[
   {"id":"n9","name":"prompt","node_type":"data","data":{"prompt":"Great! You guessed it."}},
   {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess","valve":3}},
   {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
@@ -400,11 +398,12 @@ var graph_examples = {
   {"name":"prompt","node_type":"io","io":{"selector":"#prompt"},"id":"n3"},
   {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100);"],"id":"n1","node_type":"process"},
   {"name":"enter","id":"n0","io":{"selector":"#enter_button"},"node_type":"io"},
-  {"id":"n10","name":"graph","node_type":"io"},
+  {"id":"n10","name":"env","node_type":"io"},
   {"id":"n2","name":"prompt","node_type":"data","data":{"prompt":"Too Low, guess again"}},
   {"id":"n4","name":"prompt","node_type":"data","data":{"prompt":"Too High, guess again"}},
-  {"id":"n11","name":"","node_type":"process","process":["this.count = count + 1;"]},
-  {"id":"n12","name":"count","node_type":"io","io":{"selector":"#count","valve":3}}
+  {"id":"n11","name":"","node_type":"process","process":["this.count = +count + 1;"]},
+  {"id":"n12","name":"count","node_type":"io","io":{"selector":"#count","valve":3},"data":{"count":0}},
+  {"id":"n13","name":"prompt","node_type":"data","data":{"prompt":"Sorry, all guesses are used up."}}
  ],
  "edges":[
   ["n1","n5","flo","next","",0],
@@ -422,8 +421,10 @@ var graph_examples = {
   ["n0","n11","sub","click","",12],
   ["n11","n12","get","","",13],
   ["n11","n12","set","","",14],
-  ["n11","n7","flo","","count < 7",15]
+  ["n11","n7","flo","","count < 7",15],
+  ["n11","n13","flo","","",16],
+  ["n13","n3","set","","",17]
  ],
- "views":[{"name":"primary","nodes":{"n9":{"position":{"x":351,"y":279},"width":180},"n8":{"position":{"x":526,"y":323},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n6":{"position":{"x":69,"y":286},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n3":{"position":{"x":526,"y":281},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n0":{"position":{"x":526,"y":365},"width":60},"n10":{"position":{"x":5,"y":19},"width":60},"n2":{"position":{"x":287,"y":227},"width":180},"n4":{"position":{"x":247,"y":164},"width":180},"n11":{"position":{"x":343,"y":431},"width":60},"n12":{"position":{"x":528,"y":428},"width":60}},"edges":{}}]
+ "views":[{"name":"primary","nodes":{"n9":{"position":{"x":312,"y":225},"width":180},"n8":{"position":{"x":526,"y":323},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n6":{"position":{"x":69,"y":286},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n3":{"position":{"x":539,"y":208},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n0":{"position":{"x":532,"y":386},"width":60},"n10":{"position":{"x":5,"y":19},"width":60},"n2":{"position":{"x":249,"y":184},"width":180},"n4":{"position":{"x":189,"y":138},"width":180},"n11":{"position":{"x":343,"y":431},"width":60},"n12":{"position":{"x":528,"y":428},"width":60},"n13":{"position":{"x":362,"y":303},"width":60}},"edges":{}}]
 }
 };
