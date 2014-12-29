@@ -285,10 +285,22 @@
 			});
 		}
 		$.each(io_nodes, function(i, node) {
-		  var selector;
+		  var selector, selector_str;
+		  var sel_dom
 		  if (node.io && node.io.selector) {
 		    selector = node.io.selector;
 		    // initial sync the nodes data with the IO point
+		    sel_dom = $(selector)[0];
+		    if (!sel_dom) {
+		      if (selector[0] === '#') {
+		        selector_str = ' id="'+selector_str.substr(1)+'"';
+		      }
+		      if (selector[0] === '.') {
+		        selector_str = ' class="'+selector_str.substr(1)+'"';
+		      }
+		      selector_str
+		      $("#graphlet").append('<div ' + selector_str + '>'+selector_str+'</div>');
+		    }
 		    if (node.data && node.name) {
 		      $(selector).val(node.data[node.name]);
 		      $(selector).text(node.data[node.name]);
