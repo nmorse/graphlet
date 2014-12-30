@@ -141,9 +141,9 @@
 				o.id = "n"+i;
 				id_mode = "generated";
 			}
-			if (o.data.node_type === undefined && o.data.type !== undefined) {
-				o.data.node_type = o.data.type;
-			}
+			//if (o.data.node_type === undefined && o.data.type !== undefined) {
+			//	o.data.node_type = o.data.type;
+			//}
 			demoNodes.push(o);
 		}
 		for (i = 0; i < raw_edges.length; i++) {
@@ -201,7 +201,7 @@
 					"border-color": "#B29E7C",
 					"text-valign":"center"
 				})
-			.selector("node[node_type='io']")
+			.selector("node[io]")
 				.css({
 					"background-color": "#DDE2FF",
 					"border-color": "#8890BB",
@@ -289,7 +289,7 @@
 					pos = data.view.position;
 					//alert(pos.x + " " + pos.y);
 					nodes[i].position({x: pos.x, y: pos.y});
-					if (data.node_type === 'data') {
+					if (data.data) {
 						if (typeof data.name !== 'undefined'
 							&& typeof data.data !== 'undefined'
 						  && typeof data.data[data.name] !== 'undefined') {
@@ -304,7 +304,7 @@
 							}
 						}
 					}
-					if (data.node_type === 'io') {
+					if (data.io) {
 						if (typeof data.name !== 'undefined'
 							&& typeof data.io !== 'undefined'
 							&& typeof data.io[data.name] !== 'undefined') {
@@ -319,7 +319,7 @@
 							}
 						}
 					}
-					if (data.node_type === 'process') {
+					if (data.process) {
 						if (typeof data.name === 'undefined' || $.trim(data.name) === '') {
 							label = data.process[0];
 							nodes[i].css({"content": label});

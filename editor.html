@@ -45,18 +45,12 @@
 					"items": {
 					  "type": "object",
 					  "title": "Selected Node",
-					  "headerTemplate": "{{ self.id }} - {{ self.name }} ({{ self.node_type }})",
+					  "headerTemplate": "{{ self.id }} - {{ self.name }}",
 					  "properties": {
 						"name": {
 						  "type": "string",
 						  "default": "Start",
               "required": true
-						},
-						"node_type": {
-						  "required": true,
-						  "type": "string",
-						  "default":"process",
-						  "enum": ['io', 'process', 'data']
 						},
 						"id": {
 						  "type": "string",

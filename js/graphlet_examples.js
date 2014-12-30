@@ -390,7 +390,7 @@ var graph_examples = {
 },
 "Guessing Game 2":
 {"graph":{"name":"Guessing Game 2","template":"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"}, "nodes":[
-  {"id":"n9","name":"prompt","node_type":"data","data":{"prompt":"Great! You guessed it."}},
+  {"id":"n9","name":"prompt","node_type":"data","data":{"prompt":"Great! You guessed it, in {{count}} guess(es) "},"process":["this.prompt = prompt.replace(\"{{count}}\", count);"]},
   {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess","valve":3}},
   {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
   {"id":"n6","name":"secret","node_type":"process"},
@@ -424,8 +424,63 @@ var graph_examples = {
   ["n11","n7","flo","","count < 7",15],
   ["n11","n13","flo","","",16],
   ["n13","n3","set","","",17],
-  ["n13","n6","get","","",18]
+  ["n13","n6","get","","",18],
+  ["n9","n12","get","","",19]
  ],
- "views":[{"name":"primary","nodes":{"n9":{"position":{"x":312,"y":225},"width":180},"n8":{"position":{"x":526,"y":323},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n6":{"position":{"x":69,"y":286},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n3":{"position":{"x":539,"y":208},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n0":{"position":{"x":532,"y":386},"width":60},"n10":{"position":{"x":5,"y":19},"width":60},"n2":{"position":{"x":249,"y":184},"width":180},"n4":{"position":{"x":189,"y":138},"width":180},"n11":{"position":{"x":343,"y":431},"width":60},"n12":{"position":{"x":528,"y":428},"width":60},"n13":{"position":{"x":362,"y":303},"width":60}},"edges":{}}]
+ "views":[{"name":"primary","nodes":{"n9":{"position":{"x":326,"y":241},"width":180},"n8":{"position":{"x":533,"y":323},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n6":{"position":{"x":69,"y":286},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n3":{"position":{"x":533,"y":208},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n0":{"position":{"x":533,"y":386},"width":60},"n10":{"position":{"x":5,"y":19},"width":60},"n2":{"position":{"x":249,"y":184},"width":180},"n4":{"position":{"x":189,"y":138},"width":180},"n11":{"position":{"x":343,"y":431},"width":60},"n12":{"position":{"x":533,"y":440},"width":60},"n13":{"position":{"x":362,"y":303},"width":60}},"edges":{}}]
+},
+"Guessing Game 3":
+{"graph":{"name":"Guessing Game 3","template":"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"}, "nodes":[
+  {"id":"n9","name":"prompt","node_type":"data","data":{"prompt":"Great! You guessed it, in {{count}} guess(es) "},"process":["this.prompt = prompt.replace(\"{{count}}\", count);"]},
+  {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess","valve":3}},
+  {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
+  {"id":"n6","name":"secret","node_type":"process"},
+  {"name":"prompt","id":"n5","node_type":"data","data":{"prompt":"Guess a number (1 - 100)"}},
+  {"name":"prompt","node_type":"io","io":{"selector":"#prompt"},"id":"n3"},
+  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100) + 1;"],"id":"n1","node_type":"process"},
+  {"name":"enter","id":"n0","io":{"selector":"#enter_button"},"node_type":"io"},
+  {"id":"n10","name":"env","node_type":"io"},
+  {"id":"n2","name":"prompt","node_type":"data","data":{"prompt":"Too Low"}},
+  {"id":"n4","name":"prompt","node_type":"data","data":{"prompt":"Too High"}},
+  {"id":"n11","name":"","node_type":"process","process":["this.count = +count + 1;"]},
+  {"id":"n12","name":"count","node_type":"io","io":{"selector":"#count","valve":3},"data":{"count":0}},
+  {"id":"n13","name":"prompt","node_type":"data","data":{"prompt":"Sorry, all guesses are used up, the number was "},"process":["this.prompt = prompt + secret"]},
+  {"id":"n14","name":"game over?","node_type":"process","process":["this.game_over =  (count>=7);"]},
+  {"id":"n15","name":"guess again","node_type":"process","process":["this.prompt =  prompt + \", guess again\";"]},
+  {"id":"n16","name":"end","node_type":"process","process":["this.prompt =  prompt + \", no more guesses left. The secret number of \" + secret;"]}
+ ],
+ "edges":[
+  ["n1","n5","flo","next","",0],
+  ["n1","n6","set","","",1],
+  ["n5","n3","set","","",2],
+  ["n7","n8","get","","",3],
+  ["n7","n6","get","","",4],
+  ["n7","n9","flo","","",5],
+  ["n9","n3","set","","",6],
+  ["n10","n1","sub","graph_init","",7],
+  ["n2","n3","set","","",8],
+  ["n7","n2","flo","","diff < 0",9],
+  ["n4","n3","set","","",10],
+  ["n7","n4","flo","","diff > 0",11],
+  ["n0","n11","sub","click","",12],
+  ["n11","n12","get","","",13],
+  ["n11","n12","set","","",14],
+  ["n11","n7","flo","","count < 8",15],
+  ["n11","n13","flo","","",16],
+  ["n13","n3","set","","",17],
+  ["n13","n6","get","","",18],
+  ["n9","n12","get","","",19],
+  ["n4","n14","flo","","",20],
+  ["n2","n14","flo","","",21],
+  ["n14","n12","get","","",22],
+  ["n14","n15","flo","","!game_over",23],
+  ["n14","n16","flo","","game_over",24],
+  ["n16","n3","set","","",26],
+  ["n15","n3","set","","",28],
+  ["n15","n3","get","","",31],
+  ["n16","n3","get","","",33],
+  ["n16","n6","get","","",34]
+ ],
+ "views":[{"name":"primary","nodes":{"n9":{"position":{"x":326,"y":241},"width":180},"n8":{"position":{"x":533,"y":323},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n6":{"position":{"x":69,"y":286},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n3":{"position":{"x":533,"y":208},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n0":{"position":{"x":530,"y":378},"width":60},"n10":{"position":{"x":5,"y":19},"width":60},"n2":{"position":{"x":249,"y":184},"width":100},"n4":{"position":{"x":170,"y":136},"width":100},"n11":{"position":{"x":343,"y":431},"width":60},"n12":{"position":{"x":533,"y":440},"width":60},"n13":{"position":{"x":362,"y":303},"width":60},"n14":{"position":{"x":715,"y":161}},"n15":{"position":{"x":642,"y":28}},"n16":{"position":{"x":716,"y":264}}},"edges":{}}]
 }
 };
