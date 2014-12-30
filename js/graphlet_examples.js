@@ -1,12 +1,12 @@
 var graph_examples = {
 "Hello World": {"graph":{"name":"Hello World","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
-  {"name":"selector","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
-  {"name":"concat","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","node_type":"process"},
-  {"name":"","data":{"salutation":"Hello"},"id":"n2","node_type":"data"},
-  {"name":"selector","node_type":"io","io":{"selector":".greeting"},"id":"n3","parent":"n6"},
-  {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4","parent":"n6"},
-  {"name":"end","id":"n5","node_type":"data","data":{}},
-  {"name":"group","id":"n6","node_type":"process"}
+  {"name":"selector","id":"n0","io":{"selector":"#start_button"}},
+  {"name":"concat","process":["this.greeting = salutation + ' ' + name;"],"id":"n1"},
+  {"name":"","data":{"salutation":"Hello"},"id":"n2"},
+  {"name":"selector","io":{"selector":".greeting"},"id":"n3","parent":"n6"},
+  {"name":"name","data":{"name":"World"},"id":"n4","parent":"n6"},
+  {"name":"end","id":"n5","data":{}},
+  {"name":"group","id":"n6"}
  ],
  "edges":[
   ["n0","n1","sub","click","",0],
@@ -18,12 +18,12 @@ var graph_examples = {
  "views":[{"name":"first","nodes":{"n6":{"position":{"x":423,"y":226}},"n5":{"position":{"x":128,"y":302},"width":80},"n4":{"position":{"x":423,"y":186},"width":100},"n3":{"position":{"x":424,"y":265},"width":80},"n2":{"position":{"x":316,"y":105},"width":128},"n1":{"position":{"x":124,"y":196},"width":80},"n0":{"position":{"x":124,"y":80},"width":110}},"edges":{}},{"name":"second view","nodes":{"n0":{"position":{"x":114,"y":80},"width":110},"n1":{"position":{"x":134,"y":196},"width":60},"n2":{"position":{"x":326,"y":105},"width":140},"n3":{"position":{"x":456,"y":310},"width":80},"n4":{"position":{"x":415,"y":196},"width":80},"n5":{"position":{"x":153,"y":316},"width":60},"n6":{"position":{"x":436,"y":253}}},"edges":{}},{"name":"sideways","nodes":{"n6":{"position":{"x":380,"y":121}},"n5":{"position":{"x":296,"y":329},"width":70},"n4":{"position":{"x":278,"y":92},"width":70},"n3":{"position":{"x":481,"y":151},"width":70},"n2":{"position":{"x":118,"y":207},"width":140},"n1":{"position":{"x":296,"y":254},"width":70},"n0":{"position":{"x":489,"y":308},"width":110}},"edges":{}}]
 },
 "Hello World version 2": {"graph":{"name":"Hello World version 2","template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"}, "nodes":[
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
-  {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","node_type":"process"},
-  {"name":"salutation","data":{"salutation":"Hello"},"id":"n2","node_type":"data"},
-  {"name":"greeting","node_type":"io","io":{"selector":".greeting"},"id":"n3"},
-  {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4"},
-  {"name":"end","id":"n5","node_type":"data","data":{"color":"rgb(255, 0, 0)"}}
+  {"name":"start","id":"n0","io":{"selector":"#start_button"}},
+  {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1"},
+  {"name":"salutation","data":{"salutation":"Hello"},"id":"n2"},
+  {"name":"greeting","io":{"selector":".greeting"},"id":"n3"},
+  {"name":"name","data":{"name":"World"},"id":"n4"},
+  {"name":"end","id":"n5","data":{"color":"rgb(255, 0, 0)"}}
  ],
  "edges":[
   ["n0","n1","sub","click",null,0],
@@ -38,11 +38,11 @@ var graph_examples = {
 "shake 1":
 {"graph": {"name":"shake 2.5","template":"<input type='text' id='textbox' value='' placeholder='type here' />"},
 "nodes":[
- {"id":"n4","name":"timeout {{timeout}} ms","node_type":"data","data":{"timeout":2000}},
- {"id":"n3","name":"effect","node_type":"data","data":{"effect":"shake", "distance":5}},
- {"id":"n2","name":"string","node_type":"data","data":{"string":"new text"}},
- {"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
- {"id":"n0","name":"timer","node_type":"process","process":["wait(timeout);"]}
+ {"id":"n4","name":"timeout {{timeout}} ms","data":{"timeout":2000}},
+ {"id":"n3","name":"effect","data":{"effect":"shake", "distance":5}},
+ {"id":"n2","name":"string","data":{"string":"new text"}},
+ {"id":"n1","name":"text box","io":{"selector":"#textbox"}},
+ {"id":"n0","name":"timer","process":["wait(timeout);"]}
 ],
 "edges":[
  ["n1","n0","sub","keyup",null,0],
@@ -56,11 +56,11 @@ var graph_examples = {
 },
 "shake 2":
 {"graph":{"name":"shake 2","template":"<input type='text' id='textbox' value='' placeholder='type here' />"}, "nodes":[
-  {"id":"n0","name":"timer","node_type":"process","process":["wait(timeout);"]},
-  {"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
-  {"id":"n2","name":"new text","node_type":"data","data":{"string":""}},
-  {"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake","distance":5}},
-  {"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":2000}}
+  {"id":"n0","name":"timer","process":["wait(timeout);"]},
+  {"id":"n1","name":"text box","io":{"selector":"#textbox"}},
+  {"id":"n2","name":"new text","data":{"string":""}},
+  {"id":"n3","name":"shake","data":{"effect":"shake","distance":5}},
+  {"id":"n4","name":"2000 ms","data":{"timeout":2000}}
  ],
  "edges":[
   ["n1","n0","sub","keyup",null,0],
@@ -74,11 +74,11 @@ var graph_examples = {
  "views":[{"name":"primary","nodes":{"n0":{"position":{"x":146,"y":192},"width":60},"n1":{"position":{"x":322,"y":127},"width":60},"n2":{"position":{"x":245,"y":290},"width":60},"n3":{"position":{"x":450,"y":251},"width":60},"n4":{"position":{"x":90,"y":88},"width":60}},"edges":{}}]
 },
 "Loop 1": {"graph":{"name":"Loop 1","template":"<button id='start_button'>Start</button><div class='counter'></div>"}, "nodes":[
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
-  {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
-  {"name":"fin","id":"n5","node_type":"data","data":{"c":0}},
-  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0}},
-  {"id":"n4","node_type":"data","data":{"c":0},"name":"c"}
+  {"name":"start","id":"n0","io":{"selector":"#start_button"}},
+  {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1"},
+  {"name":"fin","id":"n5","data":{"c":0}},
+  {"id":"n3","name":"c","io":{"selector":".counter"},"data":{"c":0}},
+  {"id":"n4","data":{"c":0},"name":"c"}
  ],
  "edges":[
   ["n1","n5","flo","","",0],
@@ -92,12 +92,12 @@ var graph_examples = {
  "views":[{"name":"primary","nodes":{"n0":{"position":{"x":125,"y":64},"width":70},"n1":{"position":{"x":124,"y":233},"width":70},"n5":{"position":{"x":125,"y":320},"width":70},"n3":{"position":{"x":339,"y":233},"width":70},"n4":{"position":{"x":124,"y":149}}},"edges":{}}]
 },
 "Loop 2": {"graph":{"name":"Loop 2","template":"<button id='start_button'>Start</button><div class='counter'></div>"}, "nodes":[
-  {"id":"n6","node_type":"process","process":["wait(750);"],"name":"pause"},
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
-  {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
-  {"name":"fin","id":"n5","node_type":"data","data":{"c":0}},
-  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0}},
-  {"id":"n4","node_type":"data","data":{"c":0},"name":"c"}
+  {"id":"n6","process":["wait(750);"],"name":"pause"},
+  {"name":"start","id":"n0","io":{"selector":"#start_button"}},
+  {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1"},
+  {"name":"fin","id":"n5","data":{"c":0}},
+  {"id":"n3","name":"c","io":{"selector":".counter"},"data":{"c":0}},
+  {"id":"n4","data":{"c":0},"name":"c"}
  ],
  "edges":[
   ["n1","n5","flo","","",0],
@@ -113,10 +113,10 @@ var graph_examples = {
 },
 "counter 1":
 {"graph":{"name":"counter 1","template":"<button id='start_button'>Start</button><div class='counter'></div>"}, "nodes":[
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
-  {"name":"+1","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
-  {"name":"","id":"n5","node_type":"data","data":{"c":0}},
-  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0}}
+  {"name":"start","id":"n0","io":{"selector":"#start_button"}},
+  {"name":"+1","process":["this.c = c + 1;"],"id":"n1"},
+  {"name":"","id":"n5","data":{"c":0}},
+  {"id":"n3","name":"c","io":{"selector":".counter"},"data":{"c":0}}
  ],
  "edges":[
   ["n0","n1","sub","click","",0],
@@ -129,11 +129,11 @@ var graph_examples = {
 },
 "counter 2":
 {"graph":{"name":"counter 2","template":"<button id='start_button'>Start</button><div class='counter'></div><div><input id='limit_input' /></div>"}, "nodes":[
-  {"id":"n2","name":"limit","node_type":"io","data":{"limit":3},"io":{"selector":"#limit_input"}},
-  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":0}},
-  {"name":"c","id":"n5","node_type":"data","data":{"c":0}},
-  {"name":"","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"}
+  {"id":"n2","name":"limit","data":{"limit":3},"io":{"selector":"#limit_input"}},
+  {"id":"n3","name":"c","io":{"selector":".counter"},"data":{"c":0}},
+  {"name":"c","id":"n5","data":{"c":0}},
+  {"name":"","process":["this.c = c + 1;"],"id":"n1"},
+  {"name":"start","id":"n0","io":{"selector":"#start_button"}}
  ],
  "edges":[
   ["n0","n1","sub","click","",0],
@@ -147,13 +147,13 @@ var graph_examples = {
 },
 "counter 3":
 {"graph":{"name":"counter 3","template":"<button id='start_button'>Start</button><div class='counter'></div><div><input id='limit_input' /></div>"}, "nodes":[
-  {"id":"n4","name":"init","node_type":"process"},
-  {"name":"start","id":"n0","io":{"selector":"#start_button"},"node_type":"io"},
-  {"name":"","process":["this.c = c + 1;"],"id":"n1","node_type":"process"},
-  {"name":"c","id":"n5","node_type":"data","data":{"c":1}},
-  {"id":"n3","node_type":"io","name":"c","io":{"selector":".counter"},"data":{"c":1}},
-  {"id":"n2","name":"limit","node_type":"io","data":{"limit":3},"io":{"selector":"#limit_input","valve":3}},
-  {"id":"n6","name":"Graph","node_type":"io"}
+  {"id":"n4","name":"init"},
+  {"name":"start","id":"n0","io":{"selector":"#start_button"}},
+  {"name":"","process":["this.c = c + 1;"],"id":"n1"},
+  {"name":"c","id":"n5","data":{"c":1}},
+  {"id":"n3","name":"c","io":{"selector":".counter"},"data":{"c":1}},
+  {"id":"n2","name":"limit","data":{"limit":3},"io":{"selector":"#limit_input","valve":3}},
+  {"id":"n6","name":"Graph"}
  ],
  "edges":[
   ["n1","n5","flo","","c > limit",0],
@@ -170,14 +170,14 @@ var graph_examples = {
 },
 "Double Loop 1":
 {"graph":{"name":"Double Loop 1","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span></div><div>j = <span class='var_j'></span></div>"}, "nodes":[
-  {"id":"n7","name":"j","node_type":"data","data":{"j":0}},
-  {"id":"n6","name":"Start","node_type":"io","io":{"selector":"#start_button","event":""}},
-  {"id":"n3","name":"j","node_type":"io","io":{"selector":".var_j","event":""}},
-  {"id":"n0","name":"i","node_type":"data","data":{"i":0}},
-  {"id":"n1","name":"outer loop","node_type":"process","process":["this.i = i + 1;"]},
-  {"id":"n2","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
-  {"id":"n4","name":"inner loop","node_type":"process","process":["this.j = j + 1;"]},
-  {"id":"n5","name":"fin","node_type":"process"}
+  {"id":"n7","name":"j","data":{"j":0}},
+  {"id":"n6","name":"Start","io":{"selector":"#start_button","event":""}},
+  {"id":"n3","name":"j","io":{"selector":".var_j","event":""}},
+  {"id":"n0","name":"i","data":{"i":0}},
+  {"id":"n1","name":"outer loop","process":["this.i = i + 1;"]},
+  {"id":"n2","name":"i","io":{"selector":".var_i","event":""}},
+  {"id":"n4","name":"inner loop","process":["this.j = j + 1;"]},
+  {"id":"n5","name":"fin"}
  ],
  "edges":[
   ["n0","n2","set","","",0],
@@ -198,16 +198,16 @@ var graph_examples = {
 },
 "Double Loop 2":
 {"graph":{"name":"Double Loop 2","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span></div><div>j = <span class='var_j'></span></div><div>grid: <div class='table'></div></div>"}, "nodes":[
-  {"id":"n7","name":"j","node_type":"data","data":{"j":0}},
-  {"id":"n6","name":"Start","node_type":"io","io":{"selector":"#start_button","event":""}},
-  {"id":"n3","name":"j","node_type":"io","io":{"selector":".var_j","event":""},"inspect":true},
-  {"id":"n0","name":"i","node_type":"data","data":{"i":0}},
-  {"id":"n1","name":"outer loop","node_type":"process","process":["this.i = i + 1;"]},
-  {"id":"n2","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
-  {"id":"n4","name":"inner loop","node_type":"process","process":["this.j = j + 1;"]},
-  {"id":"n5","name":"fin","node_type":"process"},
-  {"id":"n8","name":"","node_type":"data","data":{"i":0,"j":"0"}},
-  {"id":"n9","name":"table","node_type":"io","process":[],"io":{"selector":".table"}}
+  {"id":"n7","name":"j","data":{"j":0}},
+  {"id":"n6","name":"Start","io":{"selector":"#start_button","event":""}},
+  {"id":"n3","name":"j","io":{"selector":".var_j","event":""},"inspect":true},
+  {"id":"n0","name":"i","data":{"i":0}},
+  {"id":"n1","name":"outer loop","process":["this.i = i + 1;"]},
+  {"id":"n2","name":"i","io":{"selector":".var_i","event":""}},
+  {"id":"n4","name":"inner loop","process":["this.j = j + 1;"]},
+  {"id":"n5","name":"fin"},
+  {"id":"n8","name":"","data":{"i":0,"j":"0"}},
+  {"id":"n9","name":"table","process":[],"io":{"selector":".table"}}
  ],
  "edges":[
   ["n0","n2","set","","",0],
@@ -231,16 +231,16 @@ var graph_examples = {
 },
 "Double Loop 3":
 {"graph":{"name":"Double Loop 3","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span></div><div>j = <span class='var_j'></span></div>"}, "nodes":[
-  {"id":"n9","name":"inner work","node_type":"process"},
-  {"id":"n8","name":"outer work","node_type":"process"},
-  {"id":"n7","name":"j","node_type":"data","data":{"j":1}},
-  {"id":"n6","name":"Start","node_type":"io","io":{"selector":"#start_button","event":""}},
-  {"id":"n3","name":"j","node_type":"io","io":{"selector":".var_j","event":""}},
-  {"id":"n0","name":"i","node_type":"data","data":{"i":1}},
-  {"id":"n1","name":"","node_type":"process","process":["this.i++;"],"data":{"j":1}},
-  {"id":"n2","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
-  {"id":"n4","name":"","node_type":"process","process":["this.j++;"]},
-  {"id":"n5","name":"fin","node_type":"process"}
+  {"id":"n9","name":"inner work"},
+  {"id":"n8","name":"outer work"},
+  {"id":"n7","name":"j","data":{"j":1}},
+  {"id":"n6","name":"Start","io":{"selector":"#start_button","event":""}},
+  {"id":"n3","name":"j","io":{"selector":".var_j","event":""}},
+  {"id":"n0","name":"i","data":{"i":1}},
+  {"id":"n1","name":"","process":["this.i++;"],"data":{"j":1}},
+  {"id":"n2","name":"i","io":{"selector":".var_i","event":""}},
+  {"id":"n4","name":"","process":["this.j++;"]},
+  {"id":"n5","name":"fin"}
  ],
  "edges":[
   ["n0","n2","set","","",0],
@@ -265,20 +265,20 @@ var graph_examples = {
 },
 "Double Loop 3.7":
 {"graph":{"name":"Double Loop 3.7","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span> | max_i:<input id='max_i' type='integer'/></div><div>j = <span class='var_j'></span> | max_j:<input id='max_j' type='integer'/></div>"}, "nodes":[
-  {"id":"n13","name":"max_j","node_type":"io","io":{"selector":"#max_j","event":"","valve":2},"data":{"max_j":4}},
-  {"id":"n12","name":"max_i","node_type":"io","io":{"selector":"#max_i","event":"","valve":2},"data":{"max_i":4}},
-  {"id":"n11","name":"disable","node_type":"process","data":{"disabled":true}},
-  {"id":"n10","name":"enable","node_type":"process","data":{"disabled":false}},
-  {"id":"n9","name":"inner work","node_type":"process"},
-  {"id":"n8","name":"outer work","node_type":"process"},
-  {"id":"n7","name":"j","node_type":"data","data":{"j":1}},
-  {"id":"n6","name":"Start","node_type":"io","io":{"selector":"#start_button","event":""}},
-  {"id":"n3","name":"j","node_type":"io","io":{"selector":".var_j","event":""}},
-  {"id":"n0","name":"i","node_type":"data","data":{"i":1}},
-  {"id":"n1","name":"","node_type":"process","process":["this.i++;"],"data":{"j":1}},
-  {"id":"n2","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
-  {"id":"n4","name":"","node_type":"process","process":["this.j++;"]},
-  {"id":"n5","name":"fin","node_type":"process","data":{}}
+  {"id":"n13","name":"max_j","io":{"selector":"#max_j","event":"","valve":2},"data":{"max_j":4}},
+  {"id":"n12","name":"max_i","io":{"selector":"#max_i","event":"","valve":2},"data":{"max_i":4}},
+  {"id":"n11","name":"disable","data":{"disabled":true}},
+  {"id":"n10","name":"enable","data":{"disabled":false}},
+  {"id":"n9","name":"inner work"},
+  {"id":"n8","name":"outer work"},
+  {"id":"n7","name":"j","data":{"j":1}},
+  {"id":"n6","name":"Start","io":{"selector":"#start_button","event":""}},
+  {"id":"n3","name":"j","io":{"selector":".var_j","event":""}},
+  {"id":"n0","name":"i","data":{"i":1}},
+  {"id":"n1","name":"","process":["this.i++;"],"data":{"j":1}},
+  {"id":"n2","name":"i","io":{"selector":".var_i","event":""}},
+  {"id":"n4","name":"","process":["this.j++;"]},
+  {"id":"n5","name":"fin","data":{}}
  ],
  "edges":[
   ["n0","n2","set","","",0],
@@ -311,22 +311,22 @@ var graph_examples = {
 },
 "Double Loop 4":
 {"graph":{"name":"Double Loop 4","template":"<button id='start_button'>Start</button><div>i = <span class='var_i'></span> | max_i:<input id='max_i' type='integer'/></div><div>j = <span class='var_j'></span> | max_j:<input id='max_j' type='integer'/></div>"}, "nodes":[
-  {"id":"n5","name":"fin","node_type":"process","data":{}},
-  {"id":"n14","name":"outer","node_type":"process"},
-  {"id":"n15","name":"inner","node_type":"process"},
-  {"id":"n6","name":"Start","node_type":"io","io":{"selector":"#start_button","event":""}},
-  {"id":"n10","name":"enable","node_type":"process","data":{"disabled":false}},
-  {"id":"n11","name":"disable","node_type":"process","data":{"disabled":true}},
-  {"id":"n12","name":"max_i","node_type":"io","io":{"selector":"#max_i","event":"","valve":2},"data":{"max_i":4}},
-  {"id":"n13","name":"max_j","node_type":"io","io":{"selector":"#max_j","event":"","valve":2},"data":{"max_j":4}},
-  {"id":"n4","parent":"n15","name":"","node_type":"process","process":["this.j++;"]},
-  {"id":"n2","parent":"n14","name":"i","node_type":"io","io":{"selector":".var_i","event":""}},
-  {"id":"n1","parent":"n14","name":"","node_type":"process","process":["this.i++;"],"data":{"j":1}},
-  {"id":"n0","parent":"n14","name":"i","node_type":"data","data":{"i":1}},
-  {"id":"n3","parent":"n15","name":"j","node_type":"io","io":{"selector":".var_j","event":""}},
-  {"id":"n7","parent":"n15","name":"j","node_type":"data","data":{"j":1}},
-  {"id":"n8","parent":"n14","name":"outer work","node_type":"process"},
-  {"id":"n9","parent":"n15","name":"inner work","node_type":"process"}
+  {"id":"n5","name":"fin","data":{}},
+  {"id":"n14","name":"outer"},
+  {"id":"n15","name":"inner"},
+  {"id":"n6","name":"Start","io":{"selector":"#start_button","event":""}},
+  {"id":"n10","name":"enable","data":{"disabled":false}},
+  {"id":"n11","name":"disable","data":{"disabled":true}},
+  {"id":"n12","name":"max_i","io":{"selector":"#max_i","event":"","valve":2},"data":{"max_i":4}},
+  {"id":"n13","name":"max_j","io":{"selector":"#max_j","event":"","valve":2},"data":{"max_j":4}},
+  {"id":"n4","parent":"n15","name":"","process":["this.j++;"]},
+  {"id":"n2","parent":"n14","name":"i","io":{"selector":".var_i","event":""}},
+  {"id":"n1","parent":"n14","name":"","process":["this.i++;"],"data":{"j":1}},
+  {"id":"n0","parent":"n14","name":"i","data":{"i":1}},
+  {"id":"n3","parent":"n15","name":"j","io":{"selector":".var_j","event":""}},
+  {"id":"n7","parent":"n15","name":"j","data":{"j":1}},
+  {"id":"n8","parent":"n14","name":"outer work"},
+  {"id":"n9","parent":"n15","name":"inner work"}
  ],
  "edges":[
   ["n0","n2","set","","",0],
@@ -359,17 +359,17 @@ var graph_examples = {
 },
 "Guessing Game 1":
 {"graph":{"name":"Guessing Game 1","template":"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"}, "nodes":[
-  {"id":"n4","name":"prompt","node_type":"data","data":{"prompt":"Too High, guess again"}},
-  {"id":"n2","name":"prompt","node_type":"data","data":{"prompt":"Too Low, guess again"}},
-  {"id":"n10","name":"graph","node_type":"io"},
-  {"name":"enter","id":"n0","io":{"selector":"#enter_button"},"node_type":"io"},
-  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100);"],"id":"n1","node_type":"process"},
-  {"name":"prompt","node_type":"io","io":{"selector":"#prompt"},"id":"n3"},
-  {"name":"prompt","id":"n5","node_type":"data","data":{"prompt":"Guess a number (1 - 100)"}},
-  {"id":"n6","name":"secret","node_type":"process"},
-  {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
-  {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess","valve":3}},
-  {"id":"n9","name":"prompt","node_type":"data","data":{"prompt":"Great! You guessed it."}}
+  {"id":"n4","name":"prompt","data":{"prompt":"Too High, guess again"}},
+  {"id":"n2","name":"prompt","data":{"prompt":"Too Low, guess again"}},
+  {"id":"n10","name":"graph"},
+  {"name":"enter","id":"n0","io":{"selector":"#enter_button"}},
+  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100);"],"id":"n1"},
+  {"name":"prompt","io":{"selector":"#prompt"},"id":"n3"},
+  {"name":"prompt","id":"n5","data":{"prompt":"Guess a number (1 - 100)"}},
+  {"id":"n6","name":"secret"},
+  {"id":"n7","name":"diff","process":["this.diff = guess - secret;"]},
+  {"id":"n8","name":"guess","io":{"selector":"#guess","valve":3}},
+  {"id":"n9","name":"prompt","data":{"prompt":"Great! You guessed it."}}
  ],
  "edges":[
   ["n1","n5","flo","next","",0],
@@ -390,20 +390,20 @@ var graph_examples = {
 },
 "Guessing Game 2":
 {"graph":{"name":"Guessing Game 2","template":"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"}, "nodes":[
-  {"id":"n9","name":"prompt","node_type":"data","data":{"prompt":"Great! You guessed it, in {{count}} guess(es) "},"process":["this.prompt = prompt.replace(\"{{count}}\", count);"]},
-  {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess","valve":3}},
-  {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
-  {"id":"n6","name":"secret","node_type":"process"},
-  {"name":"prompt","id":"n5","node_type":"data","data":{"prompt":"Guess a number (1 - 100)"}},
-  {"name":"prompt","node_type":"io","io":{"selector":"#prompt"},"id":"n3"},
-  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100) + 1;"],"id":"n1","node_type":"process"},
-  {"name":"enter","id":"n0","io":{"selector":"#enter_button"},"node_type":"io"},
-  {"id":"n10","name":"env","node_type":"io"},
-  {"id":"n2","name":"prompt","node_type":"data","data":{"prompt":"Too Low, guess again"}},
-  {"id":"n4","name":"prompt","node_type":"data","data":{"prompt":"Too High, guess again"}},
-  {"id":"n11","name":"","node_type":"process","process":["this.count = +count + 1;"]},
-  {"id":"n12","name":"count","node_type":"io","io":{"selector":"#count","valve":3},"data":{"count":0}},
-  {"id":"n13","name":"prompt","node_type":"data","data":{"prompt":"Sorry, all guesses are used up, the number was "},"process":["this.prompt = prompt + secret"]}
+  {"id":"n9","name":"prompt","data":{"prompt":"Great! You guessed it, in {{count}} guess(es) "},"process":["this.prompt = prompt.replace(\"{{count}}\", count);"]},
+  {"id":"n8","name":"guess","io":{"selector":"#guess","valve":3}},
+  {"id":"n7","name":"diff","process":["this.diff = guess - secret;"]},
+  {"id":"n6","name":"secret"},
+  {"name":"prompt","id":"n5","data":{"prompt":"Guess a number (1 - 100)"}},
+  {"name":"prompt","io":{"selector":"#prompt"},"id":"n3"},
+  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100) + 1;"],"id":"n1"},
+  {"name":"enter","id":"n0","io":{"selector":"#enter_button"}},
+  {"id":"n10","name":"env"},
+  {"id":"n2","name":"prompt","data":{"prompt":"Too Low, guess again"}},
+  {"id":"n4","name":"prompt","data":{"prompt":"Too High, guess again"}},
+  {"id":"n11","name":"","process":["this.count = +count + 1;"]},
+  {"id":"n12","name":"count","io":{"selector":"#count","valve":3},"data":{"count":0}},
+  {"id":"n13","name":"prompt","data":{"prompt":"Sorry, all guesses are used up, the number was "},"process":["this.prompt = prompt + secret"]}
  ],
  "edges":[
   ["n1","n5","flo","next","",0],
@@ -431,23 +431,23 @@ var graph_examples = {
 },
 "Guessing Game 3":
 {"graph":{"name":"Guessing Game 3","template":"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"}, "nodes":[
-  {"id":"n9","name":"prompt","node_type":"data","data":{"prompt":"Great! You guessed it, in {{count}} guess(es) "},"process":["this.prompt = prompt.replace(\"{{count}}\", count);"]},
-  {"id":"n8","name":"guess","node_type":"io","io":{"selector":"#guess","valve":3}},
-  {"id":"n7","name":"diff","node_type":"process","process":["this.diff = guess - secret;"]},
-  {"id":"n6","name":"secret","node_type":"process"},
-  {"name":"prompt","id":"n5","node_type":"data","data":{"prompt":"Guess a number (1 - 100)"}},
-  {"name":"prompt","node_type":"io","io":{"selector":"#prompt"},"id":"n3"},
-  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100) + 1;"],"id":"n1","node_type":"process"},
-  {"name":"enter","id":"n0","io":{"selector":"#enter_button"},"node_type":"io"},
-  {"id":"n10","name":"env","node_type":"io"},
-  {"id":"n2","name":"prompt","node_type":"data","data":{"prompt":"Too Low"}},
-  {"id":"n4","name":"prompt","node_type":"data","data":{"prompt":"Too High"}},
-  {"id":"n11","name":"","node_type":"process","process":["this.count = +count + 1;"]},
-  {"id":"n12","name":"count","node_type":"io","io":{"selector":"#count","valve":3},"data":{"count":0}},
-  {"id":"n13","name":"prompt","node_type":"data","data":{"prompt":"Sorry, all guesses are used up, the number was "},"process":["this.prompt = prompt + secret"]},
-  {"id":"n14","name":"game over?","node_type":"process","process":["this.game_over =  (count>=7);"]},
-  {"id":"n15","name":"guess again","node_type":"process","process":["this.prompt =  prompt + \", guess again\";"]},
-  {"id":"n16","name":"end","node_type":"process","process":["this.prompt =  prompt + \", no more guesses left. The secret number of \" + secret;"]}
+  {"id":"n9","name":"prompt","data":{"prompt":"Great! You guessed it, in {{count}} guess(es) "},"process":["this.prompt = prompt.replace(\"{{count}}\", count);"]},
+  {"id":"n8","name":"guess","io":{"selector":"#guess","valve":3}},
+  {"id":"n7","name":"diff","process":["this.diff = guess - secret;"]},
+  {"id":"n6","name":"secret"},
+  {"name":"prompt","id":"n5","data":{"prompt":"Guess a number (1 - 100)"}},
+  {"name":"prompt","io":{"selector":"#prompt"},"id":"n3"},
+  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100) + 1;"],"id":"n1"},
+  {"name":"enter","id":"n0","io":{"selector":"#enter_button"}},
+  {"id":"n10","name":"env"},
+  {"id":"n2","name":"prompt","data":{"prompt":"Too Low"}},
+  {"id":"n4","name":"prompt","data":{"prompt":"Too High"}},
+  {"id":"n11","name":"","process":["this.count = +count + 1;"]},
+  {"id":"n12","name":"count","io":{"selector":"#count","valve":3},"data":{"count":0}},
+  {"id":"n13","name":"prompt","data":{"prompt":"Sorry, all guesses are used up, the number was "},"process":["this.prompt = prompt + secret"]},
+  {"id":"n14","name":"game over?","process":["this.game_over =  (count>=7);"]},
+  {"id":"n15","name":"guess again","process":["this.prompt =  prompt + \", guess again\";"]},
+  {"id":"n16","name":"end","process":["this.prompt =  prompt + \", no more guesses left. The secret number of \" + secret;"]}
  ],
  "edges":[
   ["n1","n5","flo","next","",0],

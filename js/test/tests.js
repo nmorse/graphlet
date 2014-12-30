@@ -2,12 +2,12 @@
 test( "Graphlet selector tests", function(assert) {
   expect(7);
   var graph = {"graph":{"name":"Hello World"},"nodes":[
-	  {"name":"start","id":"n0", "io":{"type":"button"},"view":{"position":{"x":124,"y":80}},"node_type":"io"},
-	  {"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"},
-	  {"name":"Hello","data":{"salutation":"Hello "},"id":"n2","view":{"position":{"x":316,"y":105}},"node_type":"data"},
-	  {"name":"out","node_type":"io","id":"n3","view":{"position":{"x":446,"y":304}}},
-	  {"name":"name","io":{"method":"POST","data":{"name":"World"}},"node_type":"io","id":"n4","view":{"position":{"x":446,"y":196}}},
-	  {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}},"node_type":"process"}
+	  {"name":"start","id":"n0", "io":{"type":"button"},"view":{"position":{"x":124,"y":80}}},
+	  {"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}}},
+	  {"name":"Hello","data":{"salutation":"Hello "},"id":"n2","view":{"position":{"x":316,"y":105}}},
+	  {"name":"out","id":"n3","view":{"position":{"x":446,"y":304}}},
+	  {"name":"name","io":{"method":"POST","data":{"name":"World"}},"id":"n4","view":{"position":{"x":446,"y":196}}},
+	  {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}}}
 	 ],
 	 "edges":[
 	  ["n0","n1","flo","",null,0],
@@ -21,13 +21,13 @@ test( "Graphlet selector tests", function(assert) {
   // 1
   assert.deepEqual(
 	gq.using(graph).find({"element":"node", "id":"n1"}).graph(),
-	{"nodes":[{"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"}]},
+	{"nodes":[{"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}}}]},
 	"selection of node n1 as a graph"
   );
   // 2
   assert.deepEqual(
 	gq.using(graph).find({"element":"node", "id":"n1"}).nodes(),
-	[{"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"}],
+	[{"name":"send","process":["~salutation = ~salutation . ~name"],"data":{"salutation":"Hi "},"id":"n1","view":{"position":{"x":124,"y":196}}}],
 	"selection of node n1 as nodes"
   );
   // 3
@@ -69,12 +69,12 @@ asyncTest( "Graphlet procedural run test on a simple Hello World graphlet", func
   var $fixture = $env.append('<div id="graphlet">loading</div>');
 
   init_graphlet({"graph":{"name":"Hello World", "template":"<button id='start_button'>Say Hello</button><div class='greeting'></div>"},"nodes":[
-	  {"name":"start","id":"n0", "io":{"selector":"#start_button"},"view":{"position":{"x":124,"y":80}},"node_type":"io"},
-	  {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","view":{"position":{"x":124,"y":196}},"node_type":"process"},
-	  {"name":"Hello","data":{"salutation":"Hello"},"id":"n2","view":{"position":{"x":316,"y":105}},"node_type":"data"},
-	  {"name":"greeting","node_type":"io", "io":{"selector":".greeting"},"id":"n3","view":{"position":{"x":446,"y":304}}},
-	  {"name":"name","data":{"name":"World"},"node_type":"data","id":"n4","view":{"position":{"x":446,"y":196}}},
-	  {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}},"node_type":"data", "data":{"color": "rgb(255, 0, 0)"}}
+	  {"name":"start","id":"n0", "io":{"selector":"#start_button"},"view":{"position":{"x":124,"y":80}}},
+	  {"name":"send","process":["this.greeting = salutation + ' ' + name;"],"id":"n1","view":{"position":{"x":124,"y":196}}},
+	  {"name":"Hello","data":{"salutation":"Hello"},"id":"n2","view":{"position":{"x":316,"y":105}}},
+	  {"name":"greeting", "io":{"selector":".greeting"},"id":"n3","view":{"position":{"x":446,"y":304}}},
+	  {"name":"name","data":{"name":"World"},"id":"n4","view":{"position":{"x":446,"y":196}}},
+	  {"name":"end","id":"n5","view":{"position":{"x":124,"y":302}}, "data":{"color": "rgb(255, 0, 0)"}}
 	 ],
 	 "edges":[
 	  ["n0","n1","sub","click",null,0],
@@ -103,11 +103,11 @@ asyncTest( "Graphlet procedural run test on the demo 'shake 2' graphlet", functi
 
   init_graphlet({"graph":{"name":"shake 2.5","template":"<input type='text' id='textbox' value='' placeholder='type here' />"},
    "nodes":[
-    {"id":"n4","name":"2000 ms","node_type":"data","data":{"timeout":1000}},
-    {"id":"n3","name":"shake","node_type":"data","data":{"effect":"shake", "distance":5}},
-    {"id":"n2","name":"new text","node_type":"data","data":{"string":"new text"}},
-    {"id":"n1","name":"text box","node_type":"io","io":{"selector":"#textbox"}},
-    {"id":"n0","name":"timer","node_type":"process","process":["this.defered_transition = true; wait(target_node_id, timeout);"]}
+    {"id":"n4","name":"2000 ms","data":{"timeout":1000}},
+    {"id":"n3","name":"shake","data":{"effect":"shake", "distance":5}},
+    {"id":"n2","name":"new text","data":{"string":"new text"}},
+    {"id":"n1","name":"text box","io":{"selector":"#textbox"}},
+    {"id":"n0","name":"timer","process":["this.defered_transition = true; wait(target_node_id, timeout);"]}
    ],
    "edges":[
     ["n1","n0","sub","keyup",null,0],

@@ -141,9 +141,6 @@
 				o.id = "n"+i;
 				id_mode = "generated";
 			}
-			//if (o.data.node_type === undefined && o.data.type !== undefined) {
-			//	o.data.node_type = o.data.type;
-			//}
 			demoNodes.push(o);
 		}
 		for (i = 0; i < raw_edges.length; i++) {
