@@ -118,7 +118,7 @@
 		return top_obj;
 	}
 
-	// convert a stored graph into a from that is appropreate for Cytoscape.js
+	// convert a stored graphlet into a form that is appropreate for cytoscape.js
 	load_hbg = function (graph, graph_designator) {
 		var raw_nodes = graph.nodes;
 		var raw_edges = graph.edges;
@@ -128,7 +128,7 @@
 		var source, target;
 		var id_mode = "provided";
 		var active_view_index = graph_designator.view_index || 0;
-		//var active_view = graph.views[active_view_index] || {};
+
 		if (graph && graph.graph) {
 			g_aux.graph = graph.graph;
 			g_aux.active_view_index = active_view_index;
@@ -156,12 +156,14 @@
 			o = {"data":{"id":id, "name": name, "source": source, "target": target, "edge_type": raw_edges[i][2], "guard": raw_edges[i][4], "weight": 20}};
 			demoEdges.push(o);
 		}
+		// return in a format suitable for loading into cytoscape.js
 		return {
 		  nodes: demoNodes,
 		  edges: demoEdges
 		};
 	};
 
+  // exposed for the storage of the graph
 	get_current_cyto_graph = function () {
 		return g;
 	};
@@ -172,20 +174,16 @@
 		var i = +g_aux.active_view_index;
 		return g_aux.views[i].name;
 	};
-	set_nodes_editor = function (ed) {
-		nodes_editor = ed;
-		// editor feedback to the graph
-	};
-	set_edges_editor = function (ed) {
-		edges_editor = ed;
-		// editor feedback to the graph
-	};
+
+	// called by during run mode (by the interpretor to highlight the active
+	//   element in the graph)
 	vis_run_state = function (selector, css_class, duration) {
     var this_edge = g.$(selector);
     this_edge.addClass(css_class);
     setTimeout(function() {this_edge.removeClass(css_class);}, duration);
 	};
 
+  // display the graph using cytoscape.js
 	load_cy_graph = function (init_graph) {
 		if (g) {
 			g.remove(g.elements("node"));
@@ -379,7 +377,7 @@
 	};
 
 	$(function() {
-		//var init_graph = load_hbg(graph);
+
 		// jQuery should add this to the API
 		// adds options to a select tag from a list.
 		$.fn.options = function(l, first_blank) {
@@ -393,7 +391,6 @@
 			$(this).html(html_options);
 		};
 
-		//load_cy_graph(init_graph);
 		$('#add_node').off("click");
 		$('#add_node').on("click", function() {
 			//alert(g.nodes().length);
