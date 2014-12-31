@@ -180,6 +180,11 @@
 		edges_editor = ed;
 		// editor feedback to the graph
 	};
+	vis_run_state = function (selector, css_class, duration) {
+    var this_edge = g.$(selector);
+    this_edge.addClass(css_class);
+    setTimeout(function() {this_edge.removeClass(css_class);}, duration);
+	};
 
 	load_cy_graph = function (init_graph) {
 		if (g) {
