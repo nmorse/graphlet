@@ -25,6 +25,12 @@
           selector = end_node.io.selector;
           if (!end_node.data) {end_node.data = {};}
           end_node.data[name] = $(selector).val() || $(selector).text();
+          if (end_node.io.as_type && $.type(end_node.data[name]) != end_node.io.as_type) {
+            console.log("convert type "+$.type(end_node.data[name])+" to "+end_node.io.as_type);
+            if (end_node.io.as_type === "boolean") {
+              end_node.data[name] = (end_node.data[name] === 'true' || end_node.data[name] === '1' || end_node.data[name] === 'on');
+            }
+          }
         }
         else {
           console.log("Warning: io node was not able to provide data to get edge. ", JSON.stringify(end_node.io));
@@ -194,7 +200,7 @@
 			document: {}
 		};
 		// and mix in the environment
-		locals = $.extend(locals, env);
+		locals = $.extend({}, env, locals);
 
 		var createSandbox = function (env, code, locals) {
 			var params = []; // the names of local variables
