@@ -278,7 +278,7 @@
 		}
 		$.each(io_nodes, function(i, node) {
 		  var selector, selector_str;
-		  var sel_dom
+		  var sel_dom;
 		  if (node.io && node.io.selector) {
 		    selector = node.io.selector;
 		    // initial sync the nodes data with the IO point

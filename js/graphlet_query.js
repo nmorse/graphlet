@@ -2,7 +2,7 @@
 //
 
 (function() {
-	var graphlet = {}
+	var graphlet = {};
   gq = {
 		"using": function(g) {
 
@@ -67,7 +67,7 @@
 		  if (graphlet.edges) {
 		    hba_str += "edges:\n";
 		    $.each(graphlet.edges, function(i, e) {
-		      var from = 0, to = 0, e_type + "", name = "", guard = "";
+		      var from = 0, to = 0, e_type = "", name = "", guard = "";
 		      from = this.node_index(e[0]);
 		      to = this.node_index(e[1]);
 		      e_type = e[2].substr(0, 3);
