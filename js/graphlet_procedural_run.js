@@ -4,21 +4,26 @@
 (function($, gq) {
   var glt;
   var debug_rate = 0;
+
+
+  var unpack_edge = function(e) {
+    return {"from":e[0], "to":e[1], "edge_type":e[2], "name":e[3], "guard":e[4], "index":e[5] };
+  };
+
   // get all values from get edges and return as an object
   var get_all = function(id) {
     var got_obj = {};
     var g = this.glt;
     var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
     $.each(get_edges, function(i, e) {
-	    var to_node_id = e[1];
-      var end_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
-      var name = e[3] || end_node.name;
-      var alias = e[4] || name;
-      var this_edge;
-      var this_node;
+      var edge = unpack_edge(e);
+      var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
+      var name = edge.name || end_node.name;
+      // get edges use the "guard" as an "alias"
+      var alias = edge.guard || name;
       var selector;
       if (debug_rate) {
-        vis_run_state("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='get']", "active_run_get", debug_rate/2);
+        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='get']", "active_run_get", debug_rate/2);
       }
       if (end_node.io) {
         if (end_node.io.selector && end_node.io.valve >= 2) {
@@ -51,22 +56,18 @@
     var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
     var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
     $.each(set_edges, function(i, e) {
-      var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
+      var edge = unpack_edge(e);
+      var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
       var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
-      var alias = e[3];
-      var name = alias || end_node.name || start_node.name || "data";
-      var guard = e[4];
-      var this_edge;
-      var cy_target_node;
-      var guard_expression = e[4];
+      var name = edge.name || end_node.name || start_node.name || "data";
       var guard = {"result":true};
 
-      if (guard_expression) {
-        guard = run_edge_guard(result, guard_expression);
+      if (edge.guard) {
+        guard = run_edge_guard(result, edge.guard);
       }
 
       if (debug_rate && guard.result) {
-        vis_run_state("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='set']", "active_run_set", debug_rate/2);
+        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='set']", "active_run_set", debug_rate/2);
       }
       if (guard.result) {
         if (name.charAt(0) === ".") {
@@ -98,7 +99,7 @@
   					$(end_node.io.selector).text(end_node.data[name]);
   					$(end_node.io.selector).val(end_node.data[name]);
   				}
-  				set_all(e[1], result);
+  				set_all(edge.to, result);
   				if (debug_rate) {
   				  vis_run_state("node[id='"+end_node.id+"']", "active_run_set", debug_rate/2);
           }
@@ -106,7 +107,8 @@
       }
     });
     $.each(pub_edges, function(i, e) {
-      var end_node = gq.using(g).find({"element":"node", "id":e[1]}).nodes()[0];
+      var edge = unpack_edge(e);
+      var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
       var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
       var effect_options;
       if (start_node.data && start_node.data.effect && end_node.io && end_node.io.selector) {
@@ -116,8 +118,8 @@
         $(end_node.io.selector).effect(effect_options);
       }
       else {
-        console.log("trigger of " + e[2]);
-        $('body').trigger(e[2]);
+        console.log("trigger of " + edge.type);
+        $('body').trigger(edge.type);
       }
 
     });
@@ -129,32 +131,32 @@
     var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
     // first go through only the restrictive guarded flo edges.
     $.each(trans_edges, function(i, e) {
-      var guard_expression = e[4];
+      var edge = unpack_edge(e);
       var guard = {"result":false};
-      if (guard_expression && !gone) {
-        guard = run_edge_guard(get_result, guard_expression);
+      if (edge.guard && !gone) {
+        guard = run_edge_guard(get_result, edge.guard);
 
         if (guard.result) {
-          console.log("trigger transition "+e[0]+" -> "+e[1]);
+          console.log("trigger transition "+edge.from+" -> "+edge.to);
           if (debug_rate) {
-            vis_run_state("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='flo']", "active_run_flo", debug_rate);
+            vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
           }
-          setTimeout(function() {$("body").trigger("edge_" + e[5]);}, debug_rate);
+          setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
           gone = true;
         }
       }
     });
     // secondly go to any non-restrictive flo edges (with no guard)
     $.each(trans_edges, function(i, e) {
-      var guard_expression = e[4];
+      var edge = unpack_edge(e);
       var guard = {"result":true};
-      if (!guard_expression & !gone) {
+      if (!edge.guard & !gone) {
         if (guard.result) {
-          console.log("trigger transition "+e[0]+" -> "+e[1]);
+          console.log("trigger transition "+edge.form+" -> "+edge.to);
           if (debug_rate) {
-            vis_run_state("edge[source='"+e[0]+"'][target='"+e[1]+"'][edge_type='flo']", "active_run_flo", debug_rate);
+            vis_run_state("edge[source='"+edge.form+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
           }
-          setTimeout(function() {$("body").trigger("edge_" + e[5]);}, debug_rate);
+          setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
         }
       }
     });
@@ -299,34 +301,31 @@
 		  }
 		});
     $.each(flo_edges, function(i, e) {
-			$("body").off("edge_" + e[5]);
-			$("body").on("edge_" + e[5], function () {
-				var to_node_id = e[1];
-				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
+      var edge = unpack_edge(e);
+			$("body").off("edge_" + edge.index);
+			$("body").on("edge_" + edge.index, function () {
+				var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
 				run_node(target_node);
 			});
 		});
     // first time to turn off all listeners
     $.each(subscribe_edges, function(i, e) {
-			var from_node_id = e[0];
-			var event_name = e[3];
-			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
+      var edge = unpack_edge(e);
+			var source_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
 			var io = source_node.io;
 			if (!io) {io = {};}
 			if (!io.selector) {io.selector = 'body';}
-			$(io.selector).off(event_name);
+			$(io.selector).off(edge.name);
 		});
-		// secontime through this set of edges to turn on listneing (subscribe) to events.
+		// second time through this set of edges to turn on listneing (subscribe) to events.
     $.each(subscribe_edges, function(i, e) {
-			var from_node_id = e[0];
-			var event_name = e[3];
-			var source_node = gq.using(g).find({"element":"node", "id":from_node_id}).nodes()[0];
+      var edge = unpack_edge(e);
+			var source_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
 			var io = source_node.io;
 			if (!io) {io = {};}
 			if (!io.selector) {io.selector = 'body';}
-			$(io.selector).on(event_name, function() {
-				var to_node_id = e[1];
-				var target_node = gq.using(g).find({"element":"node", "id":to_node_id}).nodes()[0];
+			$(io.selector).on(edge.name, function() {
+				var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
 				run_node(target_node);
 			});
 		});
