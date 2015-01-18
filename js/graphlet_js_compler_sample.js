@@ -5,23 +5,38 @@
   var node_queue = [];
   var debug_mode = "";
   var nodes = {
-    "n1":{"process":function(input) {return input.a + input.b;}
-
+    "start":{"process":function(input) {return input.a + input.b;},
+      "get_edges":[
+          function () {return get("n2", "data_key", "alias");}
+        ],
+        "set_edges":[], "flo_edges":[
+          function (data_ele) {
+            if (allow(guard_exp, data_ele)) {
+              return "end"; // to_node_id
+            }
+            return ""; // no transition
+        ],
+    },
+    "n2":{"name":"data_key", "data":{"data_key":"Hello World"},
+      "get_edges":[], "set_edges":[], "flo_edges":[],
+    },
+    "n3":{"process":function(input) {return input.a + input.b;},
+      "get_edges":[], "set_edges":[], "flo_edges":[],
+    },
+    "end":{"name":"data_key", "data":{"data_key":"Hello World"},
+      "get_edges":[], "set_edges":[], "flo_edges":[],
     }
 
   };
   var edges = [];
   var run = function(node_id) {
     var node, input, result, trans_list = [];
-    node_queue.enqueue([node_id]);
-    while(node_queue) {
-      node_id = node_queue.dequeue();
+    while(node_id) {
       node = nodes[node_id];
-      input =node.get_all();
+      input = node.get_all();
       result = node.process(input);
       node.set_all(result);
-      trans_list = node.transition(result);
-      enqueue(trans_list);
+      node_id = node.transition(result);
     }
   };
 
