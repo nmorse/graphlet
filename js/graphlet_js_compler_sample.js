@@ -7,15 +7,19 @@
   var nodes = {
     "start":{"process":function(input) {return input.a + input.b;},
       "get_edges":[
-          function () {return get("n2", "data_key", "alias");}
-        ],
-        "set_edges":[], "flo_edges":[
-          function (data_ele) {
-            if (allow(guard_exp, data_ele)) {
-              return "end"; // to_node_id
-            }
-            return ""; // no transition
-        ],
+          // function returns data from, nameed,  aliased as.
+          function () {return get( "n2", "count", "c");},
+          function () {return get( "n2", "limit");}
+      ],
+      "set_edges":[],
+      "flo_edges":[
+        function (data_ele) {
+          if (allow(guard_exp, data_ele)) {
+            return "end"; // to_node_id
+          }
+          return ""; // no transition
+        }
+      ],
     },
     "n2":{"name":"data_key", "data":{"data_key":"Hello World"},
       "get_edges":[], "set_edges":[], "flo_edges":[],
