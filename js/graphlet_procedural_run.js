@@ -126,7 +126,7 @@
   };
 
   var transition_to = function(id, get_result) {
-    var gone = false;
+    var gone = false; // no transition has been found, this boolean is used to stop multiple edges from firing.
     var g = this.glt;
     var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
     // first go through only the restrictive guarded flo edges.
@@ -143,6 +143,7 @@
           }
           setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
           gone = true;
+          return false; // escape the each iterator
         }
       }
     });
@@ -157,6 +158,7 @@
             vis_run_state("edge[source='"+edge.form+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
           }
           setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
+          return false; // escape the each iterator
         }
       }
     });

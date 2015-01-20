@@ -21,8 +21,8 @@
     }
    },
    "edges":[
-    {"from":"n0","to":"n1","type":"msg","name":"click","guard":"","id":0}, // put these in on_init listner hookup
-    {"from":"n1","to":"n5","type":"flo","name":"","guard":function(in) {return (in.c > 5);},"id":1},
+    {"from":"n0","to":"n1","type":"msg","name":"click","guard":"","id":0}, // put msg edges in on_init listner hookup
+    {"from":"n1","to":"n5","type":"flo","name":"","guard":function(in) {return (in.c > 5);},"id":1}, // all other in the from node
     {"from":"n1","to":"n3","type":"set","name":"","guard":function(in) {return (in.c <= 5);},"id":2},
     {"from":"n1","to":"n3","type":"get","name":"","guard":"","id":3},
     {"from":"n5","to":"n3","type":"set","name":"","guard":"","id":4}
@@ -91,8 +91,8 @@
   var set_all = function(node) {
     var set_edges = node.edges.set;
     var pub_edges = node.edges.pub;
-    $.each(set_edges, function(i, e) {
-      var edge = unpack_edge(e);
+    $.each(set_edges, function(i, edge) {
+      //var edge = unpack_edge(e);
       var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
       var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
       var name = edge.name || end_node.name || start_node.name || "data";
@@ -142,8 +142,8 @@
         }
       }
     });
-    $.each(pub_edges, function(i, e) {
-      var edge = unpack_edge(e);
+    $.each(pub_edges, function(i, edge) {
+      //var edge = unpack_edge(e);
       var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
       var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
       var effect_options;
@@ -160,17 +160,53 @@
 
     });
   };
+  var transition = function(node) {
+    var gone = false; // no transition has been found, this boolean is used to stop multiple edges from firing.
+    var g = this.glt;
+    var trans_edges = node.edges.flo;
+    var next_node_id = '';
+    // first go through only the restrictive guarded flo edges.
+    $.each(trans_edges, function(i, edge) {
+      //var edge = unpack_edge(e);
+      var guard = {"result":false};
+      if (edge.guard && !gone) {
+        guard = run_edge_guard(get_result, edge.guard);
 
+        if (guard.result) {
+          console.log("trigger transition "+edge.from+" -> "+edge.to);
+          if (debug_rate) {
+            vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
+          }
+          //setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
+          next_node_id = edge.to;
+          gone = true;
+          return false; // escape the each iterator
+        }
+      }
+    });
+    if (gone) {
+      return next_node_id;
+    }
+    // secondly go to any non-restrictive flo edges (with no guard)
+    $.each(trans_edges, function(i, edge) {
+      //var edge = unpack_edge(e);
+      var guard = {"result":true};
+      if (!edge.guard & !gone) {
+        if (guard.result) {
+          console.log("trigger transition "+edge.form+" -> "+edge.to);
+          if (debug_rate) {
+            vis_run_state("edge[source='"+edge.form+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
+          }
+          //setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
+          next_node_id = edge.to;
+          return false; // escape the each iterator
+        }
+      }
+    });
+    return next_node_id;
 
-  var nodify = function (node) {
-    node.get_all = function() {
-
-    };
-    node.process = function() {
-
-    };
-    return node;
   };
+
 
   // interface
   init = function () {
