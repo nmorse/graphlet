@@ -4,21 +4,21 @@
 
   var g = {"graph":{"name":"counter 1","template":"<button id='start_button'>Start</button><div class='counter'></div>"},
     "nodes":{
-    "n3":{"name":"c","io":{"selector":".counter"},"data":{"c":0}},
-    "n5":{"name":"","data":{"c":0},
-      "edges":{
-        "set":[{"to":"n3"}]
+      "n3":{"name":"c","io":{"selector":".counter"},"data":{"c":0}},
+      "n5":{"name":"","data":{"c":0},
+        "edges":{
+          "set":[{"to":"n3"}]
+        }
+      },
+      "n1":{"name":"+1","process":[function(in){this.c = in.c + 1;return this;}],
+        "edges":{
+          "get":[{"to":"n3"}],
+          "set":[{"to":"n3","guard":function(in) {return (in.c <= 5);}}],
+          "flo":[{"to":"n5","guard":function(in) {return (in.c > 5);}}]
+        }
+      },
+      "n0":{"name":"start","io":{"selector":"#start_button"}
       }
-    },
-    "n1":{"name":"+1","process":[function(in){this.c = in.c + 1;return this;}],
-      "edges":{
-        "get":[{"to":"n3"}],
-        "set":[{"to":"n3","guard":function(in) {return (in.c <= 5);}}],
-        "flo":[{"to":"n5","guard":function(in) {return (in.c > 5);}}]
-      }
-    },
-    "n0":{"name":"start","io":{"selector":"#start_button"}
-    }
    },
    "edges":[
     {"from":"n0","to":"n1","type":"msg","name":"click","guard":"","id":0}, // put msg edges in on_init listner hookup
@@ -28,7 +28,7 @@
     {"from":"n5","to":"n3","type":"set","name":"","guard":"","id":4}
    ]
   };
-
+  var environment_selector = "";
   var debug_mode = "";
 
   var run = function(node_id) {
@@ -206,6 +206,9 @@
     return next_node_id;
 
   };
+  var init_environment = function() {
+
+  };
   var listen = function(edge) {
     var selector = edge.from_node.io.selector;
     var message_channel = edge.name;
@@ -217,15 +220,19 @@
 
 
   // interface
-  init = function () {
-
-    // init by setting up io listeners
-    listen({"from_node":{"id":"n0", "io":{}},"to":"n1","type":"msg","name":"click"});
-
+  init = function (env_selector) {
     // init io elements from the environment
+    environment_selector = env_selector;
+    init_environment();
 
-    // if a 'start' node exists, then run it
+    // init by setting up io listeners on edges of type 'msg'
+    listen({"from_node":{"id":"n0", "io":{"selector":"#start_button"}},"to":"n1","type":"msg","name":"click"});
+
+    // send an graph_init message
+    $(environment_selector).trigger('graph_init');
+
   };
+
   set_debug_mode = function (new_attr) {
     debug_mode = $.extend({}, debug_mode, new_attr);
   };
