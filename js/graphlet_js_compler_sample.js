@@ -52,8 +52,8 @@
       // get edges use the "guard" as an "alias"
       var alias = edge.guard || name;
       var selector;
-      if (step_rate) {
-        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='get']", "active_run_get", debug_rate/2);
+      if (step_delay) {
+        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='get']", "active_run_get", step_delay/2);
       }
       if (end_node.io) {
         if (end_node.io.selector && end_node.io.valve >= 2) {
@@ -73,8 +73,8 @@
       }
       if (end_node.data) {
 		    got_obj[alias] = end_node.data[name];
-        if (debug_rate) {
-          vis_run_state("node[id='"+end_node.id+"']", "active_run_get", debug_rate/2);
+        if (step_delay) {
+          vis_run_state("node[id='"+end_node.id+"']", "active_run_get", step_delay/2);
         }
 	    }
 
@@ -102,8 +102,8 @@
         guard = run_edge_guard(result, edge.guard);
       }
 
-      if (debug_rate && guard.result) {
-        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='set']", "active_run_set", debug_rate/2);
+      if (step_delay && guard.result) {
+        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='set']", "active_run_set", step_delay/2);
       }
       if (guard.result) {
         if (name.charAt(0) === ".") {
@@ -136,8 +136,8 @@
   					$(end_node.io.selector).val(end_node.data[name]);
   				}
   				set_all(edge.to, result);
-  				if (debug_rate) {
-  				  vis_run_state("node[id='"+end_node.id+"']", "active_run_set", debug_rate/2);
+  				if (step_delay) {
+  				  vis_run_state("node[id='"+end_node.id+"']", "active_run_set", step_delay/2);
           }
         }
       }
@@ -174,10 +174,10 @@
 
         if (guard.result) {
           console.log("trigger transition "+edge.from+" -> "+edge.to);
-          if (debug_rate) {
-            vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
+          if (step_delay) {
+            vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", step_delay);
           }
-          //setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
+          //setTimeout(function() {$("body").trigger("edge_" + edge.index);}, step_delay);
           next_node_id = edge.to;
           gone = true;
           return false; // escape the each iterator
@@ -194,10 +194,10 @@
       if (!edge.guard & !gone) {
         if (guard.result) {
           console.log("trigger transition "+edge.form+" -> "+edge.to);
-          if (debug_rate) {
-            vis_run_state("edge[source='"+edge.form+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
+          if (step_delay) {
+            vis_run_state("edge[source='"+edge.form+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", step_delay);
           }
-          //setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
+          //setTimeout(function() {$("body").trigger("edge_" + edge.index);}, step_delay);
           next_node_id = edge.to;
           return false; // escape the each iterator
         }
@@ -206,13 +206,21 @@
     return next_node_id;
 
   };
+  var listen = function(edge) {
+    var selector = edge.from_node.io.selector;
+    var message_channel = edge.name;
+    $(selector).off(message_channel);
+    $(selector).on(message_channel, function() {
+      run(edge.to);
+    });
+  };
 
 
   // interface
   init = function () {
 
     // init by setting up io listeners
-    listen({"from":"n0","to":"n1","type":"msg","name":"click"});
+    listen({"from_node":{"id":"n0", "io":{}},"to":"n1","type":"msg","name":"click"});
 
     // init io elements from the environment
 
@@ -224,5 +232,5 @@
 
 
 
-})($);
+})(jQuery);
 
