@@ -482,5 +482,36 @@ var graph_examples = {
   ["n16","n6","get","","",34]
  ],
  "views":[{"name":"primary","nodes":{"n9":{"position":{"x":326,"y":241},"width":180},"n8":{"position":{"x":533,"y":323},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n6":{"position":{"x":69,"y":286},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n3":{"position":{"x":533,"y":208},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n0":{"position":{"x":530,"y":378},"width":60},"n10":{"position":{"x":5,"y":19},"width":60},"n2":{"position":{"x":249,"y":184},"width":100},"n4":{"position":{"x":170,"y":136},"width":100},"n11":{"position":{"x":343,"y":431},"width":60},"n12":{"position":{"x":533,"y":440},"width":60},"n13":{"position":{"x":362,"y":303},"width":60},"n14":{"position":{"x":715,"y":161}},"n15":{"position":{"x":642,"y":28}},"n16":{"position":{"x":716,"y":264}}},"edges":{}}]
+},
+"calc 1":
+{"graph":{"name":"calc 1","template":"<div class='row'>  <div class='col-sm-3'><button id='num_7'>7</button></div>  <div class='col-sm-3'><button id='num_8'>8</button></div>  <div class='col-sm-3'><button id='num_9'>9</button></div>  <div class='col-sm-3'><button id='divide'>/</button></div></div><div class='row'>  <div class='col-sm-3'><button id='num_4'>4</button></div>  <div class='col-sm-3'><button id='num_5'>5</button></div>  <div class='col-sm-3'><button id='num_6'>6</button></div>  <div class='col-sm-3'><button id='mult'>*</button></div></div><div class='row'>  <div class='col-sm-3'><button id='num_1'>1</button></div>  <div class='col-sm-3'><button id='num_2'>2</button></div>  <div class='col-sm-3'><button id='num_3'>3</button></div>  <div class='col-sm-3'><button id='subtract'>-</button></div></div><div class='row'>  <div class='col-sm-3'><button id='ce'>CE</button></div>  <div class='col-sm-3'><button id='num_0'>0</button></div>  <div class='col-sm-3'><button id='equals'>=</button></div>  <div class='col-sm-3'><button id='add'>+</button></div></div><div class='row'><div class='col-sm-12'><span class='readout'></span></div></div>"}, "nodes":[
+  {"id":"n16","name":"number"},
+  {"id":"n0","name":"0","data":{"digit":0},"io":{"selector":"#num_0"}},
+  {"id":"n1","name":"1","data":{"digit":1},"io":{"selector":"#num_1"}},
+  {"id":"n2","name":"2","data":{"digit":2},"io":{"selector":"#num_2"}},
+  {"id":"n3","name":"3","data":{"digit":3},"io":{"selector":"#num_3"}},
+  {"id":"n4","name":"4","data":{"digit":4},"io":{"selector":"#num_4"}},
+  {"id":"n5","name":"5","data":{"digit":5},"io":{"selector":"#num_5"}},
+  {"id":"n6","name":"6","data":{"digit":6},"io":{"selector":"#num_6"}},
+  {"id":"n7","name":"7","data":{"digit":7},"io":{"selector":"#num_7"}},
+  {"id":"n8","name":"8","data":{"digit":8},"io":{"selector":"#num_8"}},
+  {"id":"n9","name":"9","data":{"digit":9},"io":{"selector":"#num_9"}},
+  {"id":"n10","name":"/","io":{"selector":"#divide"}},
+  {"id":"n11","name":".","io":{"selector":"#mult"}},
+  {"id":"n12","name":"-","io":{"selector":"#subtract"}},
+  {"id":"n13","name":"+","io":{"selector":"#add"}},
+  {"id":"n14","name":"CE","io":{"selector":"#ce"}},
+  {"id":"n15","name":"=","io":{"selector":"#equals"}},
+  {"id":"n17","name":"readout","io":{"selector":".readout"}},
+  {"name":"str","id":"n18","data":{"str":""}}
+ ],
+ "edges":[
+  ["n7","n7","sub","click","",3],
+  ["n7","n16","set","","",4],
+  ["n7","n16","flo","","",5],
+  ["n16","n17","flo","","",7],
+  ["n16","n18","set","str","digit",10]
+ ],
+ "views":[{"name":"primary","nodes":{"n16":{"position":{"x":86,"y":179},"width":60},"n0":{"position":{"x":251,"y":251},"width":60},"n1":{"position":{"x":250,"y":206},"width":60},"n2":{"position":{"x":319,"y":206},"width":60},"n3":{"position":{"x":393,"y":207},"width":60},"n4":{"position":{"x":251,"y":163},"width":60},"n5":{"position":{"x":322,"y":165},"width":60},"n6":{"position":{"x":393,"y":167},"width":60},"n7":{"position":{"x":252,"y":125},"width":60},"n8":{"position":{"x":321,"y":128},"width":60},"n9":{"position":{"x":398,"y":127},"width":60},"n10":{"position":{"x":477,"y":127}},"n11":{"position":{"x":475,"y":166}},"n12":{"position":{"x":474,"y":207}},"n13":{"position":{"x":473,"y":256}},"n14":{"position":{"x":321,"y":250}},"n15":{"position":{"x":406,"y":255}},"n17":{"position":{"x":362,"y":299},"width":260},"n18":{"position":{"x":81,"y":262}}},"edges":{}}]
 }
 };
