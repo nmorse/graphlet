@@ -10,11 +10,11 @@
           "set":[{"to":"n3"}]
         }
       },
-      "n1":{"name":"+1","process":[function(in){this.c = in.c + 1;return this;}],
+      "n1":{"name":"+1", "process":[function(input){this.c = input.c + 1;return this;}],
         "edges":{
           "get":[{"to":"n3"}],
-          "set":[{"to":"n3","guard":function(in) {return (in.c <= 5);}}],
-          "flo":[{"to":"n5","guard":function(in) {return (in.c > 5);}}]
+          "set":[{"to":"n3","guard":function(input) {return (input.c <= 5);}}],
+          "flo":[{"to":"n5","guard":function(input) {return (input.c > 5);}}]
         }
       },
       "n0":{"name":"start","io":{"selector":"#start_button"}
@@ -22,8 +22,8 @@
    },
    "edges":[
     {"from":"n0","to":"n1","type":"msg","name":"click","guard":"","id":0}, // put msg edges in on_init listner hookup
-    {"from":"n1","to":"n5","type":"flo","name":"","guard":function(in) {return (in.c > 5);},"id":1}, // all other in the from node
-    {"from":"n1","to":"n3","type":"set","name":"","guard":function(in) {return (in.c <= 5);},"id":2},
+    {"from":"n1","to":"n5","type":"flo","name":"","guard":function(input) {return (input.c > 5);},"id":1}, // all other in the from node
+    {"from":"n1","to":"n3","type":"set","name":"","guard":function(input) {return (input.c <= 5);},"id":2},
     {"from":"n1","to":"n3","type":"get","name":"","guard":"","id":3},
     {"from":"n5","to":"n3","type":"set","name":"","guard":"","id":4}
    ]
