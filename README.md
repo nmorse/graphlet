@@ -1,9 +1,9 @@
 Graphlet
 ========
-This progect, the "Graphlet" project, aims to move toward a few ideals that have been missing from programming (IMHO).
+This project, the "Graphlet" project, aims to move toward a few ideals that have been missing from programming (IMHO).
 These are:
  * a graph based syntax for flow-control and data-flow (i.e. a network of function, data and I/O elements)
- * visual programming (enabling spatial reasoning via visual renderings of graph networks)
+ * visual programming (enabling spatial reasoning via visual renderings of graph network)
  * a portable (environment agnostic) high-level approach to programming for many platforms
  * event oriented programming expressed as visual syntax (messages follow edges in the graph)
 
@@ -21,7 +21,7 @@ The flow of control is entirely determined by the topology of nodes and edges.
 >You will not find an "IF" or "WHILE" control structure in Graphlet. All flow control is determined by the topology of the graph that you create.
 
 All Access to data is clearly shown by the (data nodes) connectivity (via edges) in the Graphlet Graph structure.
-This visual approach enables sharing code, and code inspection (by graph analisys, or visually).
+This visual approach enables sharing code, and code inspection (by graph analysis, or visually).
 >If you need to understand what are all the ways that some datum or IO element is read from or written to, it is plainly represented by adjacency.
 
 Code Visualization
@@ -48,8 +48,8 @@ Message passing is represented in the graph by certain edge types {color:blue}. 
 can be styled to clearly show the source and target of message. The affected on connected nodes of the graph can be traced and
 understood visually.
 The Graphlet interpreter also sends events out to any external subscribers, these events
-allow developer tools to display an indication of how your graph is progressing. External Dev tools
-couls be as simple as progress bar, or as complex as a full IDE (eg. TBD the HoneyBee project).
+allow developer tools to display an indication of how your graph is progressing. External development tools
+could be as simple as progress bar, or as complex as a full IDE (eg. TBD the HoneyBee project).
 
 
 The Way Graphlet Works
@@ -60,7 +60,7 @@ Hopefully a balance will result in an semi-ideal yet practical programming syste
 This is what I know about the "way" it works (to date). Questions
 "Why is it done this way?" and
 "How did this come about?" are difficult to answer, other than "It has emerged in this way
-from a few high-faluting ideals and a great number of pesky praciticalities."
+from a few _highfalutin_ ideals and a great number of pesky practicalities."
 
 
 Node abilities (types)
@@ -89,11 +89,11 @@ Edge types
  * Flo flow or transition (guarded) between nodes
 
 Edges define how data moves and how the flow-of-control moves from node to node
-while the graphlet is running.
+while the Graphlet is running.
 > Note that Graphlet does *not* have any flow-of-control structures
  such as `for/while-loops` or `if-then-else blocks`. Instead all flow of execution is
- controled by edges that pass the control from node to node until no edge is suitable for
- tranistion and therefore no node is given the control to execute.
+ controlled by edges that pass the control from node to node until no edge is suitable for
+ transition and therefore no node is given the control to execute.
 
 
 Starting a Graphlet Program Running
@@ -101,7 +101,7 @@ Starting a Graphlet Program Running
 calling `graphlet_init(graph)` with a Graphlet (source graph) will prepare the program to
 be run and then a `graph_init` message is emitted.
 If a graph has a subscribe edge (of type 'sub') listening for this event, then the edge's target
-node is given control to execute. A graphlet may also lay dormant, waiting for an input message
+node is given control to execute. A Graphlet may also lay dormant, waiting for an input message
 from an element (IO node) with a subscribe edge, such as a 'click' event on a button element in a web browser.
 
 
