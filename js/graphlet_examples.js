@@ -513,5 +513,34 @@ var graph_examples = {
   ["n16","n18","set","str","digit",10]
  ],
  "views":[{"name":"primary","nodes":{"n16":{"position":{"x":86,"y":179},"width":60},"n0":{"position":{"x":251,"y":251},"width":60},"n1":{"position":{"x":250,"y":206},"width":60},"n2":{"position":{"x":319,"y":206},"width":60},"n3":{"position":{"x":393,"y":207},"width":60},"n4":{"position":{"x":251,"y":163},"width":60},"n5":{"position":{"x":322,"y":165},"width":60},"n6":{"position":{"x":393,"y":167},"width":60},"n7":{"position":{"x":252,"y":125},"width":60},"n8":{"position":{"x":321,"y":128},"width":60},"n9":{"position":{"x":398,"y":127},"width":60},"n10":{"position":{"x":477,"y":127}},"n11":{"position":{"x":475,"y":166}},"n12":{"position":{"x":474,"y":207}},"n13":{"position":{"x":473,"y":256}},"n14":{"position":{"x":321,"y":250}},"n15":{"position":{"x":406,"y":255}},"n17":{"position":{"x":362,"y":299},"width":260},"n18":{"position":{"x":81,"y":262}}},"edges":{}}]
+},
+"calc 2":{"graph":{"name":"calc 2","template":"<div class='row'>  <div class='col-sm-3'><button id='num_7'>7</button></div>  <div class='col-sm-3'><button id='num_8'>8</button></div>  <div class='col-sm-3'><button id='num_9'>9</button></div>  <div class='col-sm-3'><button id='divide'>/</button></div></div><div class='row'>  <div class='col-sm-3'><button id='num_4'>4</button></div>  <div class='col-sm-3'><button id='num_5'>5</button></div>  <div class='col-sm-3'><button id='num_6'>6</button></div>  <div class='col-sm-3'><button id='mult'>*</button></div></div><div class='row'>  <div class='col-sm-3'><button id='num_1'>1</button></div>  <div class='col-sm-3'><button id='num_2'>2</button></div>  <div class='col-sm-3'><button id='num_3'>3</button></div>  <div class='col-sm-3'><button id='subtract'>-</button></div></div><div class='row'>  <div class='col-sm-3'><button id='ce'>CE</button></div>  <div class='col-sm-3'><button id='num_0'>0</button></div>  <div class='col-sm-3'><button id='equals'>=</button></div>  <div class='col-sm-3'><button id='add'>+</button></div></div><div class='row'><div class='col-sm-12'><span class='readout'></span></div></div>"}, "nodes":[
+  {"name":"str","id":"n18","data":{"str":""}},
+  {"id":"n17","name":"readout","io":{"selector":".readout"},"data":{}},
+  {"id":"n15","name":"=","io":{"selector":"#equals"}},
+  {"id":"n14","name":"CE","io":{"selector":"#ce"}},
+  {"id":"n13","name":"+","io":{"selector":"#add"}},
+  {"id":"n12","name":"-","io":{"selector":"#subtract"}},
+  {"id":"n11","name":".","io":{"selector":"#mult"}},
+  {"id":"n10","name":"/","io":{"selector":"#divide"}},
+  {"id":"n9","name":"9","data":{"digit":9},"io":{"selector":"#num_9"}},
+  {"id":"n8","name":"8","data":{"digit":8},"io":{"selector":"#num_8"}},
+  {"id":"n7","name":"digit","data":{"digit":7},"io":{"selector":"#num_7"}},
+  {"id":"n6","name":"6","data":{"digit":6},"io":{"selector":"#num_6"}},
+  {"id":"n5","name":"5","data":{"digit":5},"io":{"selector":"#num_5"}},
+  {"id":"n4","name":"4","data":{"digit":4},"io":{"selector":"#num_4"}},
+  {"id":"n3","name":"3","data":{"digit":3},"io":{"selector":"#num_3"}},
+  {"id":"n2","name":"2","data":{"digit":2},"io":{"selector":"#num_2"}},
+  {"id":"n1","name":"1","data":{"digit":1},"io":{"selector":"#num_1"}},
+  {"id":"n0","name":"0","data":{"digit":0},"io":{"selector":"#num_0"}},
+  {"id":"n16","name":"number","process":["this.readout = digit; "]}
+ ],
+ "edges":[
+  ["n16","n18","set","str","digit",0],
+  ["n16","n17","set","","",1],
+  ["n7","n16","sub","click","",2],
+  ["n16","n7","get","","",3]
+ ],
+ "views":[{"name":"primary","nodes":{"n16":{"position":{"x":86,"y":179},"width":60},"n0":{"position":{"x":251,"y":251},"width":60},"n1":{"position":{"x":250,"y":206},"width":60},"n2":{"position":{"x":319,"y":206},"width":60},"n3":{"position":{"x":393,"y":207},"width":60},"n4":{"position":{"x":251,"y":163},"width":60},"n5":{"position":{"x":322,"y":165},"width":60},"n6":{"position":{"x":393,"y":167},"width":60},"n7":{"position":{"x":252,"y":125},"width":60},"n8":{"position":{"x":321,"y":128},"width":60},"n9":{"position":{"x":398,"y":127},"width":60},"n10":{"position":{"x":477,"y":127}},"n11":{"position":{"x":475,"y":166}},"n12":{"position":{"x":474,"y":207}},"n13":{"position":{"x":473,"y":256}},"n14":{"position":{"x":321,"y":250}},"n15":{"position":{"x":406,"y":255}},"n17":{"position":{"x":362,"y":299},"width":260},"n18":{"position":{"x":81,"y":262}}},"edges":{}},{"name":"process view","nodes":{"n18":{"position":{"x":65,"y":67}},"n17":{"position":{"x":170,"y":316},"width":260},"n15":{"position":{"x":406,"y":255}},"n14":{"position":{"x":321,"y":250}},"n13":{"position":{"x":475,"y":252}},"n12":{"position":{"x":475,"y":207}},"n11":{"position":{"x":475,"y":165}},"n10":{"position":{"x":475,"y":125}},"n9":{"position":{"x":392,"y":125},"width":60},"n8":{"position":{"x":322,"y":125},"width":60},"n7":{"position":{"x":252,"y":125},"width":60},"n6":{"position":{"x":393,"y":165},"width":60},"n5":{"position":{"x":322,"y":165},"width":60},"n4":{"position":{"x":251,"y":165},"width":60},"n3":{"position":{"x":393,"y":207},"width":60},"n2":{"position":{"x":322,"y":206},"width":60},"n1":{"position":{"x":250,"y":206},"width":60},"n0":{"position":{"x":251,"y":251},"width":60},"n16":{"position":{"x":102,"y":146},"width":60}},"edges":{}}]
 }
 };
