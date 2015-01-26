@@ -2,19 +2,25 @@
 
 (function($) {
 
-  var g = {"graph":{"name":"counter 1","template":"<button id='start_button'>Start</button><div class='counter'></div>"},
+  var g = {"graph":{"name":"counter 1","template":"<button id='start_button'>Start</button><div class='counter'>0</div>"},
     "nodes":{
-      "n3":{"name":"c","io":{"selector":".counter"},"data":{"c":0}},
+      "n3":{"name":"c","io":{"as_type":"integer","selector":".counter"},"data":{"c":0}},
       "n5":{"name":"","data":{"c":0},
         "edges":{
           "set":[{"to":"n3"}]
         }
       },
-      "n1":{"name":"+1", "process":[function(input){this.c = input.c + 1;return this;}],
+      "n1":{"name":"+1", "processes":[function(input){this.c = input.c + 1;return this;}],
         "edges":{
           "get":[{"to":"n3"}],
-          "set":[{"to":"n3","guard":function(input) {return (input.c <= 5);}}],
-          "flo":[{"to":"n5","guard":function(input) {return (input.c > 5);}}]
+          "set":[{"to":"n3","guard":function(input) {
+            return (input.c <= 5);
+
+          }}],
+          "flo":[{"to":"n5","guard":function(input) {
+            return (input.c > 5);
+
+          }}]
         }
       },
       "n0":{"name":"start","io":{"selector":"#start_button"}
@@ -29,25 +35,30 @@
    ]
   };
   var environment_selector = "";
-  var debug_mode = "";
+  var step_msg = function (chanel, msg) {console.log(chanel, msg);};
+  var step_delay = 0;
 
   var run = function(node_id) {
     var node, input, result;
     while(node_id) {
+      if (step_msg) {step_msg('run', 'control passed to '+node_id);}
       node = g.nodes[node_id];
       input = get_all(node);
+      if (step_msg) {step_msg('run', 'got all '+JSON.stringify(input));}
       node.data = $.extend({}, input, node.data);
       result = process(node);
+      if (step_msg) {step_msg('run', 'post process '+JSON.stringify(result));}
       node.data = $.extend({}, result, node.data);
       set_all(node);
       node_id = transition(node);
+      if (step_msg) {step_msg('run', 'transition to '+node_id);}
     }
   };
 
   var get_all = function(node) {
     var got_obj = {};
     $.each(node.edges.get, function(i, edge) {
-      var end_node = g.nodes[e.to];
+      var end_node = g.nodes[edge.to];
       var name = edge.name || end_node.name;
       // get edges use the "guard" as an "alias"
       var alias = edge.guard || name;
@@ -56,7 +67,7 @@
         vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='get']", "active_run_get", step_delay/2);
       }
       if (end_node.io) {
-        if (end_node.io.selector && end_node.io.valve >= 2) {
+        if (end_node.io.selector) {
           selector = end_node.io.selector;
           if (!end_node.data) {end_node.data = {};}
           end_node.data[name] = $(selector).val() || $(selector).text();
@@ -64,6 +75,9 @@
             console.log("convert type "+$.type(end_node.data[name])+" to "+end_node.io.as_type);
             if (end_node.io.as_type === "boolean") {
               end_node.data[name] = (end_node.data[name] === 'true' || end_node.data[name] === '1' || end_node.data[name] === 'on');
+            }
+            if (end_node.io.as_type === "integer") {
+              end_node.data[name] = (end_node.data[name] === '')? 0: parseInt(end_node.data[name], 10);
             }
           }
         }
@@ -83,23 +97,32 @@
   };
   var process = function(node) {
     var result = {};
-    $.each(node.processes, function(i, process) {
-      result = $.extend({}, process.call(node.data), result);
-    });
+    if (node.processes) {
+      $.each(node.processes, function(i, process) {
+        result = $.extend({}, process.call(this, node.data), result);
+      });
+    }
     return result;
   };
-  var set_all = function(node) {
-    var set_edges = node.edges.set;
-    var pub_edges = node.edges.pub;
+
+  var run_edge_guard = function(result, guard_exp) {
+    return guard_exp.call(this, result);
+  };
+
+  var set_all = function(start_node) {
+    var set_edges = start_node.edges.set || [];
+    var pub_edges = start_node.edges.pub || [];
+    if (step_msg) {step_msg('run', 'setting from node '+JSON.stringify(start_node));}
     $.each(set_edges, function(i, edge) {
+      if (step_msg) {step_msg('run', 'setting on edge '+JSON.stringify(edge));}
       //var edge = unpack_edge(e);
       var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
-      var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
-      var name = edge.name || end_node.name || start_node.name || "data";
+      //var start_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
+      var name = edge.name || (end_node && end_node.name) || (start_node && start_node.name) || "data";
       var guard = {"result":true};
 
       if (edge.guard) {
-        guard = run_edge_guard(result, edge.guard);
+        guard = run_edge_guard(start_node.data, edge.guard);
       }
 
       if (step_delay && guard.result) {
@@ -170,7 +193,7 @@
       //var edge = unpack_edge(e);
       var guard = {"result":false};
       if (edge.guard && !gone) {
-        guard = run_edge_guard(get_result, edge.guard);
+        guard = run_edge_guard(node.data, edge.guard);
 
         if (guard.result) {
           console.log("trigger transition "+edge.from+" -> "+edge.to);
@@ -206,14 +229,18 @@
     return next_node_id;
 
   };
-  var init_environment = function() {
 
+  var init_environment = function() {
+    $(environment_selector).append(g.graph.template);
   };
+
   var listen = function(edge) {
     var selector = edge.from_node.io.selector;
     var message_channel = edge.name;
     $(selector).off(message_channel);
+    if (step_msg) {step_msg('run', 'listening on '+selector+' for '+message_channel);}
     $(selector).on(message_channel, function() {
+      if (step_msg) {step_msg('run', 'fire '+JSON.stringify(edge));}
       run(edge.to);
     });
   };
@@ -224,6 +251,7 @@
     // init io elements from the environment
     environment_selector = env_selector;
     init_environment();
+    if (step_msg) {step_msg('run', 'init '+JSON.stringify(env_selector));}
 
     // init by setting up io listeners on edges of type 'msg'
     listen({"from_node":{"id":"n0", "io":{"selector":"#start_button"}},"to":"n1","type":"msg","name":"click"});
