@@ -13,11 +13,16 @@
 
 		"find": function(sel) {
 			var res = {};
+			if (!graphlet) {
+			  console.log('qg.find has an undefined graphlet.');
+			  return res;
+			}
 			if (sel.element === "node") {
 				res.nodes = [];
 				$.each(graphlet.nodes, function(i, o) {
 					if (sel.id && sel.id === o.id) {
 						res.nodes.push(o);
+						return false;
 					}
 					if (sel.type && o[sel.type]) {
 						res.nodes.push(o);

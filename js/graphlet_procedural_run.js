@@ -51,61 +51,72 @@
     return got_obj;
   };
 
-  var set_all = function(id, result) {
-    var g = this.glt;
-    var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
-    var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
-    $.each(set_edges, function(i, e) {
-      var edge = unpack_edge(e);
-      var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
-      var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
-      var name = edge.name || end_node.name || start_node.name || "data";
-      var guard = {"result":true};
+  var set_1edge = function(i, e) {
+    var g = that.glt;
+    var edge = unpack_edge(e);
+    var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
+    var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
+    var name = edge.name || end_node.name || start_node.name || "data";
+    var guard = {"result":true};
 
-      if (edge.guard) {
-        guard = run_edge_guard(result, edge.guard);
-      }
+    if (edge.guard) {
+      guard = run_edge_guard(result, edge.guard);
+    }
 
-      if (debug_rate && guard.result) {
-        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='set']", "active_run_set", debug_rate/2);
-      }
-      if (guard.result) {
-        if (name.charAt(0) === ".") {
-  				if (end_node.io && end_node.io.selector) {
+    if (debug_rate && guard.result) {
+      vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='set']", "active_run_set", debug_rate/2);
+    }
+    if (guard.result) {
+      if (name.charAt(0) === ".") {
+				if (end_node.io && end_node.io.selector) {
 
-  					switch (name)  {
-  						case ".css":
-  							$(end_node.io.selector).css(start_node.data);
-  							break;
-  						case ".attr":
-  							$(end_node.io.selector).attr(start_node.data);
-  							break;
-  						case ".hide":
-  							$(end_node.io.selector).hide(start_node.data.speed);
-  							break;
-  						case ".show":
-  							$(end_node.io.selector).show(start_node.data.speed);
-  							break;
-  						default:
-  							alert("jQuery function " +name + " is not supported at this time.");
-  					}
+					switch (name)  {
+						case ".css":
+							$(end_node.io.selector).css(start_node.data);
+							break;
+						case ".attr":
+							$(end_node.io.selector).attr(start_node.data);
+							break;
+						case ".hide":
+							$(end_node.io.selector).hide(start_node.data.speed);
+							break;
+						case ".show":
+							$(end_node.io.selector).show(start_node.data.speed);
+							break;
+						default:
+							alert("jQuery function " +name + " is not supported at this time.");
+					}
 
-  				}
-  			}
-  			else {
-  				if (!end_node.data) { end_node.data = {};}
-  				end_node.data[name] = result[name];
-  				if (end_node.io && end_node.io.selector) {
-  					$(end_node.io.selector).text(end_node.data[name]);
-  					$(end_node.io.selector).val(end_node.data[name]);
-  				}
-  				set_all(edge.to, result);
-  				if (debug_rate) {
-  				  vis_run_state("node[id='"+end_node.id+"']", "active_run_set", debug_rate/2);
-          }
+				}
+			}
+			else {
+				if (!end_node.data) { end_node.data = {};}
+				end_node.data[name] = result[name];
+				if (end_node.io && end_node.io.selector) {
+					$(end_node.io.selector).text(end_node.data[name]);
+					$(end_node.io.selector).val(end_node.data[name]);
+				}
+				set_all(edge.to, result);
+				if (debug_rate) {
+				  vis_run_state("node[id='"+end_node.id+"']", "active_run_set", debug_rate/2);
         }
       }
-    });
+    }
+  };
+
+  var set_all = function(id, result) {
+    var g = this.glt;
+    //var from_node = gq.using(g).find({"element":"node", "id":id}).nodes();
+    var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
+    var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
+    // if (from_node.data && from_node.io && from_node.io.selector) {
+      // make a self_edge to service this nodes own io point
+      // var self_edge = [id, id, "set"];
+      // invoke the set_edge method
+      // set_edge(self_edge);
+    // }
+    var that = this;
+    $.each(set_edges, set_1edge);
     $.each(pub_edges, function(i, e) {
       var edge = unpack_edge(e);
       var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
