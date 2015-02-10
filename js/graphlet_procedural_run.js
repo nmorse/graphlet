@@ -51,11 +51,11 @@
     return got_obj;
   };
 
-  var set_1edge = function(i, e) {
+  var set_1edge = function(i, e, that, result) {
     var g = that.glt;
     var edge = unpack_edge(e);
     var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
-    var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
+    var start_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
     var name = edge.name || end_node.name || start_node.name || "data";
     var guard = {"result":true};
 
@@ -116,7 +116,7 @@
       // set_edge(self_edge);
     // }
     var that = this;
-    $.each(set_edges, set_1edge);
+    $.each(set_edges, function(i, o) { set_1edge(i, o, that, result); });
     $.each(pub_edges, function(i, e) {
       var edge = unpack_edge(e);
       var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
