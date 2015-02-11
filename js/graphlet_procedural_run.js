@@ -51,8 +51,7 @@
     return got_obj;
   };
 
-  var set_1edge = function(i, e, that, result) {
-    var g = that.glt;
+  var set_1edge = function(e, g, result) {
     var edge = unpack_edge(e);
     var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
     var start_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
@@ -115,8 +114,8 @@
       // invoke the set_edge method
       // set_edge(self_edge);
     // }
-    var that = this;
-    $.each(set_edges, function(i, o) { set_1edge(i, o, that, result); });
+
+    $.each(set_edges, function(i, e) { set_1edge(e, g, result); });
     $.each(pub_edges, function(i, e) {
       var edge = unpack_edge(e);
       var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
