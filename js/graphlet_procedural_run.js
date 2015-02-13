@@ -338,6 +338,9 @@
 			if (!io.selector) {io.selector = 'body';}
 			$(io.selector).on(edge.name, function() {
 				var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
+				// DOM events are mapped to edges. the event source data is transfered to the
+				// target node, then the target node is run by calling run_node().
+				target_node.data = $.extend({}, target_node.data, source_node.data);
 				run_node(target_node);
 			});
 		});
