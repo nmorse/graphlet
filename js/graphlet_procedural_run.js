@@ -90,7 +90,12 @@
 			}
 			else {
 				if (!end_node.data) { end_node.data = {};}
-				end_node.data[name] = result[name];
+				if (edge.name === 'push') {
+				  end_node.data[end_node.name].push(result[name]);
+				}
+				else {
+				  end_node.data[name] = result[name];
+				}
 				if (end_node.io && end_node.io.selector) {
 					$(end_node.io.selector).text(end_node.data[name]);
 					$(end_node.io.selector).val(end_node.data[name]);
@@ -292,7 +297,14 @@
 		$.each(io_nodes, function(i, node) {
 		  var selector, selector_str;
 		  var sel_dom;
-		  var event_edges = gq.using(g).find({"element":"edge", "type":"sub", "from":node.id}).edges();
+		  var event_edges;
+		  if (node.parent) {
+		    event_edges = gq.using(g).find({"element":"edge", "type":"sub", "from":node.parent}).edges();
+		  }
+		  else {
+		    event_edges = gq.using(g).find({"element":"edge", "type":"sub", "from":node.id}).edges();
+		  }
+
 		  if (node.io && node.io.selector) {
 		    selector = node.io.selector;
 		    // initial sync the nodes data with the IO point
