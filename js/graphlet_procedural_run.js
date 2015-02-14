@@ -280,7 +280,6 @@
   init_graphlet = function(g) {
     var io_nodes = gq.using(g).find({"element":"node", "type":"io"}).nodes();
     var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
-    var subscribe_edges = gq.using(g).find({"element":"edge", "type":"sub"}).edges();
     this.glt = g;
     // cancel any previous listeners for a graph_init message.
     $('body').off('graph_init');
@@ -293,6 +292,7 @@
 		$.each(io_nodes, function(i, node) {
 		  var selector, selector_str;
 		  var sel_dom;
+		  var event_edges = gq.using(g).find({"element":"edge", "type":"sub", "from":node.id}).edges();
 		  if (node.io && node.io.selector) {
 		    selector = node.io.selector;
 		    // initial sync the nodes data with the IO point
@@ -306,11 +306,30 @@
 		      }
 		      $("#graphlet").append('<div ' + selector_str + '>'+selector_str+'</div>');
 		    }
+		    // initial syncing of DOM and data
 		    if (node.data && node.name) {
 		      $(selector).val(node.data[node.name]);
 		      $(selector).text(node.data[node.name]);
 		    }
+		    if (!node.data) {node.data = {};}
 		  }
+	    if (event_edges) {
+	      selector = node.io.selector || 'body';
+	      $.each(event_edges, function(i, e) {
+	        var edge = unpack_edge(e);
+	        $(selector).off(edge.name);
+	      });
+	      $.each(event_edges, function(i, e) {
+	        var edge = unpack_edge(e);
+    			var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
+    			$(selector).on(edge.name, function() {
+    				// DOM events are mapped to edges. the event source data is transfered to the
+    				// target node, then the target node is run by calling run_node().
+    				target_node.data = $.extend({}, target_node.data, node.data);
+    				run_node(target_node);
+    			});
+	      });
+	    }
 		});
     $.each(flo_edges, function(i, e) {
       var edge = unpack_edge(e);
@@ -320,30 +339,30 @@
 				run_node(target_node);
 			});
 		});
-    // first time to turn off all listeners
-    $.each(subscribe_edges, function(i, e) {
-      var edge = unpack_edge(e);
-			var source_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
-			var io = source_node.io;
-			if (!io) {io = {};}
-			if (!io.selector) {io.selector = 'body';}
-			$(io.selector).off(edge.name);
-		});
-		// second time through this set of edges to turn on listneing (subscribe) to events.
-    $.each(subscribe_edges, function(i, e) {
-      var edge = unpack_edge(e);
-			var source_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
-			var io = source_node.io;
-			if (!io) {io = {};}
-			if (!io.selector) {io.selector = 'body';}
-			$(io.selector).on(edge.name, function() {
-				var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
-				// DOM events are mapped to edges. the event source data is transfered to the
-				// target node, then the target node is run by calling run_node().
-				target_node.data = $.extend({}, target_node.data, source_node.data);
-				run_node(target_node);
-			});
-		});
+    //// first time to turn off all listeners
+    //$.each(subscribe_edges, function(i, e) {
+    //  var edge = unpack_edge(e);
+		//	var source_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
+		//	var io = source_node.io;
+		//	if (!io) {io = {};}
+		//	if (!io.selector) {io.selector = 'body';}
+		//	$(io.selector).off(edge.name);
+		//});
+		//// second time through this set of edges to turn on listneing (subscribe) to events.
+    //$.each(subscribe_edges, function(i, e) {
+    //  var edge = unpack_edge(e);
+		//	var source_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
+		//	var io = source_node.io;
+		//	if (!io) {io = {};}
+		//	if (!io.selector) {io.selector = 'body';}
+		//	$(io.selector).on(edge.name, function() {
+		//		var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
+		//		// DOM events are mapped to edges. the event source data is transfered to the
+		//		// target node, then the target node is run by calling run_node().
+		//		target_node.data = $.extend({}, target_node.data, source_node.data);
+		//		run_node(target_node);
+		//	});
+		//});
     console.log("trigger of graph_init event");
     $('body').trigger('graph_init');
   };

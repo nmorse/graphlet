@@ -168,29 +168,26 @@ asyncTest( "Graphlet procedural run test on the demo 'counter 3' graphlet", func
   var $fixture = $env.append('<div id="graphlet">loading</div>');
 
   init_graphlet(graph_examples['counter 3']);
+
   setTimeout(function() {
-    // trigger event
+	  assert.equal( $('.counter').text(), "1", "the counter graphlet ran and set the counter to '1'" );
+
     $('#start_button').trigger("click");
     setTimeout(function() {
-  	  assert.equal( $('.counter').text(), "1", "the counter graphlet ran and set the counter to '1'" );
+  	  assert.equal( $('.counter').text(), "2", "the counter graphlet ran and set the counter to '2'" );
 
       $('#start_button').trigger("click");
       setTimeout(function() {
-    	  assert.equal( $('.counter').text(), "2", "the counter graphlet ran and set the counter to '2'" );
+    	  assert.equal( $('.counter').text(), "3", "the counter graphlet ran and set the counter to '3'" );
 
         $('#start_button').trigger("click");
-        setTimeout(function() {
-      	  assert.equal( $('.counter').text(), "3", "the counter graphlet ran and set the counter to '3'" );
-
-          $('#start_button').trigger("click");
-            setTimeout(function() {
-          	  assert.equal( $('.counter').text(), "1", "the counter graphlet ran once more and set the counter back to '1'" );
-              QUnit.start();
-              $('#qunit-work-area').empty();
-            }, 500);
-        }, 500);
-      }, 500);
-    }, 500);
-  }, 1000);
+          setTimeout(function() {
+        	  assert.equal( $('.counter').text(), "1", "the counter graphlet ran once more and set the counter back to '1'" );
+            QUnit.start();
+            $('#qunit-work-area').empty();
+          }, 300);
+      }, 300);
+    }, 300);
+  }, 300);
 });
 
