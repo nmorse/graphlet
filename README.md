@@ -1,12 +1,12 @@
 Graphlet
 ========
-This project, the "Graphlet" project, aims to move toward a few ideals that have been missing from programming (IMHO).
-These are:
+This project, the "Graphlet" project, aims to move toward a few ideals that have been missing from the programming landscape.
  * a graph based syntax for flow-control and data-flow (i.e. a network of function, data and I/O elements)
- * visual programming (enabling spatial reasoning via visual renderings of graph network)
- * a portable (environment agnostic) high-level approach to programming for many platforms
+ * visual programming (enabling spatial reasoning on a graph network topology)
+ * a portable (environment agnostic) high-level approach to programming
  * event oriented programming expressed as visual syntax (messages follow edges in the graph)
-
+ * visual representation of data structures and transformation vectors (eg. a state machine or linked list)
+ 
 A Graph Based Syntax
 --------------------
 >The syntax for this language is based on a few types of nodes and edges in a graph. Nodes represent data storage and/or coded
@@ -50,6 +50,10 @@ understood visually.
 The Graphlet interpreter also sends events out to any external subscribers, these events
 allow developer tools to display an indication of how your graph is progressing. External development tools
 could be as simple as progress bar, or as complex as a full IDE (eg. TBD the HoneyBee project).
+
+Visualizing Data Structures and Transformations
+-----------------------------------------------
+Stacks, Queues, Lists (my favorite is a 'Skip List'), State Machines, and Heaps are all usefull Data Objects. Each one could really benefit the programmer by having a visual representation. The goal is to provide a visual environment that is helpful in alining a programmers intent with the selected data structures and associated transformations.
 
 
 The Way Graphlet Works
