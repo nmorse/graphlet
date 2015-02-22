@@ -73,6 +73,26 @@ var graph_examples = {
  ],
  "views":[{"name":"primary","nodes":{"n0":{"position":{"x":146,"y":192},"width":60},"n1":{"position":{"x":322,"y":127},"width":60},"n2":{"position":{"x":245,"y":290},"width":60},"n3":{"position":{"x":450,"y":251},"width":60},"n4":{"position":{"x":90,"y":88},"width":60}},"edges":{}}]
 },
+"shake 3":{"graph":{"name":"shake 3","template":"<input type='text' id='textbox' value='' placeholder='type here' />"}, "nodes":[
+  {"id":"n0","name":"timer","process":["wait(timeout);"]},
+  {"id":"n1","name":"textbox","io":{"selector":"#textbox","valve":3},"data":{"effect_state":"done"}},
+  {"id":"n2","name":"new text","data":{"string":""}},
+  {"id":"n3","name":"shake","data":{"effect":"shake","distance":5}},
+  {"id":"n4","name":"2000 ms","data":{"timeout":2000}},
+  {"id":"n5","name":"effect_state","io":{"selector":"#effect_state","valve":3,"as_type":""},"data":{"effect_state":"temp"}}
+ ],
+ "edges":[
+  ["n1","n0","sub","keyup",null,0],
+  ["n0","n2","flo","when done",null,1],
+  ["n2","n3","flo","next","effect_state === 'done'",2],
+  ["n2","n1","set","string",null,3],
+  ["n3","n1","pub","effect",null,4],
+  ["n0","n4","get","timeout",null,5],
+  ["n2","n1","get","effect_state","",6],
+  ["n2","n5","set","effect_state","",7]
+ ],
+ "views":[{"name":"primary","nodes":{"n0":{"position":{"x":146,"y":192},"width":60},"n1":{"position":{"x":322,"y":127},"width":60},"n2":{"position":{"x":245,"y":290},"width":60},"n3":{"position":{"x":450,"y":251},"width":60},"n4":{"position":{"x":90,"y":88},"width":60},"n5":{"position":{"x":425,"y":326},"width":90}},"edges":{}}]
+},
 "Loop 1": {"graph":{"name":"Loop 1","template":"<button id='start_button'>Start</button><div class='counter'></div>"}, "nodes":[
   {"name":"start","id":"n0","io":{"selector":"#start_button"}},
   {"name":"c+=1","process":["this.c = c + 1;"],"id":"n1"},

@@ -25,7 +25,7 @@
       if (debug_rate) {
         vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='get']", "active_run_get", debug_rate/2);
       }
-      if (end_node.io) {
+      if (end_node.io && name === end_node.io.selector.substr(1)) {
         if (end_node.io.selector && end_node.io.valve >= 2) {
           selector = end_node.io.selector;
           if (!end_node.data) {end_node.data = {};}
@@ -113,12 +113,6 @@
     //var from_node = gq.using(g).find({"element":"node", "id":id}).nodes();
     var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
     var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
-    // if (from_node.data && from_node.io && from_node.io.selector) {
-      // make a self_edge to service this nodes own io point
-      // var self_edge = [id, id, "set"];
-      // invoke the set_edge method
-      // set_edge(self_edge);
-    // }
 
     $.each(set_edges, function(i, e) { set_1edge(e, g, result); });
     $.each(pub_edges, function(i, e) {
@@ -128,15 +122,16 @@
       var effect_options;
       if (start_node.data && start_node.data.effect && end_node.io && end_node.io.selector) {
         effect_options = $.extend({"complete":function() {
-          console.log("effect complete"); //this.data['effect state'] = "done"
+          console.log("effect complete");
+          end_node.data['effect_state'] = "done";
         }}, start_node.data);
+        end_node.data['effect_state'] = "start";
         $(end_node.io.selector).effect(effect_options);
       }
       else {
         console.log("trigger of " + edge.type);
         $('body').trigger(edge.type);
       }
-
     });
   };
 
@@ -351,30 +346,6 @@
 				run_node(target_node);
 			});
 		});
-    //// first time to turn off all listeners
-    //$.each(subscribe_edges, function(i, e) {
-    //  var edge = unpack_edge(e);
-		//	var source_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
-		//	var io = source_node.io;
-		//	if (!io) {io = {};}
-		//	if (!io.selector) {io.selector = 'body';}
-		//	$(io.selector).off(edge.name);
-		//});
-		//// second time through this set of edges to turn on listneing (subscribe) to events.
-    //$.each(subscribe_edges, function(i, e) {
-    //  var edge = unpack_edge(e);
-		//	var source_node = gq.using(g).find({"element":"node", "id":edge.from}).nodes()[0];
-		//	var io = source_node.io;
-		//	if (!io) {io = {};}
-		//	if (!io.selector) {io.selector = 'body';}
-		//	$(io.selector).on(edge.name, function() {
-		//		var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
-		//		// DOM events are mapped to edges. the event source data is transfered to the
-		//		// target node, then the target node is run by calling run_node().
-		//		target_node.data = $.extend({}, target_node.data, source_node.data);
-		//		run_node(target_node);
-		//	});
-		//});
     console.log("trigger of graph_init event");
     $('body').trigger('graph_init');
   };
