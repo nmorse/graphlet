@@ -71,13 +71,37 @@
 						  "type": "array",
 						  "items": {"type":"string"}
 						},
+						"fsa": {
+						  "type": "object",
+						  "properties": {
+							  "states":{
+							    "type":"array",
+						      "items": {
+						        "type": "object",
+						        "properties": {
+						          "input":{"type":"string"},
+						          "node":{"type":"string"}
+						        }
+						      }
+							  },
+							  "description":{"type":"string"}
+						  }
+						},
+						"fsa_state": {
+					    "type":"object",
+						  "properties": {
+							  "accepting": {
+								  "type": "boolean"
+							  }
+						  }
+						},
 						"view": {
 						  "type":"object",
 						  "properties": {
-							"position": {
-								"type": "object",
-								"properties": {"x":{"type":"integer"}, "y":{"type":"integer"}}
-							}
+							  "position": {
+								  "type": "object",
+								  "properties": {"x":{"type":"integer"}, "y":{"type":"integer"}}
+							  }
 						  }
 						},
 						"parent": {
@@ -103,31 +127,34 @@
 					  "title": "Selected Edge",
 					  "headerTemplate": "{{ self.source }} -> {{ self.target }} ({{ self.edge_type }}) {{ self.name }} ",
 					  "properties": {
-						 "name": {
-						  "type": "string",
-						  "required": true
-						},
-						"source": {
-						  "type": "string",
-						  "required": true
-						},
-						"target": {
-						  "type": "string",
-						  "required": true
-						},
-						"edge_type": {
-						  "type": "string",
-						  "enum": ['get', 'set', 'flo', 'sub', 'pub'],
-						  "required": true
-						},
-						"guard": {
-						  "type": "string",
-						  "required": true
-						},
-						"weight": {
-						  "type": "integer",
-						  "required": true
-						}
+              "name": {
+  						  "type": "string",
+	  					  "required": true
+		  				},
+  						"source": {
+  						  "type": "string",
+  						  "required": true
+  						},
+  						"target": {
+  						  "type": "string",
+  						  "required": true
+  						},
+  						"edge_type": {
+  						  "type": "string",
+  						  "enum": ["", "get", "set", "flo", "sub", "pub"],
+  						  "required": true
+  						},
+  						"guard": {
+  						  "type": "string",
+  						  "required": true
+  						},
+  						"set_op": {
+  						  "type": "string",
+  						  "enum":["", "push", "pop", "enqueue", "dequeue"]
+  						},
+  						"alias": {
+  						  "type": "string"
+  						}
 					  },
 					  "format": "grid"
 					}

@@ -655,31 +655,41 @@ var graph_examples = {
 },
 "number FSA 2":
 {"graph":{"name":"number FSA 2"}, "nodes":[
-  {"id":"n8","name":"number FSA"},
+  {"id":"n12","name":"Graph"},
+  {"id":"n11","name":"state","io":{"selector":"#state"}},
+  {"id":"n10","name":"io","io":{"selector":"#inputbox", "valve":2}},
+  {"id":"n8","name":"number FSA","fsa":{"states":[],"description":"accepts a string that represents a number"}},
+  {"id":"n9","name":"Start"},
   {"id":"n3","name":"Start","parent":"n8"},
   {"id":"n0","name":"-","parent":"n8"},
-  {"id":"n5","name":"1-9","io":{"accepting":true},"parent":"n8"},
-  {"id":"n4","name":"0","io":{"accepting":true},"parent":"n8"},
+  {"id":"n5","name":"1-9","parent":"n8","fsa_state":{"accepting":true}},
+  {"id":"n4","name":"0","fsa_state":{"accepting":true},"parent":"n8"},
   {"id":"n1","name":"-0","parent":"n8"},
-  {"id":"n7","name":"0-9","io":{"accepting":true},"parent":"n8"},
+  {"id":"n7","name":"0-9","fsa_state":{"accepting":true},"parent":"n8"},
   {"id":"n2","name":".","parent":"n8"},
-  {"id":"n6","name":"0-9","parent":"n8","io":{"accepting":true}}
+  {"id":"n6","name":"0-9","parent":"n8","fsa_state":{"accepting":true}}
  ],
  "edges":[
-  ["n3","n0","flo","","-",0],
-  ["n3","n5","flo","","1-9",1],
-  ["n0","n5","flo","","1-9",2],
-  ["n3","n4","flo","","0",3],
-  ["n0","n1","flo","","0",4],
-  ["n7","n7","flo","","0-9",5],
-  ["n5","n7","flo","","0-9",6],
-  ["n5","n2","flo","","\\.",7],
-  ["n4","n2","flo","","\\.",8],
-  ["n1","n2","flo","","\\.",9],
-  ["n7","n2","flo","","\\.",10],
-  ["n6","n6","flo","","0-9",11],
-  ["n2","n6","flo","","0-9",12]
+  ["n3","n0","flo","","/-/",0],
+  ["n3","n5","flo","","/[1-9]/",1],
+  ["n0","n5","flo","","/[1-9]/",2],
+  ["n3","n4","flo","","/0/",3],
+  ["n0","n1","flo","","/0/",4],
+  ["n7","n7","flo","","/[0-9]/",5],
+  ["n5","n7","flo","","/[0-9]/",6],
+  ["n5","n2","flo","","/\\./",7],
+  ["n4","n2","flo","","/\\./",8],
+  ["n1","n2","flo","","/\\./",9],
+  ["n7","n2","flo","","/\\./",10],
+  ["n6","n6","flo","","/[0-9]/",11],
+  ["n2","n6","flo","","/[0-9]/",12],
+  ["n9","n8","set","init","",13],
+  ["n10","n8","set","char","",14],
+  ["n10","n10","sub","change","",15],
+  ["n10","n11","flo","","",16],
+  ["n11","n8","get","state","",17],
+  ["n12","n9","sub","graph_init","",18]
  ],
- "views":[{"name":"primary","nodes":{"n8":{"position":{"x":282,"y":-16}},"n3":{"position":{"x":114,"y":-40}},"n0":{"position":{"x":178,"y":31}},"n5":{"position":{"x":182,"y":-96}},"n4":{"position":{"x":124,"y":63}},"n1":{"position":{"x":254,"y":24}},"n7":{"position":{"x":365,"y":-71}},"n2":{"position":{"x":388,"y":39}},"n6":{"position":{"x":450,"y":-29}}},"edges":{}}]
+ "views":[{"name":"primary","nodes":{"n12":{"position":{"x":51,"y":294}},"n11":{"position":{"x":399,"y":324}},"n10":{"position":{"x":245,"y":327}},"n8":{"position":{"x":290,"y":139}},"n9":{"position":{"x":121,"y":316}},"n3":{"position":{"x":106,"y":125}},"n0":{"position":{"x":173,"y":176}},"n5":{"position":{"x":227,"y":60}},"n4":{"position":{"x":120,"y":218}},"n1":{"position":{"x":252,"y":176}},"n7":{"position":{"x":396,"y":90}},"n2":{"position":{"x":364,"y":200}},"n6":{"position":{"x":474,"y":148}}},"edges":{}}]
 }
 };

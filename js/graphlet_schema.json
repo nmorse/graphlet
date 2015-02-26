@@ -9,57 +9,117 @@
       "default": "Jeremy Dorn"
     },
     "nodes": {
-      "type": "object",
-      "title": "Nodes",
-      "properties": {
-        "name": {
-          "type": "string",
-          "default": "Start",
-          "required": true
-        },
-        "id": {
-          "type": "string",
-          "default": "n1"
-        },
-        "data": {
-          "type": "object"
-        }
-      }
-    },
+					"type": "array",
+					"title": "All Selected Nodes",
+					"uniqueItems": true,
+					"items": {
+					  "type": "object",
+					  "title": "Selected Node",
+					  "headerTemplate": "{{ self.id }} - {{ self.name }}",
+					  "properties": {
+						"name": {
+						  "type": "string",
+						  "default": "Start",
+              "required": true
+						},
+						"id": {
+						  "type": "string",
+						  "options": {"hidden": true}
+						},
+						"data": {
+						  "type": "object"
+						},
+						"io": {
+						  "type": "object",
+						  "properties": {
+							  "selector":{"type":"string"},
+							  "valve":{"type":"integer"},
+							  "as_type":{"type":"string"}
+						  }
+						},
+						"process": {
+						  "type": "array",
+						  "items": {"type":"string"}
+						},
+						"fsa": {
+						  "type": "object",
+						  "properties": {
+							  "states":{
+							    "type":"array",
+						      "items": {
+						        "type": "object",
+						        "properties": {
+						          "input":{"type":"string"},
+						          "node":{"type":"string"}
+						        }
+						      }
+							  },
+							  "description":{"type":"string"}
+						  }
+						},
+						"fsa_state": {
+					    "type":"object",
+						  "properties": {
+							  "accepting": {
+								  "type": "boolean"
+							  }
+						  }
+						},
+						"view": {
+						  "type":"object",
+						  "properties": {
+							  "position": {
+								  "type": "object",
+								  "properties": {"x":{"type":"integer"}, "y":{"type":"integer"}}
+							  }
+						  }
+						},
+						"parent": {
+						  "type": "string"
+						}
+					 },
+					 "format": "grid"
+					}
+				},
     "edges": {
-      "type": "array",
-      "format": "table",
-      "title": "Edges",
-      "uniqueItems": true,
-      "items": {
-        "type": "object",
-        "title": "Edge",
-        "properties": {
-          "from":{
-            "type": "string"
-          } ,
-          "to": {
-            "type": "string"
-          },
-"edge_type":{
-            "type": "string",
-            "enum": [
-              "get",
-              "set",
-              "flo",
-              "evt",
-              ".css"
-            ],
-            "default": "get"
-          },
-          "alias": {
-            "type": "string"
-          },
-          "guard": {
-            "type": "string"
-          }
-        }
-      }
-    }
+					"type": "array",
+					"title": "Selected Edges",
+					"items": {
+					  "type": "object",
+					  "title": "Selected Edge",
+					  "headerTemplate": "{{ self.source }} -> {{ self.target }} ({{ self.edge_type }}) {{ self.name }} ",
+					  "properties": {
+              "name": {
+  						  "type": "string",
+	  					  "required": true
+		  				},
+  						"source": {
+  						  "type": "string",
+  						  "required": true
+  						},
+  						"target": {
+  						  "type": "string",
+  						  "required": true
+  						},
+  						"edge_type": {
+  						  "type": "string",
+  						  "enum": ["", "get", "set", "flo", "sub", "pub"],
+  						  "required": true
+  						},
+  						"guard": {
+  						  "type": "string",
+  						  "required": true
+  						},
+  						"set_op": {
+  						  "type": "string",
+  						  "enum":["", "push", "pop", "enqueue", "dequeue"]
+  						},
+  						"alias": {
+  						  "type": "string"
+  						}
+					  },
+					  "format": "grid"
+					}
+				}
   }
 }
