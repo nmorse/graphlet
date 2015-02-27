@@ -207,9 +207,20 @@
 					"border-color": "#8890BB",
 					"shape": "roundrectangle"
 				})
-			.selector("node[width]")
+		  .selector("node[width]")
 				.css({
 					"width": "data(width)"
+				})
+		  .selector("node[fsa_state]")
+				.css({
+					"background-color": "#FFDDE2",
+					"border-color": "#BB8890",
+					"border-width": 6
+				})
+				.selector("node[fsa_state][[indegree = 0]]")
+				.css({
+					"background-color": "#E2FFDD",
+					"border-color": "#90BB88",
 				})
 			.selector("edge")
 				.css({

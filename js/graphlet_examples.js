@@ -654,13 +654,13 @@ var graph_examples = {
  "views":[{"name":"primary","nodes":{"n7":{"position":{"x":410,"y":-87}},"n6":{"position":{"x":493,"y":20}},"n5":{"position":{"x":303,"y":-35}},"n4":{"position":{"x":555,"y":-66}},"n3":{"position":{"x":101,"y":16}},"n2":{"position":{"x":388,"y":39}},"n1":{"position":{"x":268,"y":27}},"n0":{"position":{"x":169,"y":85}}},"edges":{}}]
 },
 "number FSA 2":
-{"graph":{"name":"number FSA 2"}, "nodes":[
+{"graph":{"name":"number FSA 2","template":"<div id='state'></div><input id='inputbox'/><button id='enter_button'>Enter</button>"}, "nodes":[
   {"id":"n12","name":"Graph"},
   {"id":"n11","name":"state","io":{"selector":"#state"}},
-  {"id":"n10","name":"io","io":{"selector":"#inputbox", "valve":2}},
+  {"id":"n10","name":"io","io":{"selector":"#inputbox","valve":2}},
   {"id":"n8","name":"number FSA","fsa":{"states":[],"description":"accepts a string that represents a number"}},
   {"id":"n9","name":"Start"},
-  {"id":"n3","name":"Start","parent":"n8"},
+  {"id":"n3","name":"Start","parent":"n8","fsa_state":{"start":true}},
   {"id":"n0","name":"-","parent":"n8"},
   {"id":"n5","name":"1-9","parent":"n8","fsa_state":{"accepting":true}},
   {"id":"n4","name":"0","fsa_state":{"accepting":true},"parent":"n8"},
