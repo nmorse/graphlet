@@ -175,7 +175,8 @@
   };
 
   var run_node = function(target_node) {
-    var aug_debug_rate = debug_rate;
+    var orig_debug_rate = debug_rate;
+    var pause_mode = false;
     var get_data = get_all(target_node.id);
     var this_node;
     var wait = function(milliseconds) {
@@ -184,10 +185,11 @@
       setTimeout(function() {transition_to(target_node.id, {});}, milliseconds);
     };
     if (vis_node_selected(target_node.id)) {
-      aug_debug_rate = 4000;
+      pause_mode = true;
+      debug_rate = 5000;
     }
-    if (aug_debug_rate) {
-      vis_run_state("node[id='"+target_node.id+"']", "active_run_node", aug_debug_rate);
+    if (debug_rate) {
+      vis_run_state("node[id='"+target_node.id+"']", "active_run_node", debug_rate);
     }
     get_data.defered_transition = false;
     if (target_node.data) {
@@ -206,7 +208,9 @@
       if (!get_data.defered_transition) {
         transition_to(target_node.id, get_data);
       }
-    }, aug_debug_rate/2);
+    }, debug_rate/2);
+
+    debug_rate = orig_debug_rate;
   };
 
 	// sandbox for functional (saferEval)

@@ -1,3 +1,4 @@
+// test
 
 test( "Graphlet selector tests", function(assert) {
   expect(7);
@@ -190,4 +191,10 @@ asyncTest( "Graphlet procedural run test on the demo 'counter 3' graphlet", func
     }, 300);
   }, 300);
 });
+
+// graphlet_vis is not inluded so...
+// stubbed out function so that test.html does not have to pull in all scripts
+vis_node_selected = function (node_id) {
+	  return false;
+};
 
