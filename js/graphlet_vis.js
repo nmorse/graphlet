@@ -183,6 +183,11 @@
     setTimeout(function() {this_edge.removeClass(css_class);}, duration);
 	};
 
+	vis_node_selected = function (node_id) {
+    var the_node = g.$("node[id='"+node_id+"']");
+	  return the_node.selected();
+	};
+
   // display the graph using cytoscape.js
 	load_cy_graph = function (init_graph) {
 		if (g) {

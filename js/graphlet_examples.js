@@ -451,23 +451,23 @@ var graph_examples = {
 },
 "Guessing Game 3":
 {"graph":{"name":"Guessing Game 3","template":"<div id='prompt'></div><input id='guess'/><button id='enter_button'>Enter</button>"}, "nodes":[
-  {"id":"n9","name":"prompt","data":{"prompt":"Great! You guessed it, in {{count}} guess(es) "},"process":["this.prompt = prompt.replace(\"{{count}}\", count);"]},
-  {"id":"n8","name":"guess","io":{"selector":"#guess","valve":3}},
-  {"id":"n7","name":"diff","process":["this.diff = guess - secret;"]},
-  {"id":"n6","name":"secret"},
-  {"name":"prompt","id":"n5","data":{"prompt":"Guess a number (1 - 100)"}},
-  {"name":"prompt","io":{"selector":"#prompt"},"id":"n3"},
-  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100) + 1;"],"id":"n1"},
-  {"name":"enter","id":"n0","io":{"selector":"#enter_button"}},
-  {"id":"n10","name":"env"},
-  {"id":"n2","name":"prompt","data":{"prompt":"Too Low"}},
-  {"id":"n4","name":"prompt","data":{"prompt":"Too High"}},
-  {"id":"n11","name":"","process":["this.count = +count + 1;"]},
-  {"id":"n12","name":"count","io":{"selector":"#count","valve":3},"data":{"count":0}},
-  {"id":"n13","name":"prompt","data":{"prompt":"Sorry, all guesses are used up, the number was "},"process":["this.prompt = prompt + secret"]},
-  {"id":"n14","name":"game over?","process":["this.game_over =  (count>=7);"]},
+  {"id":"n16","name":"end","process":["this.prompt =  prompt + \", no more guesses left. The secret number of \" + secret;"]},
   {"id":"n15","name":"guess again","process":["this.prompt =  prompt + \", guess again\";"]},
-  {"id":"n16","name":"end","process":["this.prompt =  prompt + \", no more guesses left. The secret number of \" + secret;"]}
+  {"id":"n14","name":"game over?","process":["this.game_over =  (count>=7);"]},
+  {"id":"n13","name":"prompt","data":{"prompt":"Sorry, all guesses are used up, the number was "},"process":["this.prompt = prompt + secret"]},
+  {"id":"n12","name":"count","io":{"selector":"#count","valve":3},"data":{"count":0}},
+  {"id":"n11","name":"","process":["this.count = +count + 1;"]},
+  {"id":"n4","name":"prompt","data":{"prompt":"Too High"}},
+  {"id":"n2","name":"prompt","data":{"prompt":"Too Low"}},
+  {"id":"n10","name":"env","io":{"selector":"","valve":0,"as_type":""}},
+  {"name":"enter","id":"n0","io":{"selector":"#enter_button"}},
+  {"name":"think","process":["this.secret = Math.floor(Math.random(1)*100) + 1;"],"id":"n1"},
+  {"name":"prompt","io":{"selector":"#prompt"},"id":"n3"},
+  {"name":"prompt","id":"n5","data":{"prompt":"Guess a number (1 - 100)"}},
+  {"id":"n6","name":"secret"},
+  {"id":"n7","name":"diff","process":["this.diff = guess - secret;"]},
+  {"id":"n8","name":"guess","io":{"selector":"#guess","valve":3}},
+  {"id":"n9","name":"prompt","data":{"prompt":"Great! You guessed it, in {{count}} guess(es) "},"process":["this.prompt = prompt.replace(\"{{count}}\", count);"]}
  ],
  "edges":[
   ["n1","n5","flo","next","",0],
@@ -495,13 +495,13 @@ var graph_examples = {
   ["n14","n12","get","","",22],
   ["n14","n15","flo","","!game_over",23],
   ["n14","n16","flo","","game_over",24],
-  ["n16","n3","set","","",26],
-  ["n15","n3","set","","",28],
-  ["n15","n3","get","","",31],
-  ["n16","n3","get","","",33],
-  ["n16","n6","get","","",34]
+  ["n16","n3","set","","",25],
+  ["n15","n3","set","","",26],
+  ["n15","n3","get","","",27],
+  ["n16","n3","get","","",28],
+  ["n16","n6","get","","",29]
  ],
- "views":[{"name":"primary","nodes":{"n9":{"position":{"x":326,"y":241},"width":180},"n8":{"position":{"x":533,"y":323},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n6":{"position":{"x":69,"y":286},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n3":{"position":{"x":533,"y":208},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n0":{"position":{"x":530,"y":378},"width":60},"n10":{"position":{"x":5,"y":19},"width":60},"n2":{"position":{"x":249,"y":184},"width":100},"n4":{"position":{"x":170,"y":136},"width":100},"n11":{"position":{"x":343,"y":431},"width":60},"n12":{"position":{"x":533,"y":440},"width":60},"n13":{"position":{"x":362,"y":303},"width":60},"n14":{"position":{"x":715,"y":161}},"n15":{"position":{"x":642,"y":28}},"n16":{"position":{"x":716,"y":264}}},"edges":{}}]
+ "views":[{"name":"primary","nodes":{"n16":{"position":{"x":716,"y":264}},"n15":{"position":{"x":642,"y":28}},"n14":{"position":{"x":715,"y":161}},"n13":{"position":{"x":362,"y":303},"width":60},"n12":{"position":{"x":533,"y":440},"width":60},"n11":{"position":{"x":343,"y":431},"width":60},"n4":{"position":{"x":170,"y":136},"width":100},"n2":{"position":{"x":249,"y":184},"width":100},"n10":{"position":{"x":5,"y":19},"width":60},"n0":{"position":{"x":530,"y":378},"width":60},"n1":{"position":{"x":69,"y":96},"width":60},"n3":{"position":{"x":533,"y":208},"width":60},"n5":{"position":{"x":428,"y":96},"width":200},"n6":{"position":{"x":69,"y":286},"width":60},"n7":{"position":{"x":198,"y":363},"width":80},"n8":{"position":{"x":533,"y":323},"width":60},"n9":{"position":{"x":326,"y":241},"width":180}},"edges":{}}]
 },
 "calc 1":
 {"graph":{"name":"calc 1","template":"<div class='row'>  <div class='col-sm-3'><button id='num_7'>7</button></div>  <div class='col-sm-3'><button id='num_8'>8</button></div>  <div class='col-sm-3'><button id='num_9'>9</button></div>  <div class='col-sm-3'><button id='divide'>/</button></div></div><div class='row'>  <div class='col-sm-3'><button id='num_4'>4</button></div>  <div class='col-sm-3'><button id='num_5'>5</button></div>  <div class='col-sm-3'><button id='num_6'>6</button></div>  <div class='col-sm-3'><button id='mult'>*</button></div></div><div class='row'>  <div class='col-sm-3'><button id='num_1'>1</button></div>  <div class='col-sm-3'><button id='num_2'>2</button></div>  <div class='col-sm-3'><button id='num_3'>3</button></div>  <div class='col-sm-3'><button id='subtract'>-</button></div></div><div class='row'>  <div class='col-sm-3'><button id='ce'>CE</button></div>  <div class='col-sm-3'><button id='num_0'>0</button></div>  <div class='col-sm-3'><button id='equals'>=</button></div>  <div class='col-sm-3'><button id='add'>+</button></div></div><div class='row'><div class='col-sm-12'><span class='readout'></span></div></div>"}, "nodes":[
