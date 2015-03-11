@@ -192,6 +192,44 @@ asyncTest( "Graphlet procedural run test on the demo 'counter 3' graphlet", func
   }, 300);
 });
 
+asyncTest( "Graphlet test 'calc 3'", function(assert) {
+  expect(9);
+  var $env = $('#qunit-work-area');
+  var $fixture = $env.append('<div id="graphlet">loading</div>');
+
+  init_graphlet(graph_examples['calc 3']);
+
+  setTimeout(function() {
+	  assert.equal( $('#mode').text(), "new number", "the mode starts at new number." );
+
+    $('#num_7').trigger("click");
+    setTimeout(function() {
+  	  assert.equal( $('.readout').text(), "7", "A click on the 7 key works." );
+  	  assert.equal( $('#mode').text(), "number", "the mode reflects a number." );
+
+      $('#mult').trigger("click");
+      setTimeout(function() {
+    	  assert.equal( $('.readout').text(), "7*", "Multiply operator key" );
+    	  assert.equal( $('#mode').text(), "new number", "the mode goes back to 'new number'" );
+
+        $('#num_7').trigger("click");
+          setTimeout(function() {
+        	  assert.equal( $('.readout').text(), "7*7", "'7' key" );
+        	  assert.equal( $('#mode').text(), "number", "the mode reflects a number." );
+
+            $('#equals').trigger("click");
+              setTimeout(function() {
+            	  assert.equal( $('.readout').text(), "49", "after the '=' key" );
+            	  assert.equal( $('#mode').text(), "number", "the mode reflects a number." );
+                QUnit.start();
+                $('#qunit-work-area').empty();
+              }, 300);
+          }, 300);
+      }, 300);
+    }, 300);
+  }, 300);
+});
+
 // graphlet_vis is not inluded so...
 // stubbed out function so that test.html does not have to pull in all scripts
 vis_node_selected = function (node_id) {
