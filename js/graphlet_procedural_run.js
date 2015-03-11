@@ -222,7 +222,7 @@
 			document: {}
 		};
 		// and mix in the environment
-		locals = $.extend({}, env, locals);
+		locals = $.extend({}, locals, env);
 
 		var createSandbox = function (env, code, locals) {
 			var params = []; // the names of local variables
