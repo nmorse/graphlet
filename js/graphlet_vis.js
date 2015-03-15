@@ -466,6 +466,11 @@
 			$('#graph_in').hide();
 			$('#graph_out').hide();
 
+			$('#set_step_rate').off('click');
+			$('#set_step_rate').on('click', function(){
+			  set_step_rate();
+			});
+
 			// set the run env.
 			init_graphlet(JSON.parse(graph_json_str));
 		});

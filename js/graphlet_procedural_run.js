@@ -285,13 +285,17 @@
 		return result;
 	};
 
+  set_step_rate = function() {
+    debug_rate = parseInt($("#run_debug_rate").val(), 10) || 0;
+  };
+
   init_graphlet = function(g) {
     var io_nodes = gq.using(g).find({"element":"node", "type":"io"}).nodes();
     var flo_edges = gq.using(g).find({"element":"edge", "type":"flo"}).edges();
     this.glt = g;
     // cancel any previous listeners for a graph_init message.
     $('body').off('graph_init');
-    debug_rate = parseInt($("#run_debug_rate").val(), 10) || 0;
+    set_step_rate();
     if (g.graph && g.graph.template) {
 			$(function() {
 				$("#graphlet").html(g.graph.template);
