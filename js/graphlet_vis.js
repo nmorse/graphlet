@@ -410,13 +410,13 @@
 		$('#copy_node').off("click");
 		$('#copy_node').on("click", function() {
 			//alert(g.nodes().length);
-			var ns = g.add({"nodes":[ {"data":{"view":{"position":{"x":80,"y":60}}}} ]});
-			var d = ns[0].data();
-			var pos = d.view.position;
-			ns[0].position({x: pos.x, y: pos.y});
+			var ns = g.find("nodes:selected");
+			var copy = g.copy(ns);
+			var pos = copy.view.position;
+			copy[0].position({x: pos.x, y: pos.y});
 			setTimeout(function() {
 				g.$('*').unselect();
-				ns[0].select();
+				copy[0].select();
 			}, 50);
 		});
 		$('#add_node').off("click");
