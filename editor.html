@@ -164,7 +164,10 @@
 				disable_array_reorder:true,
 				disable_edit_json:true,
 				disable_properties:true
-			  });
+			});
+			if (window.location.search.indexOf('graphlet=Hello+World') >= 0) {
+			  $(document).trigger("load_hbg", [{"graph":"Hello World", "view_index":0}, ["examples"]]);
+			}
 		});
         </script>
     </head>
