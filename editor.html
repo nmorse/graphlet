@@ -36,6 +36,15 @@
 
         <script>
 		$(function() {
+			var args = document.location.search.slice(1).split('&');
+			var params = {};
+			$.each(args, function(i, o){
+			  var key_val_arr = o.split('=');
+			  if (key_val_arr.length === 2) {
+			    params[key_val_arr[0]] = decodeURIComponent(key_val_arr[1]);
+			  }
+			});
+
 			nodes_editor = new JSONEditor($('#node_editor')[0], {
 				  theme: 'bootstrap3',
 				  schema: {
@@ -165,8 +174,9 @@
 				disable_edit_json:true,
 				disable_properties:true
 			});
-			if (window.location.search.indexOf('graphlet=Hello+World') >= 0) {
-			  $(document).trigger("load_hbg", [{"graph":"Hello World", "view_index":0}, ["examples"]]);
+
+			if (params.example) {
+			  $(document).trigger("load_hbg", [{"graph":params.example, "view_index":0}, ["examples"]]);
 			}
 		});
         </script>
