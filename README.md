@@ -1,6 +1,6 @@
 Graphlet
 ========
-Demo IDE http://nmorse.github.io/graphlet/editor.html?graphlet=_1
+Demo IDE http://nmorse.github.io/graphlet/editor.html?example=Hello%20World
 
 This project, the "Graphlet" project, aims to move toward a few ideals that have been missing from the programming landscape.
  * a graph based syntax for flow-control and data-flow (i.e. a network of function, data and I/O elements)
