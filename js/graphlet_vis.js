@@ -478,9 +478,22 @@
 			$('#graph_in').hide();
 			$('#graph_out').hide();
 
-			$('#set_step_rate').off('click');
-			$('#set_step_rate').on('click', function(){
+			$('#run_step_rate').off('change');
+			$('#run_step_rate').on('change', function(){
 			  set_step_rate();
+			});
+
+			$('#run_step_rate_num').off('change');
+			$('#run_step_rate_num').on('change', function(){
+			  var milliseconds =  parseInt($('#run_step_rate_num').val() * 1000);
+			  $('#run_step_rate').val(milliseconds);
+			  set_step_rate();
+			});
+
+			$('body').off('run_step_rate_change');
+			$('body').on('run_step_rate_change', function(){
+			  var seconds = Math.round(parseInt($('#run_step_rate').val(), 10)/100)/10;
+			  $('#run_step_rate_num').val(seconds);
 			});
 
 			// set the run env.

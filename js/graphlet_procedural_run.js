@@ -3,7 +3,7 @@
 
 (function($, gq) {
   var glt;
-  var debug_rate = 0;
+  var step_rate = 0;
 
 
   var unpack_edge = function(e) {
@@ -22,8 +22,8 @@
       // get edges use the "guard" as an "alias"
       var alias = edge.guard || name;
       var selector;
-      if (debug_rate) {
-        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='get']", "active_run_get", debug_rate/2);
+      if (step_rate) {
+        vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='get']", "active_run_get", step_rate/2);
       }
       if (end_node.io && name === end_node.io.selector.substr(1)) {
         if (end_node.io.selector && end_node.io.valve >= 2) {
@@ -43,8 +43,8 @@
       }
       if (end_node.data) {
 		    got_obj[alias] = end_node.data[name];
-        if (debug_rate) {
-          vis_run_state("node[id='"+end_node.id+"']", "active_run_get", debug_rate/2);
+        if (step_rate) {
+          vis_run_state("node[id='"+end_node.id+"']", "active_run_get", step_rate/2);
         }
 	    }
     });
@@ -62,8 +62,8 @@
       guard = run_edge_guard(result, edge.guard);
     }
 
-    if (debug_rate && guard.result) {
-      vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='set']", "active_run_set", debug_rate/2);
+    if (step_rate && guard.result) {
+      vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='set']", "active_run_set", step_rate/2);
     }
     if (guard.result) {
       if (name.charAt(0) === ".") {
@@ -101,8 +101,8 @@
 					$(end_node.io.selector).val(end_node.data[name]);
 				}
 				set_all(edge.to, result);
-				if (debug_rate) {
-				  vis_run_state("node[id='"+end_node.id+"']", "active_run_set", debug_rate/2);
+				if (step_rate) {
+				  vis_run_state("node[id='"+end_node.id+"']", "active_run_set", step_rate/2);
         }
       }
     }
@@ -148,10 +148,10 @@
 
         if (guard.result) {
           console.log("trigger transition "+edge.from+" -> "+edge.to);
-          if (debug_rate) {
-            vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
+          if (step_rate) {
+            vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", step_rate);
           }
-          setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
+          setTimeout(function() {$("body").trigger("edge_" + edge.index);}, step_rate);
           gone = true;
           return false; // escape the each iterator
         }
@@ -164,10 +164,10 @@
       if (!edge.guard & !gone) {
         if (guard.result) {
           console.log("trigger transition "+edge.form+" -> "+edge.to);
-          if (debug_rate) {
-            vis_run_state("edge[source='"+edge.form+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", debug_rate);
+          if (step_rate) {
+            vis_run_state("edge[source='"+edge.form+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", step_rate);
           }
-          setTimeout(function() {$("body").trigger("edge_" + edge.index);}, debug_rate);
+          setTimeout(function() {$("body").trigger("edge_" + edge.index);}, step_rate);
           return false; // escape the each iterator
         }
       }
@@ -175,7 +175,7 @@
   };
 
   var run_node = function(target_node) {
-    var orig_debug_rate = debug_rate;
+    var orig_step_rate = step_rate;
     var pause_mode = false;
     var get_data = get_all(target_node.id);
     var this_node;
@@ -186,10 +186,10 @@
     };
     if (vis_node_selected(target_node.id)) {
       pause_mode = true;
-      debug_rate = 5000;
+      step_rate = 5000;
     }
-    if (debug_rate) {
-      vis_run_state("node[id='"+target_node.id+"']", "active_run_node", debug_rate);
+    if (step_rate) {
+      vis_run_state("node[id='"+target_node.id+"']", "active_run_node", step_rate);
     }
     get_data.defered_transition = false;
     if (target_node.data) {
@@ -208,9 +208,9 @@
       if (!get_data.defered_transition) {
         transition_to(target_node.id, get_data);
       }
-    }, debug_rate/2);
+    }, step_rate/2);
 
-    debug_rate = orig_debug_rate;
+    step_rate = orig_step_rate;
   };
 
 	// sandbox for functional (saferEval)
@@ -286,7 +286,8 @@
 	};
 
   set_step_rate = function() {
-    debug_rate = parseInt($("#run_debug_rate").val(), 10) || 0;
+    step_rate = parseInt($("#run_step_rate").val(), 10) || 0;
+    $('body').trigger('run_step_rate_change', step_rate);
   };
 
   init_graphlet = function(g) {

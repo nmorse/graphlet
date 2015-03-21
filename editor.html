@@ -192,6 +192,7 @@
               <div class="col-md-7">
 
                 <div id="graph_view" class="input-group">
+                  <div class="input-group-addon">view</div>
                   <select class="form-control"></select>
                   <input class="form-control" style="display: none;"/>
                   <span class="input-group-btn">
@@ -240,11 +241,17 @@
         </div>
         <div id="run_mode_ui" style="display: none;">
             <p>This is run mode, <em>run</em> or <em>step through</em> your graph. You can direct the input and output (to and from) your graph below.</p>
-            <div id="graph_view" class="input-group">
-              <span class="input-group-btn">
-                <button id="set_step_rate" type="button" class="btn btn-default">step rate</button>
-              </span>
-              <input class="form-control" id="run_debug_rate" type="number"/>
+            <div id="graph_view" class="form-inline">
+            <div  class="form-group">
+              <div  class="input-group">
+                <div class="input-group-addon">step rate</div>
+                <input class="form-control" id="run_step_rate"  type="range" min="0" max="10000" value="0" />
+              </div>
+              <div  class="input-group">
+                <input class="form-control" id="run_step_rate_num" type="number" min="0" max="10" />
+                <div class="input-group-addon"> seconds per step</div>
+              </div>
+            </div>
             </div>
 
             <div id="graphlet">loading</div>
