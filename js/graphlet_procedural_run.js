@@ -15,7 +15,7 @@
     var got_obj = {};
     var g = this.glt;
     var get_edges = gq.using(g).find({"element":"edge", "type":"get", "from":id}).edges();
-    $.each(get_edges, function(i, e) {
+    $.each(get_edges, function get_edge (i, e) {
       var edge = unpack_edge(e);
       var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
       var name = edge.name || end_node.name;
@@ -114,8 +114,8 @@
     var set_edges = gq.using(g).find({"element":"edge", "type":"set", "from":id}).edges();
     var pub_edges = gq.using(g).find({"element":"edge", "type":"pub", "from":id}).edges();
 
-    $.each(set_edges, function(i, e) { set_1edge(e, g, result); });
-    $.each(pub_edges, function(i, e) {
+    $.each(set_edges, function set_edge(i, e) { set_1edge(e, g, result); });
+    $.each(pub_edges, function pub_edge(i, e) {
       var edge = unpack_edge(e);
       var end_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
       var start_node = gq.using(g).find({"element":"node", "id":id}).nodes()[0];
@@ -140,7 +140,7 @@
     var g = this.glt;
     var trans_edges = gq.using(g).find({"element":"edge", "type":"flo", "from":id}).edges();
     // first go through only the restrictive guarded flo edges.
-    $.each(trans_edges, function(i, e) {
+    $.each(trans_edges, function restrictive_flo(i, e) {
       var edge = unpack_edge(e);
       var guard = {"result":false};
       if (edge.guard && !gone) {
@@ -158,7 +158,7 @@
       }
     });
     // secondly go to any non-restrictive flo edges (with no guard)
-    $.each(trans_edges, function(i, e) {
+    $.each(trans_edges, function free_flo(i, e) {
       var edge = unpack_edge(e);
       var guard = {"result":true};
       if (!edge.guard & !gone) {
@@ -198,7 +198,7 @@
     if (target_node.process) {
       get_data.wait = wait;
       get_data.target_node_id = target_node.id;
-      $.each(target_node.process, function(i, process) {
+      $.each(target_node.process, function run_proc(i, process) {
         get_data = run_node_process(get_data, process);
       });
     }
@@ -302,7 +302,7 @@
 				$("#graphlet").html(g.graph.template);
 			});
 		}
-		$.each(io_nodes, function(i, node) {
+		$.each(io_nodes, function init_io_node(i, node) {
 		  var selector, selector_str;
 		  var sel_dom;
 		  var event_edges;
@@ -335,14 +335,14 @@
 		  }
 	    if (event_edges) {
 	      selector = node.io.selector || 'body';
-	      $.each(event_edges, function(i, e) {
+	      $.each(event_edges, function turn_off_events (i, e) {
 	        var edge = unpack_edge(e);
 	        $(selector).off(edge.name);
 	      });
-	      $.each(event_edges, function(i, e) {
+	      $.each(event_edges, function prepare_events (i, e) {
 	        var edge = unpack_edge(e);
     			var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
-    			$(selector).on(edge.name, function() {
+    			$(selector).on(edge.name, function fire_evt() {
     				// DOM events are mapped to edges. the event source data is transfered to the
     				// target node, then the target node is run by calling run_node().
     				target_node.data = $.extend({}, target_node.data, node.data);
@@ -351,10 +351,10 @@
 	      });
 	    }
 		});
-    $.each(flo_edges, function(i, e) {
+    $.each(flo_edges, function prepare_flows(i, e) {
       var edge = unpack_edge(e);
 			$("body").off("edge_" + edge.index);
-			$("body").on("edge_" + edge.index, function () {
+			$("body").on("edge_" + edge.index, function fire_flo() {
 				var target_node = gq.using(g).find({"element":"node", "id":edge.to}).nodes()[0];
 				run_node(target_node);
 			});
