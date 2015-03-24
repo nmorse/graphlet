@@ -410,10 +410,14 @@
 		$('#copy_node').off("click");
 		$('#copy_node').on("click", function() {
 			//alert(g.nodes().length);
-		  var eles = g.elements("node:selected");
-			var copy = eles.clone();
-			var ns = g.add(copy);
-			var pos = ns.data().view.position;
+		  	var eles = g.elements("node:selected");
+		  	var copy, cp_json, ns, pos;
+		  	
+			
+			cp_json = eles.json();
+			cp_json.data.id = 'n999';
+			ns = g.add(cp_json);
+			pos = ns.data().view.position;
 			ns[0].position({x: pos.x+5, y: pos.y+5});
 			setTimeout(function() {
 				g.$('*').unselect();
