@@ -415,7 +415,7 @@
 		  	
 			
 			cp_json = eles.json();
-			copy = $.extend({}, cp_json);
+			copy = $.extend(true, {}, cp_json);
 			copy.data.id = 'n999';
 			ns = g.add(copy);
 			pos = ns.data().view.position;
