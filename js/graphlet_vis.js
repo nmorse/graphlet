@@ -2,7 +2,7 @@
 	var g;
 	//var nodes_editor = null;
 	g_aux = {"name":""};
-	var g_template = ""
+	var g_template = "";
 	var add_edge_mode = false;
 	var add_edge_arr = [];
 
@@ -29,7 +29,7 @@
 		  delete o.width;
     }
     if (nodes[i].data().parent) {
-      parent = nodes[i].data().parent
+      parent = nodes[i].data().parent;
       o['parent'] = parent;
     }
 		return JSON.stringify(o);
@@ -90,7 +90,7 @@
 			//}
 			exp_graph_json += "  " + JSON.stringify(o);
 		}
-		exp_graph_json += '\n ],\n "views":' + JSON.stringify(graph_views)
+		exp_graph_json += '\n ],\n "views":' + JSON.stringify(graph_views);
 		exp_graph_json += '\n}';
 		if (options && options.separate) {
 			source = JSON.stringify(graph_views);
@@ -106,7 +106,7 @@
 	function prune2level(obj, level) {
 		var top_obj = {};
 		var t;
-		for (key in obj) {
+		$.each(obj, function(key, o) {
 			t = typeof obj[key];
 			if (t !== "undefined" && t !== "object" && t !== "function") {
 				top_obj[key] = obj[key];
@@ -114,7 +114,7 @@
 			if (level > 1 && t === "object" && obj[key] !== null) {
 				top_obj[key] = prune2level(obj[key], level -1);
 			}
-		}
+		});
 		return top_obj;
 	}
 
@@ -411,14 +411,14 @@
 		$('#copy_node').on("click", function() {
 			//alert(g.nodes().length);
 		  	var eles = g.elements("node:selected");
-		  	var copy, cp_json, ns, pos;
-		  	
+		  	var copy, wrapper, cp_json, ns, pos;
 			
 			cp_json = eles.json();
 			copy = $.extend(true, {}, cp_json);
-			copy.data.id = 'n999';
-			ns = g.add(copy);
-			pos = ns.data().view.position;
+			delete copy.data.id;
+			wrapper = {"nodes":[{"data":copy.data}]};
+			ns = g.add(wrapper);
+			pos = eles.data().view.position;
 			ns[0].position({x: pos.x+5, y: pos.y+5});
 			setTimeout(function() {
 				g.$('*').unselect();
