@@ -149,7 +149,7 @@
         if (guard.result) {
           console.log("trigger transition "+edge.from+" -> "+edge.to);
           if (step_rate) {
-            vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", step_rate);
+            vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"']", "active_run_flo", step_rate);
           }
           setTimeout(function() {$("body").trigger("edge_" + edge.index);}, step_rate);
           gone = true;
@@ -157,21 +157,23 @@
         }
       }
     });
-    // secondly go to any non-restrictive flo edges (with no guard)
-    $.each(trans_edges, function free_flo(i, e) {
-      var edge = unpack_edge(e);
-      var guard = {"result":true};
-      if (!edge.guard & !gone) {
-        if (guard.result) {
-          console.log("trigger transition "+edge.form+" -> "+edge.to);
-          if (step_rate) {
-            vis_run_state("edge[source='"+edge.form+"'][target='"+edge.to+"'][edge_type='flo']", "active_run_flo", step_rate);
+    if (!gone) {
+      // secondly go to any non-restrictive flo edges (with no guard)
+      $.each(trans_edges, function free_flo(i, e) {
+        var edge = unpack_edge(e);
+        var guard = {"result":true};
+        if (!edge.guard & !gone) {
+          if (guard.result) {
+            console.log("trigger transition "+edge.from+" -> "+edge.to);
+            if (step_rate) {
+              vis_run_state("edge[source='"+edge.from+"'][target='"+edge.to+"']", "active_run_flo", step_rate);
+            }
+            setTimeout(function() {$("body").trigger("edge_" + edge.index);}, step_rate);
+            return false; // escape the each iterator
           }
-          setTimeout(function() {$("body").trigger("edge_" + edge.index);}, step_rate);
-          return false; // escape the each iterator
         }
-      }
-    });
+      });
+    }
   };
 
   var run_node = function(target_node) {
@@ -236,7 +238,7 @@
 			}
 
 			var context = Array.prototype.concat.call(env, params, code); // create the parameter list for the sandbox
-			var sandbox = new (Function.prototype.bind.apply(Function, context)); // create the sandbox function
+			var sandbox = new (Function.prototype.bind.apply(Function, context))(); // create the sandbox function
 			context = Array.prototype.concat.call(env, args); // create the argument list for the sandbox
 
 			return Function.prototype.bind.apply(sandbox, context); // bind the local variables to the sandbox
@@ -271,7 +273,7 @@
 			}
 
 			var context = Array.prototype.concat.call(env, params, "this.result = (" + code + ");"); // create the parameter list for the sandbox
-			var sandbox = new (Function.prototype.bind.apply(Function, context)); // create the sandbox function
+			var sandbox = new (Function.prototype.bind.apply(Function, context))(); // create the sandbox function
 			context = Array.prototype.concat.call(env, args); // create the argument list for the sandbox
 
 			return Function.prototype.bind.apply(sandbox, context); // bind the local variables to the sandbox
