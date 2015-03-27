@@ -71,31 +71,50 @@ $(function() {
   $("#storage_ctl").json2html({}, storage_ctl_template);
   $("#graph_in").json2html({}, load_graph_template);
   $("#graph_out").json2html({}, store_graph_template);
+  
+  $("#nav_load").on('click', function (e) {
+      $('#graph_input_name_n0').options(request_local_storage_names("examples"), "blank_first");
+      $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"), "blank_first");
+      $('#graph_input_name_n1').val(g_aux.name);
+      $('#edit_mode_ui').hide();
+      $('#run_mode_ui').hide();
+      $('#graph_in').show();
+      $('#graph_out').hide();
+  });
+  $("#nav_store").on('click', function (e) {
+      $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
+      $('#graph_input_name_n2').val(g_aux.name);
+      $('#edit_mode_ui').hide();
+      $('#run_mode_ui').hide();
+      $('#graph_in').hide();
+      $('#graph_out').show();
+  });
+  
   // hook up ctl events
   //$(".ui_mode").off('click');
   $(".ui_mode").on('click', function (e) {
-      var $btn = $(e.target);
-      var id = "", fq = "";
-      if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
-      id = $btn.attr("id");
-      if (id === "load") {
-        $('#graph_input_name_n0').options(request_local_storage_names("examples"), "blank_first");
-        $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"), "blank_first");
-        $('#graph_input_name_n1').val(g_aux.name);
-        $('#edit_mode_ui').hide();
-        $('#run_mode_ui').hide();
-        $('#graph_in').show();
-        $('#graph_out').hide();
-      }
-      if (id === "store") {
-        $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
-        $('#graph_input_name_n2').val(g_aux.name);
-        $('#edit_mode_ui').hide();
-        $('#run_mode_ui').hide();
-        $('#graph_in').hide();
-        $('#graph_out').show();
-      }
-    });
+    var $btn = $(e.target);
+    var id = "", fq = "";
+    if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
+    id = $btn.attr("id");
+    if (id === "load") {
+      $('#graph_input_name_n0').options(request_local_storage_names("examples"), "blank_first");
+      $('#graph_input_name_n1').options(request_local_storage_names("hb_graphs"), "blank_first");
+      $('#graph_input_name_n1').val(g_aux.name);
+      $('#edit_mode_ui').hide();
+      $('#run_mode_ui').hide();
+      $('#graph_in').show();
+      $('#graph_out').hide();
+    }
+    if (id === "store") {
+      $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
+      $('#graph_input_name_n2').val(g_aux.name);
+      $('#edit_mode_ui').hide();
+      $('#run_mode_ui').hide();
+      $('#graph_in').hide();
+      $('#graph_out').show();
+    }
+  });
     //$('#store').off("click");
     $('#store').on("click", function() {
       $('#graph_out>pre').text( export_graph_json(get_current_cyto_graph()) );
@@ -225,7 +244,7 @@ $(function() {
       $('#graph_view>select option').filter("[value='"+current_view_index+"']").attr('selected', true);
 
     });
-    $(document).off("copy_current_view")
+    $(document).off("copy_current_view");
     $(document).on("copy_current_view", function (event, new_view_name) {
       var json_str = export_graph_json(get_current_cyto_graph());
       var select_hbg = JSON.parse(json_str);
