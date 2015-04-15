@@ -116,7 +116,7 @@ $(function() {
     }
   });
     //$('#store').off("click");
-    $('#store').on("click", function() {
+    $('#nav_store').on("click", function() {
       $('#graph_out>pre').text( export_graph_json(get_current_cyto_graph()) );
     });
     //$('#load_from_text').off("click");
