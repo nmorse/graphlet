@@ -690,5 +690,34 @@ var graph_examples = {
   ["n12","n9","sub","graph_init","",18]
  ],
  "views":[{"name":"primary","nodes":{"n12":{"position":{"x":51,"y":294}},"n11":{"position":{"x":399,"y":324}},"n10":{"position":{"x":245,"y":327}},"n8":{"position":{"x":290,"y":139}},"n9":{"position":{"x":121,"y":316}},"n3":{"position":{"x":106,"y":125}},"n0":{"position":{"x":173,"y":176}},"n5":{"position":{"x":227,"y":60}},"n4":{"position":{"x":120,"y":218}},"n1":{"position":{"x":252,"y":176}},"n7":{"position":{"x":396,"y":90}},"n2":{"position":{"x":364,"y":200}},"n6":{"position":{"x":474,"y":148}}},"edges":{}}]
+},
+"two state machines":{"graph":{"name":"two state machines","template":"<div id='state'></div><select id='event_launcher'><option>edit</option><option>restore</option> </select>"}, "nodes":[
+  {"id":"n8","name":"existing course","fsa":{"states":[],"description":"provides track changes UI interaction for a course table entry "}},
+  {"id":"n2","name":"new_course"},
+  {"id":"n3","name":"unchanged","parent":"n8","fsa_state":{"start":true}},
+  {"id":"n0","name":"editing","parent":"n8"},
+  {"id":"n5","name":"changed","parent":"n8","fsa_state":{"accepting":true}},
+  {"id":"n4","name":"crossout","fsa_state":{"accepting":true},"parent":"n8"},
+  {"id":"n1","name":"accept","parent":"n8"},
+  {"id":"n6","name":"editing","parent":"n2","fsa_state":{"start":true}},
+  {"id":"n7","name":"added_new","parent":"n2","fsa_state":{"accepting":true}},
+  {"id":"n9","name":"delete","parent":"n2","fsa_state":{"accepting":true}}
+ ],
+ "edges":[
+  ["n3","n0","flo","edit","",0],
+  ["n3","n4","flo","mark_for_removal","",1],
+  ["n4","n3","flo","restore_original","",2],
+  ["n0","n3","flo","revert","",3],
+  ["n0","n1","flo","accept","",4],
+  ["n1","n5","flo","","changed",5],
+  ["n1","n3","flo","","original",6],
+  ["n5","n3","flo","restore_original","",7],
+  ["n5","n0","flo","edit","",8],
+  ["n6","n7","flo","accept","",9],
+  ["n7","n6","flo","edit","",10],
+  ["n7","n9","flo","remove","",11],
+  ["n6","n9","flo","remove","",12]
+ ],
+ "views":[{"name":"primary","nodes":{"n2":{"position":{"x":281,"y":344}},"n8":{"position":{"x":330,"y":140}},"n9":{"position":{"x":246,"y":401},"width":90},"n7":{"position":{"x":452,"y":318},"width":90},"n6":{"position":{"x":110,"y":287},"width":90},"n1":{"position":{"x":109,"y":55},"width":60},"n4":{"position":{"x":549,"y":223},"width":90},"n5":{"position":{"x":515,"y":109},"width":90},"n0":{"position":{"x":210,"y":138},"width":90},"n3":{"position":{"x":110,"y":222},"width":90}},"edges":{}},{"name":"secondo","nodes":{"n8":{"position":{"x":314,"y":140}},"n2":{"position":{"x":314,"y":363}},"n3":{"position":{"x":110,"y":222},"width":90},"n0":{"position":{"x":210,"y":138},"width":90},"n5":{"position":{"x":515,"y":109},"width":90},"n4":{"position":{"x":518,"y":223},"width":90},"n1":{"position":{"x":109,"y":55},"width":60},"n6":{"position":{"x":110,"y":308},"width":90},"n7":{"position":{"x":517,"y":304},"width":90},"n9":{"position":{"x":246,"y":422},"width":90}},"edges":{}}]
 }
 };
