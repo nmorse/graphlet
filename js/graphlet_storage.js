@@ -36,7 +36,15 @@ var store_graph_template = [
             ]}
         ]}
     ]},
-    {"tag":"pre"}
+    {"tag":"pre"},
+    {"tag":"form", "class":"form-horizontal", "children":[
+        {"tag":"div", "class":"control-group", "children":[
+	        {"tag":"div", "class":"controls", "children":[
+	            {"tag":"button", "id":"save_to_storage", "type":"button", "class":"btn btn-primary", "html":"Export"}
+	        ]}
+        ]}
+    ]},
+    {"tag":"pre", "class":"export"}
 ];
 
 
