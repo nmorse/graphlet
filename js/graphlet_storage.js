@@ -1,3 +1,5 @@
+/*
+dead wood issue #7
 var storage_ctl_template = {
     "tag":"div", "id":"ui_mode_1", "class":"btn-group ui_mode", "data-toggle":"buttons-radio", "children":[
         {"tag":"button", "id":"load", "type":"button", "class":"btn btn-primary", "html":"Load"},
@@ -46,7 +48,7 @@ var store_graph_template = [
     ]},
     {"tag":"pre", "class":"export"}
 ];
-
+*/
 
 $(function() {
   var renaming_now = false,
@@ -75,10 +77,12 @@ $(function() {
 		//delete graph.views;
 		return graph;
 	};
+	// begin dead wood section issue #7
   // Insert the UI
-  $("#storage_ctl").json2html({}, storage_ctl_template);
-  $("#graph_in").json2html({}, load_graph_template);
-  $("#graph_out").json2html({}, store_graph_template);
+  //$("#storage_ctl").json2html({}, storage_ctl_template);
+  //$("#graph_in").json2html({}, load_graph_template);
+  //$("#graph_out").json2html({}, store_graph_template);
+  //end dead wood section
   
   $("#nav_load").on('click', function (e) {
       $('#graph_input_name_n0').options(request_local_storage_names("examples"), "blank_first");

@@ -28,8 +28,8 @@
 		    <script type="text/javascript" src="js/graphlet_query.js"></script>
         <script type="text/javascript" src="js/graphlet_procedural_run.js"></script>
 
-        <script type="text/javascript" src="js/json2html/json2html-0.4.1.js"></script>
-        <script type="text/javascript" src="js/json2html/jquery.json2html.js"></script>
+        <!--script type="text/javascript" src="js/json2html/json2html-0.4.1.js"></script -->
+        <!-- script type="text/javascript" src="js/json2html/jquery.json2html.js"></script -->
         <script type="text/javascript" src="js/jsoneditor.js"></script>
         <!-- Bootstrap -->
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -274,8 +274,51 @@
             </select>
         </div>
         <div id="graph_out" style="display: none;">
+          <form class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label" for="node_input_name_n2">Graph Name:
+              <div class="controls"><input id="graph_input_name_n2" type="text" data-provide="typeahead" data-items="" placeholder="Enter a Name">
+              <button id="save_to_storage" type="button" class="btn btn-primary">Save</button>
+              <button id="delete_from_storage" type="button" class="btn btn-primary">Delete</button>
+              </div>
+              </label>
+            </div>
+          </form>
+          <pre></pre>
+          <form class="form-horizontal">
+            <div class="control-group">
+              <div class="controls">
+                    <button id="save_to_storage" type="button" class="btn btn-primary">Export</button>
+              </div>
+            </div>
+          </form>
+          <pre class="export"></pre>
         </div>
         <div id="graph_in" style="display: none;">
+          <form class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label" for="node_input_name_n0">Example Graphs:
+              <div class="controls">
+                <select id="graph_input_name_n0">
+                  
+                </select>
+              </div>
+              </label>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="node_input_name_n1">Local Graph Source:
+              <div class="controls">
+                <select id="graph_input_name_n1">
+                  
+                </select>
+              </div>
+              </label>
+            </div>
+          </form>
+          <textarea>
+            
+          </textarea>
+          <button id="load_from_text" type="button" class="btn btn-primary">Load from Text</button>
         </div>
 
       </div>
