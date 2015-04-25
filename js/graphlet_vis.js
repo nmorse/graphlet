@@ -127,7 +127,8 @@
 		var i, o, name, id;
 		var source, target;
 		var id_mode = "provided";
-		var active_view_index = graph_designator.view_index || 0;
+		var g_desig = graph_designator || {graph: graph.graph.name, view_index: 0};
+		var active_view_index = g_desig.view_index || 0;
 
 		if (graph && graph.graph) {
 			g_aux.graph = graph.graph;
