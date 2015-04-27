@@ -129,7 +129,8 @@ $(function() {
   });
     //$('#store').off("click");
     $('#nav_store').on("click", function() {
-      $('#graph_out>pre').text( export_graph_json(get_current_cyto_graph()) );
+      $('#graph_out>pre.graphlet_src').text( export_graph_json(get_current_cyto_graph()) );
+      $('#graph_out>pre.export').text(JSON.stringify(graphlet2statemachine.process(get_current_cyto_graph())));
     });
     //$('#load_from_text').off("click");
     $('#load_from_text').on("click", function() {
