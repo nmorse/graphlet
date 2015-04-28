@@ -1,16 +1,20 @@
 // graphlet to state machine
 (function($, gq) {
+  var given_graph;
   var make_transitions = function(edges) {
     var trans = {};
     $.each(edges, function(i, o) {
       if (o[4] && o[4].indexOf('function ($scope) {') === 0) {
-        trans[o[3]] = eval(o[4]);
+        trans[o[3]] = o[4]; //eval(o[4]);
       }
       else {
-        trans[o[3]] = o[4];
+        trans[o[3]] = get_to_node(o);
       }
     });
     return trans;
+  };  
+  var get_to_node = function(edge) {
+    return gq.using(given_graph).find({"element":"node", "id":edge[1]}).nodes()[0].name;
   };
   graphlet2statemachine = {
     "process": function (g) {
@@ -22,6 +26,16 @@
         states[o.name].trans = make_transitions(transition_edges);
       });
       return {"states":states};
+    },
+    "reverse": function (sm) {
+      var out_graph = {nodes:[], edges:[]};
+      $.each(sm, function(name, state) {
+        out_graph.nodes.push({"name":name});
+        $.each(state.trans, function(key, transition) {
+          out_graph.edges.push({"from":name, "to":transition, "name":key });
+        });
+      });
+      return out_graph;
     }
   };
 
