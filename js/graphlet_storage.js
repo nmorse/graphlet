@@ -129,8 +129,10 @@ $(function() {
   });
     //$('#store').off("click");
     $('#nav_store').on("click", function() {
-      $('#graph_out>pre.graphlet_src').text( export_graph_json(get_current_cyto_graph()) );
-      $('#graph_out>pre.export').text(JSON.stringify(graphlet2statemachine.process(get_current_cyto_graph())));
+      var g = get_current_cyto_graph();
+      var json = export_graph_json(g);
+      $('#graph_out>pre.graphlet_src').text( export_graph_json(g) );
+      $('#graph_out>pre.export').text(JSON.stringify(graphlet2statemachine.process(JSON.parse(json))));
     });
     //$('#load_from_text').off("click");
     $('#load_from_text').on("click", function() {
