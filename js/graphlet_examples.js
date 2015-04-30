@@ -719,5 +719,18 @@ var graph_examples = {
   ["n6","n9","flo","remove","",12]
  ],
  "views":[{"name":"primary","nodes":{"n2":{"position":{"x":281,"y":344}},"n8":{"position":{"x":330,"y":140}},"n9":{"position":{"x":246,"y":401},"width":90},"n7":{"position":{"x":452,"y":318},"width":90},"n6":{"position":{"x":110,"y":287},"width":90},"n1":{"position":{"x":109,"y":55},"width":60},"n4":{"position":{"x":549,"y":223},"width":90},"n5":{"position":{"x":515,"y":109},"width":90},"n0":{"position":{"x":210,"y":138},"width":90},"n3":{"position":{"x":110,"y":222},"width":90}},"edges":{}},{"name":"secondo","nodes":{"n8":{"position":{"x":314,"y":140}},"n2":{"position":{"x":314,"y":363}},"n3":{"position":{"x":110,"y":222},"width":90},"n0":{"position":{"x":210,"y":138},"width":90},"n5":{"position":{"x":515,"y":109},"width":90},"n4":{"position":{"x":518,"y":223},"width":90},"n1":{"position":{"x":109,"y":55},"width":60},"n6":{"position":{"x":110,"y":308},"width":90},"n7":{"position":{"x":517,"y":304},"width":90},"n9":{"position":{"x":246,"y":422},"width":90}},"edges":{}}]
+},
+"a three state statemachine":{"graph":{"name":"a three state statemachine"}, "nodes":[
+  {"id":"n2","name":"c"},
+  {"name":"a","id":"n0"},
+  {"name":"b","id":"n1"}
+ ],
+ "edges":[
+  ["n0","n1","flo","goto_b","function ($scope) {return \"b\";}",0],
+  ["n1","n0","flo","goto_a","",1],
+  ["n0","n2","flo","back","",2],
+  ["n2","n1","flo","again","",3]
+ ],
+ "views":[{"name":"primary","nodes":{"n2":{"position":{"x":312,"y":273}},"n0":{"position":{"x":387,"y":204}},"n1":{"position":{"x":249,"y":191}}},"edges":{}}]
 }
 };
