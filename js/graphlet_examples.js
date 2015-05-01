@@ -732,5 +732,20 @@ var graph_examples = {
   ["n2","n1","flo","again","",3]
  ],
  "views":[{"name":"primary","nodes":{"n2":{"position":{"x":312,"y":273}},"n0":{"position":{"x":387,"y":204}},"n1":{"position":{"x":249,"y":191}}},"edges":{}}]
+},
+"three states with a choice":{"graph":{"name":"three states with a choice"}, "nodes":[
+  {"id":"n2","name":"at friends house","fsa_state":{"accepting":false}},
+  {"name":"at work","id":"n0","fsa_state":{"accepting":true}},
+  {"name":"at home","id":"n1","fsa_state":{"accepting":true}},
+  {"name":"make a choice","id":"n3","fsa_state":{"accepting":false},"process":["this.choice = (food_in_fridge || !has_a_friend)? \"go home\", \"visit friend\";"]}
+ ],
+ "edges":[
+  ["n1","n0","flo","go to work","",1],
+  ["n2","n1","flo","go home","",3],
+  ["n3","n2","flo","visit friend","",4],
+  ["n3","n1","flo","go home","",5],
+  ["n0","n3","flo","leave work","",6]
+ ],
+ "views":[{"name":"primary","nodes":{"n2":{"position":{"x":196,"y":284},"width":140},"n0":{"position":{"x":476,"y":140},"width":80},"n1":{"position":{"x":193,"y":138},"width":90},"n3":{"position":{"x":479,"y":280},"width":140}},"edges":{}}]
 }
 };
