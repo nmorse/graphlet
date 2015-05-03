@@ -457,18 +457,15 @@
 			var eles = g.elements("edge:selected");
 			g.remove(eles);
 		});
-		$(".ui_mode").off('click');
-		$(".ui_mode").on('click', function (e) {
-			var $btn = $(e.target);
-			var id = "", fq = "";
-			if (!$btn.hasClass('btn')) { $btn = $btn.closest('.btn');}
-			id = $btn.attr("id");
-			if (id === "edit") {
-				$(document).trigger("edit_mode");
-			}
-			if (id === "run") {
-				$(document).trigger("run_mode");
-			}
+		$("#nav_edit").off('click');
+		$("#nav_edit").on('click', function (e) {
+			$(document).trigger("edit_mode");
+		});
+		$("#nav_run").off('click');
+		$("#nav_run").on('click', function (e) {
+			$(document).trigger("run_mode");
+			$("#nav_load").parent().removeClass("active");
+			$("#nav_run").parent().addClass("active");
 		});
 		//$(document).off("edit_mode");
 		$(document).on("edit_mode", function (e) {

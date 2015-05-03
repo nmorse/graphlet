@@ -179,6 +179,9 @@
 			if (params.example) {
 			  $(document).trigger("load_hbg", [{"graph":params.example, "view_index":0}, ["examples"]]);
 			}
+			else {
+			  $("#nav_load").trigger('click');
+			}
 		});
         </script>
     </head>
@@ -221,17 +224,9 @@
           <ul class="nav nav-tabs">
             <li role="presentation" class="active"><a id="nav_load" href="#">Load</a></li>
             <li role="presentation"><a id="nav_store" href="#">Store</a></li>
-            <li role="presentation"><a>Edit</a></li>
-            <li role="presentation"><a href="#">Run</a></li>
+            <li role="presentation"><a id="nav_edit" href="#">Edit</a></li>
+            <li role="presentation"><a id="nav_run" href="#">Run</a></li>
           </ul>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            <div id="ui_mode_2" class="btn-group ui_mode" data-toggle="buttons-radio">
-              <button id="edit" type="button" class="btn btn-default active">Edit</button>
-              <button id="run" type="button" class="btn btn-default">Run</button>
-            </div>
-          </div>
         </div>
         <div id="edit_mode_ui" style="display: none;">
             <div class="row"><div class="col-md-2"><button id="copy_node" type="button" class="btn btn-default">copy node</button>
@@ -251,7 +246,7 @@
             </div>
         </div>
         <div id="run_mode_ui" style="display: none;">
-            <p>This is run mode, <em>run</em> or <em>step through</em> your graph. You can direct the input and output (to and from) your graph below.</p>
+            <p><em>run</em> or <em>step through</em> this graph. You can direct the input and output (to and from) your graph below.</p>
             <div id="graph_view" class="form-inline">
             <div  class="form-group">
               <div  class="input-group">

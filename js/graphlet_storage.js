@@ -1,54 +1,3 @@
-/*
-dead wood issue #7
-var storage_ctl_template = {
-    "tag":"div", "id":"ui_mode_1", "class":"btn-group ui_mode", "data-toggle":"buttons-radio", "children":[
-        {"tag":"button", "id":"load", "type":"button", "class":"btn btn-primary", "html":"Load"},
-        {"tag":"button", "id":"store", "type":"button", "class":"btn btn-primary", "html":"Store"}
-    ]
-};
-var load_graph_template = [
-    {"tag":"form", "class":"form-horizontal", "children":[
-        {"tag":"div", "class":"control-group", "children":[
-            {"tag":"label", "class":"control-label", "for":"node_input_name_n0", "html":"Example Graphs:", "children":[
-                {"tag":"div", "class":"controls", "children":[
-                    {"tag":"select", "id":"graph_input_name_n0"}
-                ]}
-            ]}
-        ]},
-        {"tag":"div", "class":"control-group", "children":[
-            {"tag":"label", "class":"control-label", "for":"node_input_name_n1", "html":"Local Graph Source:", "children":[
-                {"tag":"div", "class":"controls", "children":[
-                    {"tag":"select", "id":"graph_input_name_n1"}
-                ]}
-            ]}
-        ]}
-    ]},
-    {"tag":"textarea"},
-    {"tag":"button", "id":"load_from_text", "type":"button", "class":"btn btn-primary", "html":"Load from Text"}
-];
-var store_graph_template = [
-    {"tag":"form", "class":"form-horizontal", "children":[
-        {"tag":"div", "class":"control-group", "children":[
-            {"tag":"label", "class":"control-label", "for":"node_input_name_n2", "html":"Graph Name:", "children":[
-                {"tag":"div", "class":"controls", "children":[
-                    {"tag":"input", "id":"graph_input_name_n2", "type":"text", "data-provide":"typeahead", "data-items":16, "placeholder":"Enter a Name"},
-                    {"tag":"button", "id":"save_to_storage", "type":"button", "class":"btn btn-primary", "html":"Save"},
-                    {"tag":"button", "id":"delete_from_storage", "type":"button", "class":"btn btn-primary", "html":"Delete"}
-                ]}
-            ]}
-        ]}
-    ]},
-    {"tag":"pre"},
-    {"tag":"form", "class":"form-horizontal", "children":[
-        {"tag":"div", "class":"control-group", "children":[
-	        {"tag":"div", "class":"controls", "children":[
-	            {"tag":"button", "id":"save_to_storage", "type":"button", "class":"btn btn-primary", "html":"Export"}
-	        ]}
-        ]}
-    ]},
-    {"tag":"pre", "class":"export"}
-];
-*/
 
 $(function() {
   var renaming_now = false,
@@ -77,12 +26,6 @@ $(function() {
 		//delete graph.views;
 		return graph;
 	};
-	// begin dead wood section issue #7
-  // Insert the UI
-  //$("#storage_ctl").json2html({}, storage_ctl_template);
-  //$("#graph_in").json2html({}, load_graph_template);
-  //$("#graph_out").json2html({}, store_graph_template);
-  //end dead wood section
   
   $("#nav_load").on('click', function (e) {
       $('#graph_input_name_n0').options(request_local_storage_names("examples"), "blank_first");
@@ -101,6 +44,7 @@ $(function() {
       $('#graph_in').hide();
       $('#graph_out').show();
   });
+
   
   // hook up ctl events
   //$(".ui_mode").off('click');
