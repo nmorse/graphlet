@@ -35,6 +35,11 @@ $(function() {
       $('#run_mode_ui').hide();
       $('#graph_in').show();
       $('#graph_out').hide();
+
+			$("#nav_load").parent().addClass("active");
+			$("#nav_store").parent().removeClass("active");
+			$("#nav_edit").parent().removeClass("active");
+			$("#nav_run").parent().removeClass("active");
   });
   $("#nav_store").on('click', function (e) {
       $('#graph_input_name_n2').data("source", request_local_storage_names("hb_graphs"));
@@ -43,6 +48,11 @@ $(function() {
       $('#run_mode_ui').hide();
       $('#graph_in').hide();
       $('#graph_out').show();
+
+			$("#nav_load").parent().removeClass("active");
+			$("#nav_store").parent().addClass("active");
+			$("#nav_edit").parent().removeClass("active");
+			$("#nav_run").parent().removeClass("active");
   });
 
   

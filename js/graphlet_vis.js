@@ -460,11 +460,17 @@
 		$("#nav_edit").off('click');
 		$("#nav_edit").on('click', function (e) {
 			$(document).trigger("edit_mode");
+			$("#nav_load").parent().removeClass("active");
+			$("#nav_store").parent().removeClass("active");
+			$("#nav_edit").parent().addClass("active");
+			$("#nav_run").parent().removeClass("active");
 		});
 		$("#nav_run").off('click');
 		$("#nav_run").on('click', function (e) {
 			$(document).trigger("run_mode");
 			$("#nav_load").parent().removeClass("active");
+			$("#nav_store").parent().removeClass("active");
+			$("#nav_edit").parent().removeClass("active");
 			$("#nav_run").parent().addClass("active");
 		});
 		//$(document).off("edit_mode");
