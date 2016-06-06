@@ -19,13 +19,20 @@
   graphlet2statemachine = {
     "process": function (g) {
       var states ={};
+      var trans = {};
+      var current_state_name;
       given_graph = g;
       $.each(g.nodes, function(i, o) {
-        var transition_edges = gq.using(g).find({"element":"edge", "from":o.id}).edges();
-        states[o.name] = {};
-        states[o.name].trans = make_transitions(transition_edges);
+        states[o.name] = o.properties || {};
+        if (o.start) {
+          current_state_name = o.name;
+        }
       });
-      return {"states":states};
+      $.each(g.nodes, function(i, o) {
+        var transition_edges = gq.using(g).find({"element":"edge", "from":o.id}).edges();
+        trans[o.name] = make_transitions(transition_edges);
+      });
+      return {"states":states, "trans":trans, "current_state_name":current_state_name};
     },
     "reverse": function (sm) {
       var out_graph = {nodes:[], edges:[]};
@@ -41,77 +48,28 @@
 
 })($, gq);
 
-/*
+
+/* example output for use in: 
+ *    https://github.com/CloudEngineWorks/angular-simple-statemachine
+
 {
-"states":{
-  "unchanged":{
-    "trans":{
-      "edit": function ($scope) {
-        $scope.$parent.tc_previous_content = angular.extend({}, $scope.$parent.content);
-        return 'editing';
-      },
-      "mark_for_removal": "crossout"
-    }
-  },
-  "editing":{
-    "trans":{
-      "accept": function ($scope) {
-        if (angular.equals($scope.$parent.tc_previous_content, $scope.$parent.content)) {
-          delete $scope.$parent.tc_previous_content;
-          return 'unchanged';
-        }
-        else {
-          return 'changed';
-        }
-      },
-      "revert": function ($scope) {
-        $scope.$parent.content = angular.extend({}, $scope.$parent.tc_previous_content);
-        $scope.content = $scope.$parent.content;
-        delete $scope.$parent.tc_previous_content;
-        return 'unchanged';
-      }
-    }
-  },
-  "changed":{
-    "trans":{
-      "edit": "editing",
-      "restore_original": function ($scope) {
-        $scope.$parent.content = angular.extend({}, $scope.$parent.tc_previous_content);
-        $scope.content = $scope.$parent.content;
-        delete $scope.$parent.tc_previous_content;
-        return 'unchanged';
-      }
-    }
-  },
-  "crossout": {
-    "trans": {
-      "restore_original": "unchanged"
-    }
-  }
+ "states": {
+     "start": {},
+     "clearing_mind": { "clearing_mind_icon": true },
+     "blank_slate": {},
+     "thinking": { "thinking": true, "thinking_icon": true },
+     "thinking_error": { "bad_idea": true, "need_a_new_idea":true },
+     "clearing_mind_error": { "clearing_mind": true, "display_error": true, "enterState": "function () { $timeout(function () { get_clear_mind(); }, 1000); return true; }" }
+ },
+ "trans": {
+     "start": { "init": "clearing_mind" },
+     "clearing_mind": { "success": "blank_slate", "fail": "clearing_mind_error" },
+     "blank_slate": { "idea": "thinking" },
+     "thinking": { "success": "blank_slate", "fail": "thinking_error" },
+     "thinking_error": { "idea": "thinking" },
+     "clearing_mind_error": { "init": "clearing_mind" }
+ },
+ "current_state_name": "start",
+ "current_state": {}
 }
 */
-
-/* second example output
-InAState = {
-    states: {
-       'start': {},
-       'clearing_mind': { clearing_mind_icon: true },
-       'blank_slate': {},
-       'thinking': { thinking: true, thinking_icon: true },
-       'thinking_error': { bad_idea: true, need_a_new_idea:true },
-       'clearing_mind_error': { clearing_mind: true, display_error: true, 
-          enterState: function () { $timeout(function () { get_clear_mind(); }, 1000); return true; }
-        }
-    },
-    trans: {
-       'start': { 'init': 'clearing_mind' },
-       'clearing_mind': { 'success': 'blank_slate', 'fail': 'clearing_mind_error' },
-       'blank_slate': { 'idea': 'thinking' },
-       'thinking': { 'success': 'blank_slate', 'fail': 'thinking_error' },
-       'thinking_error': { 'idea': 'thinking' },
-       'clearing_mind_error': { 'init': 'clearing_mind' }
-    },
-    current_state_name: 'start',
-    current_state: {}
-  }
-  */

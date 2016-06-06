@@ -164,6 +164,53 @@
 		};
 	};
 
+	// convert a appState into a form that is appropreate for cytoscape.js
+	load_appState = function (graph, graph_designator) {
+		var raw_nodes = graph.states;
+		var raw_edges = graph.trans;
+		var demoNodes = [];
+		var demoEdges = [];
+		var i, new_o, name, id;
+		var source, target;
+		var id_mode = "provided";
+		var g_desig = graph_designator || {graph: graph.graph.name, view_index: 0};
+		var active_view_index = g_desig.view_index || 0;
+
+		$.each(raw_nodes, function(i, o) {
+			new_o = {"data":{}};
+			
+			new_o.data.properties = o;
+			new_o.data.name = i;
+			new_o.data.id = "n"+i;
+			//new_o.name = i;
+			//new_o.id = "n"+i;
+			demoNodes.push(new_o);
+		});
+		$.each(raw_edges, function(i, t) {
+		  
+  		$.each(t, function(j, o) {
+  		  
+  			name = j;
+  			id = "e"+i+j;
+  			source = "n"+i;
+  			target = "n"+o;
+  			new_o = {"data":{"id":id, "name": name, "source": source, "target": target, "weight": 20}};
+  			demoEdges.push(new_o);
+  		});
+		});
+
+    // ick not sure if this needed
+		//g_aux.graph = {name:'test'};
+
+
+		// return in a format suitable for loading into cytoscape.js
+		return {
+      graph: {name: "test"},
+		  nodes: demoNodes,
+		  edges: demoEdges
+		};
+	};
+
   // exposed for the storage of the graph
 	get_current_cyto_graph = function () {
 		return g;

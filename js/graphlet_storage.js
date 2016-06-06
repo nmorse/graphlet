@@ -97,6 +97,15 @@ $(function() {
         load_cy_graph(cy_g);
       }
     });
+    $('#load_from_appState').off("click");
+    $('#load_from_appState').on("click", function() {
+      var s = $('#graph_in>textarea').val();
+      var cy_g;
+      if (s !== "") {
+        cy_g = load_appState(JSON.parse(s), "test");
+        load_cy_graph(cy_g);
+      }
+    });
 
     // load
     $(document).off("load_hbg");
