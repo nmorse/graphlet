@@ -186,6 +186,7 @@
 			//new_o.id = "n"+i;
 			demoNodes.push(new_o);
 		});
+		demoNodes.reverse();
 		$.each(raw_edges, function(i, t) {
 		  
   		$.each(t, function(j, o) {
@@ -194,7 +195,7 @@
   			id = "e"+i+j;
   			source = "n"+i;
   			target = "n"+o;
-  			new_o = {"data":{"id":id, "name": name, "source": source, "target": target, "weight": 20}};
+  			new_o = {"data":{"id":id, "name": name, "source": source, "target": target, "edge_type": "flo", "weight": 20}};
   			demoEdges.push(new_o);
   		});
 		});
