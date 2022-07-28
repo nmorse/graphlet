@@ -1,8 +1,9 @@
 Graphlet
 ========
-Demo IDE [http://nmorse.github.io/graphlet/editor.html?example=Hello%20World](https://nmorse.github.io/graphlet/editor.html?example=Guessing%20Game#)
+Demo of [a Guessing Game](https://nmorse.github.io/graphlet/editor.html?example=Guessing%20Game) use the Run tab to play.
+Or try the [Simple Calculator](https://nmorse.github.io/graphlet/editor.html?example=)
 
-This project, the "Graphlet" project, aims to move toward a few ideals that have been missing from the programming landscape.
+This (now aging) project, the "Graphlet" project, aimed to move toward a few ideals that have been (and are still) missing from the programming landscape.
  * a graph based syntax for flow-control and data-flow (i.e. a network of function, data and I/O elements)
  * visual programming (enabling spatial reasoning on a graph network topology)
  * a portable (environment agnostic) high-level approach to programming
